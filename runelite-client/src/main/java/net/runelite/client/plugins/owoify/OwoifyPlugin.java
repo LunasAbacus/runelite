@@ -6,9 +6,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.coords.WorldPoint;
-import net.runelite.api.events.ChatMessage;
-import net.runelite.api.events.OverheadTextChanged;
-import net.runelite.api.events.WidgetLoaded;
+import net.runelite.api.events.*;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetID;
 import net.runelite.api.widgets.WidgetInfo;
@@ -23,6 +21,8 @@ import net.runelite.client.ui.overlay.OverlayManager;
 import okhttp3.OkHttpClient;
 
 import javax.inject.Inject;
+import javax.sound.midi.Instrument;
+import javax.sound.midi.MidiSystem;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,6 +39,33 @@ public class OwoifyPlugin extends Plugin
 
 	@Inject
 	private ClientThread clientThread;
+
+	SoundEngine engine;
+
+	private HashMap<Skill, Integer> exp = new HashMap<>();
+
+	@Override
+	protected void startUp() throws Exception
+	{
+		engine = new SoundEngine();
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick e) {
+		soundCoolDown = Math.max(0, soundCoolDown - 1);
+	}
+
+	private int soundCoolDown = 0;
+	@Subscribe
+	public void onStatChanged(StatChanged e) throws IOException {
+		exp.computeIfAbsent(e.getSkill(), k -> e.getXp());
+
+		if(e.getXp() != exp.get(e.getSkill()) && soundCoolDown == 0) {
+			int wooNum = (int) Math.ceil(Math.random() * 9);
+			engine.playClip("woo" + wooNum + ".wav");
+			soundCoolDown = 3;
+		}
+	}
 
 	@Subscribe
 	public void onWidgetLoaded(WidgetLoaded e) {
