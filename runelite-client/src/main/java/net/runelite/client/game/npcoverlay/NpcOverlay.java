@@ -25,12 +25,7 @@
  */
 package net.runelite.client.game.npcoverlay;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.Shape;
+import java.awt.*;
 import java.util.Map;
 import java.util.function.Predicate;
 import net.runelite.api.Client;
@@ -44,6 +39,7 @@ import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
+import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.Text;
 
 class NpcOverlay extends Overlay
@@ -52,6 +48,9 @@ class NpcOverlay extends Overlay
 	private final ModelOutlineRenderer modelOutlineRenderer;
 	private final Map<NPC, HighlightedNpc> highlightedNpcs;
 
+	private Image testImage;
+
+
 	NpcOverlay(Client client, ModelOutlineRenderer modelOutlineRenderer, Map<NPC, HighlightedNpc> highlightedNpcs)
 	{
 		this.client = client;
@@ -59,6 +58,8 @@ class NpcOverlay extends Overlay
 		this.highlightedNpcs = highlightedNpcs;
 		setPosition(OverlayPosition.DYNAMIC);
 		setLayer(OverlayLayer.ABOVE_SCENE);
+
+		this.testImage = ImageUtil.loadImageResource(getClass(), "./sapphire.png");
 	}
 
 	@Override
@@ -165,6 +166,19 @@ class NpcOverlay extends Overlay
 			graphics.draw(polygon);
 			graphics.setColor(fillColor);
 			graphics.fill(polygon);
+		}
+	}
+
+	private void renderSprite(Graphics2D graphics, Shape polygon, Image image) {
+		if (polygon != null) {
+			// private Image clockImage;
+			// clockImage = ImageUtil.loadImageResource(getClass(), "clock.png");
+			// graphics.drawImage(plugin.getClockImage(), spriteBounds.x, spriteBounds.y, null);
+			graphics.drawImage(image,
+					(int) polygon.getBounds2D().getCenterX(), (int) polygon.getBounds2D().getCenterY(),
+					image.getWidth(null), image.getHeight(null),
+					//13, 13,
+					null);
 		}
 	}
 }

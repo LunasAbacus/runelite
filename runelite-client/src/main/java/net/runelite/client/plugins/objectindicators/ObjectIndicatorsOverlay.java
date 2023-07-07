@@ -25,13 +25,8 @@
 package net.runelite.client.plugins.objectindicators;
 
 import com.google.common.base.Strings;
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Polygon;
-import java.awt.Shape;
-import java.awt.Stroke;
+
+import java.awt.*;
 import javax.inject.Inject;
 import net.runelite.api.Client;
 import net.runelite.api.DecorativeObject;
@@ -47,6 +42,7 @@ import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.OverlayUtil;
 import net.runelite.client.ui.overlay.outline.ModelOutlineRenderer;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.ImageUtil;
 
 class ObjectIndicatorsOverlay extends Overlay
 {
@@ -54,6 +50,8 @@ class ObjectIndicatorsOverlay extends Overlay
 	private final ObjectIndicatorsConfig config;
 	private final ObjectIndicatorsPlugin plugin;
 	private final ModelOutlineRenderer modelOutlineRenderer;
+
+	private Image testImage;
 
 	@Inject
 	private ObjectIndicatorsOverlay(Client client, ObjectIndicatorsConfig config, ObjectIndicatorsPlugin plugin,
@@ -66,6 +64,8 @@ class ObjectIndicatorsOverlay extends Overlay
 		setPosition(OverlayPosition.DYNAMIC);
 		setPriority(OverlayPriority.LOW);
 		setLayer(OverlayLayer.ABOVE_SCENE);
+
+		this.testImage = ImageUtil.loadImageResource(getClass(), "sapphire.png");
 	}
 
 	@Override
@@ -95,6 +95,13 @@ class ObjectIndicatorsOverlay extends Overlay
 				{
 					continue;
 				}
+			}
+
+			if (true) {
+				graphics.drawImage(testImage,
+						object.getCanvasLocation().getX(),
+						object.getCanvasLocation().getY(),
+						null);
 			}
 
 			if (color == null || !config.rememberObjectColors())
