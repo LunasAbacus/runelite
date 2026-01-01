@@ -46,4 +46,17 @@ public interface DynamicObject extends Renderable
 	 * @return
 	 */
 	int getAnimCycle();
+
+	/**
+	 * Like {@link #getModel()} but is threadsafe and doesn't support animations.
+	 *
+	 * @return
+	 */
+	Model getModelZbuf();
+
+	/**
+	 * The object composition for the model returned by {@link #getModelZbuf()}
+	 * @return
+	 */
+	ObjectComposition getRecordedObjectComposition();
 }

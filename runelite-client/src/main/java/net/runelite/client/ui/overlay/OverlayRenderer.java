@@ -30,6 +30,7 @@ import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Point;
@@ -49,12 +50,12 @@ import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
 import net.runelite.api.KeyCode;
-import net.runelite.api.Varbits;
 import net.runelite.api.events.BeforeRender;
 import net.runelite.api.events.ClientTick;
 import net.runelite.api.events.FocusChanged;
+import net.runelite.api.gameval.InterfaceID;
+import net.runelite.api.gameval.VarbitID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.api.widgets.WidgetItem;
 import net.runelite.client.chat.ChatMessageManager;
 import net.runelite.client.chat.QueuedMessage;
@@ -95,6 +96,8 @@ public class OverlayRenderer extends MouseAdapter
 	private final ClientUI clientUI;
 	private final EventBus eventBus;
 	private final ChatMessageManager chatMessageManager;
+
+	private Font font, tooltipFont, interfaceFont;
 
 	// Overlay movement variables
 	private final Point overlayOffset = new Point();
@@ -287,6 +290,11 @@ public class OverlayRenderer extends MouseAdapter
 		final Paint paint = graphics.getPaint();
 		final RenderingHints renderingHints = graphics.getRenderingHints();
 		final Color background = graphics.getBackground();
+
+		// Cache overlay fonts
+		this.font = runeLiteConfig.fontType().getFont();
+		this.tooltipFont = runeLiteConfig.tooltipFontType().getFont();
+		this.interfaceFont = runeLiteConfig.interfaceFontType().getFont();
 
 		final Rectangle clip = clipBounds(layer);
 		graphics.setClip(clip);
@@ -627,7 +635,6 @@ public class OverlayRenderer extends MouseAdapter
 			startedMovingOverlay = false;
 		}
 
-		mouseEvent.consume();
 		return mouseEvent;
 	}
 
@@ -683,7 +690,7 @@ public class OverlayRenderer extends MouseAdapter
 			chatMessageManager.queue(QueuedMessage.builder()
 				.type(ChatMessageType.CONSOLE)
 				.runeLiteFormattedMessage("You've repositioned one of the in-game interfaces. Hold " + runeLiteConfig.dragHotkey() +
-					" and drag to reposition the interface again, or " + runeLiteConfig.dragHotkey() + " and right click to reset.")
+					" and drag to reposition the interface again, or " + runeLiteConfig.dragHotkey() + " and right-click to reset.")
 				.build());
 		}
 
@@ -715,15 +722,15 @@ public class OverlayRenderer extends MouseAdapter
 		// Set font based on configuration
 		if (position == OverlayPosition.DYNAMIC || position == OverlayPosition.DETACHED)
 		{
-			graphics.setFont(runeLiteConfig.fontType().getFont());
+			graphics.setFont(font);
 		}
 		else if (position == OverlayPosition.TOOLTIP)
 		{
-			graphics.setFont(runeLiteConfig.tooltipFontType().getFont());
+			graphics.setFont(tooltipFont);
 		}
 		else
 		{
-			graphics.setFont(runeLiteConfig.interfaceFontType().getFont());
+			graphics.setFont(interfaceFont);
 		}
 
 		graphics.translate(point.x, point.y);
@@ -785,7 +792,7 @@ public class OverlayRenderer extends MouseAdapter
 
 	private boolean shouldInvalidateBounds()
 	{
-		final Widget chatbox = client.getWidget(WidgetInfo.CHATBOX);
+		final Widget chatbox = client.getWidget(InterfaceID.Chatbox.CHATAREA);
 		final boolean resizeableChanged = isResizeable != client.isResized();
 		boolean changed = false;
 
@@ -828,16 +835,16 @@ public class OverlayRenderer extends MouseAdapter
 	{
 		if (client.isResized())
 		{
-			if (client.getVarbitValue(Varbits.SIDE_PANELS) == 1)
+			if (client.getVarbitValue(VarbitID.RESIZABLE_STONE_ARRANGEMENT) == 1)
 			{
-				return client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_BOTTOM_LINE);
+				return client.getWidget(InterfaceID.ToplevelPreEoc.HUD_CONTAINER_FRONT);
 			}
 			else
 			{
-				return client.getWidget(WidgetInfo.RESIZABLE_VIEWPORT_OLD_SCHOOL_BOX);
+				return client.getWidget(InterfaceID.ToplevelOsrsStretch.HUD_CONTAINER_FRONT);
 			}
 		}
-		return client.getWidget(WidgetInfo.FIXED_VIEWPORT);
+		return client.getWidget(InterfaceID.Toplevel.OVERLAY_HUD);
 	}
 
 	private OverlayBounds buildSnapCorners()
