@@ -54,6 +54,8 @@ dependencies {
     api(libs.rl.awt)
     compileOnly(libs.rl.orange)
 
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
+
     api(libs.slf4j.api)
     api(libs.logback.classic) {
         exclude("org.slf4j", "slf4j-api")
