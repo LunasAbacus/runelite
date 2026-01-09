@@ -24,14 +24,15 @@
  */
 package net.runelite.client.plugins.owo;
 
-import net.runelite.client.ui.overlay.OverlayPanel;
+import net.runelite.api.Point;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
-import net.runelite.client.ui.overlay.components.LineComponent;
 
 import javax.inject.Inject;
 import java.awt.*;
 
-public class OwoOverlay extends OverlayPanel
+public class OwoOverlay extends Overlay
 {
 	private final OwoPlugin plugin;
 
@@ -39,17 +40,21 @@ public class OwoOverlay extends OverlayPanel
 	OwoOverlay(OwoPlugin plugin) {
 		super(plugin);
 		this.plugin = plugin;
-		setPosition(OverlayPosition.TOP_LEFT);
-		setPriority(PRIORITY_LOW);
+		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_SCENE);
 	}
 
 	@Override
 	public Dimension render(Graphics2D graphics)
 	{
-		panelComponent.getChildren().add(LineComponent.builder()
-			.left(plugin.getDebugText())
-			.build());
-		return super.render(graphics);
-	}
+		Point point = plugin.getDebugTargetPoint();
+		if (point != null) {
+			graphics.setColor(Color.WHITE);
+			graphics.drawOval(point.getX() - 5, point.getY() - 5, 10, 10);
+        }
+		graphics.drawString(plugin.getDebugText(), 25, 300);
+		graphics.drawString("State: " + plugin.getDebugState(), 25, 325);
 
+		return null;
+	}
 }

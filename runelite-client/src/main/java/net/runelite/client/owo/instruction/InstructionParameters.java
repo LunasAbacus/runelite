@@ -13,6 +13,6 @@ public class InstructionParameters {
     private int xCoord;
     private int yCoord;
     private int radius;
-    private int waitMillis;
-    private int waitRangeOffset;
+    private int waitMinMillis;
+    private int waitMaxMillis;
 }

@@ -42,6 +42,14 @@ public class OwoPlugin extends Plugin
 	@Getter
 	private String debugText;
 
+	@Setter
+	@Getter
+	private Point debugTargetPoint;
+
+	@Setter
+	@Getter
+	private String debugState;
+
 	private final OwoServer server;
 
 	private OwoLogic activeLogic;
@@ -66,11 +74,13 @@ public class OwoPlugin extends Plugin
 	protected void startUp() throws Exception {
 		overlayManager.add(overlay);
 		setActiveLogic(owoConfig.logicType());
+		activeLogic.startUp();
 	}
 
 	@Override
 	protected void shutDown() throws Exception {
 		overlayManager.remove(overlay);
+//		activeLogic.shutDown();
 	}
 
 	@Provides
@@ -113,4 +123,7 @@ public class OwoPlugin extends Plugin
 	public void onNpcDespawned(NpcDespawned npcDespawned) {
 		activeLogic.onNpcDespawned(npcDespawned);
 	}
+
+	@Subscribe
+	public void onAnimationChanged(AnimationChanged event) { activeLogic.onAnimationChanged(event); }
 }

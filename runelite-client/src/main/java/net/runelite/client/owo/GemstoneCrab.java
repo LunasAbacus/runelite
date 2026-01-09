@@ -2,6 +2,7 @@ package net.runelite.client.owo;
 
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
+import net.runelite.api.Point;
 import net.runelite.api.events.*;
 import net.runelite.client.owo.instruction.Command;
 import net.runelite.client.owo.instruction.Instruction;
@@ -9,6 +10,7 @@ import net.runelite.client.owo.instruction.InstructionParameters;
 import net.runelite.client.owo.instruction.InstructionType;
 import net.runelite.client.plugins.owo.OwoPlugin;
 
+import java.awt.*;
 import java.util.List;
 
 @Slf4j
@@ -20,6 +22,12 @@ public class GemstoneCrab extends OwoLogic {
     // Gemstone Crab boss NPC ID
     private static final int GEMSTONE_CRAB_ID = 14779;
 
+    enum GemstoneCrabState {
+        ATTACK, TUNNEL, SEARCH, ACTION
+    }
+
+    private boolean isCrabKilled = false;
+
     private NPC gemstoneCrab = null;
     private GameObject tunnel = null;
 
@@ -29,7 +37,7 @@ public class GemstoneCrab extends OwoLogic {
         super(server, client);
         this.plugin = plugin;
 
-        Command command = new Command(List.of(new Instruction(InstructionType.IDLE, new InstructionParameters(1, 1, 1, 1, 1))));
+        Command command = new Command(List.of(new Instruction(InstructionType.IDLE, new InstructionParameters(0, 0, 0, 500, 1000))));
         server.updateCommand(command);
 
         plugin.setDebugText("Loaded GemstoneCrab");
@@ -37,28 +45,101 @@ public class GemstoneCrab extends OwoLogic {
 
     @Override
     public void onGameTick(GameTick t) {
-        // TODO Nate these points are not accurate
-        // TODO Nate gemstone crab is still not getting found
+        super.onGameTick(t);
+
+        // Determine state
+        GemstoneCrabState state;
+        if (!isIdle()) {
+            // Wait for action to complete
+            state = GemstoneCrabState.ACTION;
+            Command command = new Command(List.of(new Instruction(InstructionType.IDLE,
+                    new InstructionParameters(0, 0, 0, 1000, 2000))));
+            server.updateCommand(command);
+            plugin.setDebugState(state.name());
+            return;
+        }
+
         if (gemstoneCrab != null) {
-            Point crabPoint = Perspective.localToCanvas(
-                    client,
-                    gemstoneCrab.getLocalLocation(),
-                    gemstoneCrab.getLogicalHeight()
-            );
-            plugin.setDebugText("Crab Point: " + crabPoint);
-            if (crabPoint != null) {
-                Command command = new Command(List.of(new Instruction(InstructionType.LEFT_CLICK, new InstructionParameters(crabPoint.getX(), crabPoint.getY(), 25, 700, 200))));
-                server.updateCommand(command);
-            }
-        } else if (tunnel != null) {
-            Point tunnelPoint = tunnel.getCanvasLocation();
-            plugin.setDebugText("Tunnel Point: " + tunnelPoint);
-            if (tunnelPoint != null) {
-                Command command = new Command(List.of(new Instruction(InstructionType.LEFT_CLICK, new InstructionParameters(tunnelPoint.getX(), tunnelPoint.getY(), 25, 700, 200))));
-                server.updateCommand(command);
-            }
+            state = GemstoneCrabState.ATTACK;
+        } else if (isCrabKilled) {
+            state = GemstoneCrabState.TUNNEL;
         } else {
-            plugin.setDebugText("GemstoneCrab loaded, but no object or npc found");
+            state = GemstoneCrabState.SEARCH;
+        }
+        plugin.setDebugState(state.name());
+
+        switch (state) {
+            case ATTACK: handleAttackingState(); break;
+            case SEARCH: handleSearchingState(); break;
+            case TUNNEL: handleTunnelingState(); break;
+        }
+    }
+
+    /**
+     * Go through tunnel
+     * Next: Search for crab
+     */
+    private void handleTunnelingState() {
+        // TODO Nate what to do if tunnel is outside view?
+        if (tunnel != null) {
+            // Click on the tunnel
+            Shape clickbox = tunnel.getClickbox();
+            if (clickbox == null) {
+                return;
+            }
+            Rectangle bounds = clickbox.getBounds();
+            int centerX = bounds.x + bounds.width / 2;
+            int centerY = bounds.y + bounds.height / 2;
+            Point point = new Point(centerX, centerY);
+
+            plugin.setDebugText("Tunnel Point: " + point);
+            plugin.setDebugTargetPoint(point);
+            // TODO Nate add a random wait command
+            // TODO Nate create a factory for instruction sets
+            Command command = new Command(
+                    List.of(
+                            new Instruction(InstructionType.LEFT_CLICK,
+                                    new InstructionParameters(point.getX(), point.getY(), 25, 10000, 12000))));
+            server.updateCommand(command);
+        }
+        // TODO Nate else need to search for tunnel again
+    }
+
+    /**
+     * State: wait for crab to spawn
+     * Next: fight crab
+     */
+    private void handleSearchingState() {
+        Command command = new Command(List.of(new Instruction(InstructionType.IDLE,
+                new InstructionParameters(0, 0, 0, 2000, 3000))));
+        server.updateCommand(command);
+    }
+
+    /**
+     * State: Fighting until crab is dead
+     * Next: Tunnel
+     */
+    private void handleAttackingState() {
+        if (gemstoneCrab != null) {
+            // TODO Nate make a util for clicking on NPCs and Objects
+            // Click on gemstoneCrab
+            Rectangle bounds = gemstoneCrab.getConvexHull().getBounds();
+            int centerX = bounds.x + bounds.width / 2;
+            int centerY = bounds.y + bounds.height / 2;
+            Point point = new Point(centerX, centerY);
+
+            plugin.setDebugText("Crab Point: " + point);
+            plugin.setDebugTargetPoint(point);
+
+            // TODO Nate create a factory for instruction sets
+            Command command = new Command(
+                    List.of(
+                            new Instruction(InstructionType.LEFT_CLICK,
+                                    new InstructionParameters(point.getX(), point.getY(), 25, 10000, 12000))
+                    )
+            );
+            // TODO Nate how to handle delay between command and action?
+            server.updateCommand(command);
         }
     }
 
@@ -78,7 +159,6 @@ public class GemstoneCrab extends OwoLogic {
     public void onGameObjectDespawned(GameObjectDespawned event) {
         final GameObject gameObject = event.getGameObject();
 
-        // Track tunnels in the scene
         if (gameObject.getId() == TUNNEL_OBJECT_ID)
         {
             tunnel = null;
@@ -90,8 +170,8 @@ public class GemstoneCrab extends OwoLogic {
         NPC npc = npcSpawned.getNpc();
 
         if (npc.getId() == GEMSTONE_CRAB_ID) {
-            log.debug("Found crab npc");
             gemstoneCrab = npc;
+            isCrabKilled = false;
         }
     }
 
@@ -101,6 +181,7 @@ public class GemstoneCrab extends OwoLogic {
 
         if (npc.getId() == GEMSTONE_CRAB_ID) {
             gemstoneCrab = null;
+            isCrabKilled = true;
         }
     }
 }
