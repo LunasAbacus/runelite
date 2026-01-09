@@ -196,10 +196,15 @@ public class CameraPlugin extends Plugin implements KeyListener, MouseListener
 
 	void limitsChanged()
 	{
-		defaultZoomSmallMin = client.getVarcIntValue(VarClientID.CAMERA_ZOOM_SMALL_MIN);
-		defaultZoomSmallMax = client.getVarcIntValue(VarClientID.CAMERA_ZOOM_SMALL_MAX);
-		defaultZoomBigMin = client.getVarcIntValue(VarClientID.CAMERA_ZOOM_BIG_MIN);
-		defaultZoomBigMax = client.getVarcIntValue(VarClientID.CAMERA_ZOOM_BIG_MAX);
+//		defaultZoomSmallMin = client.getVarcIntValue(VarClientID.CAMERA_ZOOM_SMALL_MIN);
+//		defaultZoomSmallMax = client.getVarcIntValue(VarClientID.CAMERA_ZOOM_SMALL_MAX);
+//		defaultZoomBigMin = client.getVarcIntValue(VarClientID.CAMERA_ZOOM_BIG_MIN);
+//		defaultZoomBigMax = client.getVarcIntValue(VarClientID.CAMERA_ZOOM_BIG_MAX);
+
+		defaultZoomSmallMin = 1;
+		defaultZoomSmallMax = 10000;
+		defaultZoomBigMin = 1;
+		defaultZoomBigMax = 1000;
 
 		applyConfigs(config.innerLimit(), config.outerLimit());
 	}

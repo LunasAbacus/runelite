@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2018, Tomas Slusny <slusnucky@gmail.com>
- * Copyright (c) 2018, Ron Young <https://github.com/raiyni>
+ * Copyright (c) 2018, Nickolaj <https://github.com/fire-proof>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,24 +22,39 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.resourcepacks;
+package net.runelite.client.plugins.owo;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import net.runelite.client.game.SpriteOverride;
+import net.runelite.api.Point;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPosition;
 
-@RequiredArgsConstructor
-public enum TabSprites implements SpriteOverride
+import javax.inject.Inject;
+import java.awt.*;
+
+public class OwoOverlay extends Overlay
 {
-	TAB_BACKGROUND(-201, "/tag-tab.png"),
-	TAB_BACKGROUND_ACTIVE(-202, "/tag-tab-active.png"),
-	UP_ARROW(-203, "/up-arrow.png"),
-	DOWN_ARROW(-204, "/down-arrow.png"),
-	NEW_TAB(-205, "/new-tab.png");
+	private final OwoPlugin plugin;
 
-	@Getter
-	private final int spriteId;
+	@Inject
+	OwoOverlay(OwoPlugin plugin) {
+		super(plugin);
+		this.plugin = plugin;
+		setPosition(OverlayPosition.DYNAMIC);
+		setLayer(OverlayLayer.ABOVE_SCENE);
+	}
 
-	@Getter
-	private final String fileName;
+	@Override
+	public Dimension render(Graphics2D graphics)
+	{
+		Point point = plugin.getDebugTargetPoint();
+		if (point != null) {
+			graphics.setColor(Color.WHITE);
+			graphics.drawOval(point.getX() - 5, point.getY() - 5, 10, 10);
+        }
+		graphics.drawString(plugin.getDebugText(), 25, 300);
+		graphics.drawString("State: " + plugin.getDebugState(), 25, 325);
+
+		return null;
+	}
 }
