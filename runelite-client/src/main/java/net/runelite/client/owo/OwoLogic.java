@@ -1,6 +1,7 @@
 package net.runelite.client.owo;
 
 import net.runelite.api.*;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.*;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.client.owo.instruction.Command;
@@ -23,10 +24,11 @@ public abstract class OwoLogic {
 
     public void  shutdown() { }
 
+    private WorldPoint lastLocation;
     private int ticksSinceAction = 0;
 
     protected boolean isPerformingAction() {
-        return ticksSinceAction < 10;
+        return ticksSinceAction < 7;
     }
 
     protected void idle() {
@@ -34,6 +36,7 @@ public abstract class OwoLogic {
         Command command = InstructionFactory.createDefaultIdle();
         server.updateCommand(command);
         plugin.setDebugText("Performing action");
+        plugin.setDebugTargetPoint(null);
     }
 
     public void onGameTick(GameTick e) {
@@ -44,11 +47,19 @@ public abstract class OwoLogic {
 
         boolean performingAction = local.getAnimation() != -1 || local.getInteracting() != null;
 
-        if (performingAction) {
+        WorldPoint current = local.getWorldLocation();
+        boolean isMoving = lastLocation != null && !current.equals(lastLocation);
+        lastLocation = current;
+
+        if (performingAction || isMoving) {
             ticksSinceAction = 0;
         } else {
             ticksSinceAction++;
         }
+    }
+
+    public void onWorldChanged(WorldChanged worldChanged) {
+
     }
 
     public void onItemContainerChanged(ItemContainerChanged event) {

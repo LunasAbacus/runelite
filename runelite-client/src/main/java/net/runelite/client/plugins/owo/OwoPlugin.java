@@ -84,6 +84,11 @@ public class OwoPlugin extends Plugin
 //		activeLogic.shutDown();
 	}
 
+	@Subscribe
+	public void onWorldChanged(WorldChanged worldChanged) {
+		activeLogic.onWorldChanged(worldChanged);
+	}
+
 	@Provides
 	OwoConfig provideConfig(ConfigManager configManager)
 	{

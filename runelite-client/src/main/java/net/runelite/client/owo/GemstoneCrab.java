@@ -70,7 +70,6 @@ public class GemstoneCrab extends OwoLogic {
             plugin.setDebugText("Tunnel Point: " + point);
             plugin.setDebugTargetPoint(point.get());
         }
-        // TODO Nate else need to search for tunnel again like if outside view
     }
 
     /**
@@ -95,7 +94,6 @@ public class GemstoneCrab extends OwoLogic {
             plugin.setDebugTargetPoint(point);
 
             Command command = InstructionFactory.createClickCommand(point.getX(), point.getY());
-            // TODO Nate how to handle delay between command and action?
             server.updateCommand(command);
         }
     }

@@ -47,9 +47,28 @@ public class InstructionFactory {
         return new Command(List.of(new Instruction(InstructionType.SLEEP, instructionParameters)));
     }
 
-    public static Command createBankDepositCommand() {
-        // TODO Nate implement
+    public static Command createBankDepositCommand(int x, int y) {
         // Click deposit button + Hit escape key
-        return createDefaultIdle();
+        InstructionParameters clickParams = InstructionParameters.builder()
+                .x(x)
+                .y(y)
+                .clickButton(Left_CLICK_BUTTON)
+                .waitMinMillis(200)
+                .waitMaxMillis(500)
+                .build();
+        Instruction deposit = new Instruction(InstructionType.CLICK, clickParams);
+
+        InstructionParameters typeParams = InstructionParameters.builder()
+                .keys(List.of("{Esc}"))
+                .build();
+        Instruction escape = new Instruction(InstructionType.TYPE, typeParams);
+
+        InstructionParameters waitParams = InstructionParameters.builder()
+                .waitMinMillis(tickMillis)
+                .waitMaxMillis(tickMillis * 2)
+                .build();
+        Instruction wait = new Instruction(InstructionType.SLEEP, waitParams);
+
+        return new Command(List.of(deposit, escape, wait));
     }
 }

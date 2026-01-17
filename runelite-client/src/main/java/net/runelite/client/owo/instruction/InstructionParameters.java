@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * Keep all values as integers or strings to work well with AHK parsing and maps
  */
@@ -16,20 +18,20 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class InstructionParameters {
     // Click
-    private int x;
-    private int y;
-    private int radius;
-    private int waitMinMillis;
-    private int waitMaxMillis;
-    private int isShift;
+    private Integer x;
+    private Integer y;
+    private Integer radius;
+    private Integer waitMinMillis;
+    private Integer waitMaxMillis;
+    private Integer isShift;
     private String clickButton;
-    private int speed;
+    private Integer speed;
 
     // Drop
-    private int keepTools;
+    private Integer keepTools;
 
     // Pray
 
     // Type
-    private String keys;
+    private List<String> keys;
 }
