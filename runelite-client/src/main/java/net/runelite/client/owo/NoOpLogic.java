@@ -1,18 +1,13 @@
 package net.runelite.client.owo;
 
-import net.runelite.api.Client;
 import net.runelite.client.owo.instruction.Command;
-import net.runelite.client.owo.instruction.Instruction;
-import net.runelite.client.owo.instruction.InstructionParameters;
-import net.runelite.client.owo.instruction.InstructionType;
-
-import java.util.List;
+import net.runelite.client.plugins.owo.OwoPlugin;
 
 public class NoOpLogic extends OwoLogic {
-    public NoOpLogic(OwoServer server, Client client) {
-        super(server, client);
+    public NoOpLogic(OwoPlugin plugin) {
+        super(plugin);
 
-        Command command = new Command(List.of(new Instruction(InstructionType.IDLE, new InstructionParameters())));
+        Command command = InstructionFactory.createDefaultIdle();
         server.updateCommand(command);
     }
 }

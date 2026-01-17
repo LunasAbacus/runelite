@@ -23,6 +23,7 @@ import javax.inject.Inject;
 )
 public class OwoPlugin extends Plugin
 {
+	@Getter
 	@Inject
 	private Client client;
 
@@ -46,10 +47,7 @@ public class OwoPlugin extends Plugin
 	@Getter
 	private Point debugTargetPoint;
 
-	@Setter
 	@Getter
-	private String debugState;
-
 	private final OwoServer server;
 
 	private OwoLogic activeLogic;
@@ -62,10 +60,13 @@ public class OwoPlugin extends Plugin
 	private void setActiveLogic(LogicType type) {
 		switch (type) {
 			case NO_OP:
-				this.activeLogic = new NoOpLogic(server, client);
+				this.activeLogic = new NoOpLogic(this);
 				break;
 			case GEMSTONE_CRAB:
-				this.activeLogic = new GemstoneCrab(server, client, this);
+				this.activeLogic = new GemstoneCrab(this);
+				break;
+			case WOODCUTTING:
+				this.activeLogic = new Woodcutting(this);
 				break;
 		}
 	}
@@ -101,7 +102,13 @@ public class OwoPlugin extends Plugin
 
 	@Subscribe
 	public void onGameTick(GameTick e) {
+		// TODO Nate if allow random pauses, prevent active logic from running for a while
 		activeLogic.onGameTick(e);
+	}
+
+	@Subscribe
+	public void onItemContainerChanged(ItemContainerChanged event) {
+		activeLogic.onItemContainerChanged(event);
 	}
 
 	@Subscribe
