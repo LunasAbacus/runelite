@@ -5,13 +5,9 @@ import net.runelite.api.*;
 import net.runelite.api.Point;
 import net.runelite.api.events.*;
 import net.runelite.client.owo.instruction.Command;
-import net.runelite.client.owo.instruction.Instruction;
-import net.runelite.client.owo.instruction.InstructionParameters;
-import net.runelite.client.owo.instruction.InstructionType;
 import net.runelite.client.plugins.owo.OwoPlugin;
 
-import java.awt.*;
-import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 public class GemstoneCrab extends OwoLogic {
@@ -22,22 +18,17 @@ public class GemstoneCrab extends OwoLogic {
     // Gemstone Crab boss NPC ID
     private static final int GEMSTONE_CRAB_ID = 14779;
 
-    enum GemstoneCrabState {
-        ATTACK, TUNNEL, SEARCH, ACTION
-    }
-
     private boolean isCrabKilled = false;
 
     private NPC gemstoneCrab = null;
     private GameObject tunnel = null;
 
-    private final OwoPlugin plugin;
+    // TODO Nate rewrite this completely with new method
 
-    public GemstoneCrab(OwoServer server, Client client, OwoPlugin plugin) {
-        super(server, client);
-        this.plugin = plugin;
+    public GemstoneCrab(OwoPlugin plugin) {
+        super(plugin);
 
-        Command command = new Command(List.of(new Instruction(InstructionType.IDLE, new InstructionParameters(0, 0, 0, 500, 1000))));
+        Command command = InstructionFactory.createSimpleIdleCommand(500, 1000);
         server.updateCommand(command);
 
         plugin.setDebugText("Loaded GemstoneCrab");
@@ -47,31 +38,19 @@ public class GemstoneCrab extends OwoLogic {
     public void onGameTick(GameTick t) {
         super.onGameTick(t);
 
-        // Determine state
-        GemstoneCrabState state;
-        if (!isIdle()) {
+        if (isPerformingAction()) {
             // Wait for action to complete
-            state = GemstoneCrabState.ACTION;
-            Command command = new Command(List.of(new Instruction(InstructionType.IDLE,
-                    new InstructionParameters(0, 0, 0, 1000, 2000))));
+            Command command = InstructionFactory.createSimpleIdleCommand(1000, 2000);
             server.updateCommand(command);
-            plugin.setDebugState(state.name());
             return;
         }
 
         if (gemstoneCrab != null) {
-            state = GemstoneCrabState.ATTACK;
+            handleAttackingState();
         } else if (isCrabKilled) {
-            state = GemstoneCrabState.TUNNEL;
+            handleTunnelingState();
         } else {
-            state = GemstoneCrabState.SEARCH;
-        }
-        plugin.setDebugState(state.name());
-
-        switch (state) {
-            case ATTACK: handleAttackingState(); break;
-            case SEARCH: handleSearchingState(); break;
-            case TUNNEL: handleTunnelingState(); break;
+            handleSearchingState();
         }
     }
 
@@ -80,29 +59,17 @@ public class GemstoneCrab extends OwoLogic {
      * Next: Search for crab
      */
     private void handleTunnelingState() {
-        // TODO Nate what to do if tunnel is outside view?
         if (tunnel != null) {
-            // Click on the tunnel
-            Shape clickbox = tunnel.getClickbox();
-            if (clickbox == null) {
+            Optional<Point> point = OwoUtils.getGameObjectClickPoint(tunnel);
+            if (point.isEmpty()) {
                 return;
             }
-            Rectangle bounds = clickbox.getBounds();
-            int centerX = bounds.x + bounds.width / 2;
-            int centerY = bounds.y + bounds.height / 2;
-            Point point = new Point(centerX, centerY);
+            Command command = InstructionFactory.createClickCommand(point.get().getX(), point.get().getY());
+            server.updateCommand(command);
 
             plugin.setDebugText("Tunnel Point: " + point);
-            plugin.setDebugTargetPoint(point);
-            // TODO Nate add a random wait command
-            // TODO Nate create a factory for instruction sets
-            Command command = new Command(
-                    List.of(
-                            new Instruction(InstructionType.LEFT_CLICK,
-                                    new InstructionParameters(point.getX(), point.getY(), 25, 10000, 12000))));
-            server.updateCommand(command);
+            plugin.setDebugTargetPoint(point.get());
         }
-        // TODO Nate else need to search for tunnel again
     }
 
     /**
@@ -110,8 +77,8 @@ public class GemstoneCrab extends OwoLogic {
      * Next: fight crab
      */
     private void handleSearchingState() {
-        Command command = new Command(List.of(new Instruction(InstructionType.IDLE,
-                new InstructionParameters(0, 0, 0, 2000, 3000))));
+        plugin.setDebugTargetPoint(null);
+        Command command = InstructionFactory.createSimpleIdleCommand(2000, 3000);
         server.updateCommand(command);
     }
 
@@ -121,24 +88,12 @@ public class GemstoneCrab extends OwoLogic {
      */
     private void handleAttackingState() {
         if (gemstoneCrab != null) {
-            // TODO Nate make a util for clicking on NPCs and Objects
-            // Click on gemstoneCrab
-            Rectangle bounds = gemstoneCrab.getConvexHull().getBounds();
-            int centerX = bounds.x + bounds.width / 2;
-            int centerY = bounds.y + bounds.height / 2;
-            Point point = new Point(centerX, centerY);
+            Point point = OwoUtils.getNpcClickPoint(gemstoneCrab);
 
             plugin.setDebugText("Crab Point: " + point);
             plugin.setDebugTargetPoint(point);
 
-            // TODO Nate create a factory for instruction sets
-            Command command = new Command(
-                    List.of(
-                            new Instruction(InstructionType.LEFT_CLICK,
-                                    new InstructionParameters(point.getX(), point.getY(), 25, 10000, 12000))
-                    )
-            );
-            // TODO Nate how to handle delay between command and action?
+            Command command = InstructionFactory.createClickCommand(point.getX(), point.getY());
             server.updateCommand(command);
         }
     }

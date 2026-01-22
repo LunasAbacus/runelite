@@ -1,26 +1,42 @@
 package net.runelite.client.owo;
 
-import net.runelite.api.Client;
-import net.runelite.api.Player;
+import net.runelite.api.*;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.*;
+import net.runelite.api.gameval.InventoryID;
+import net.runelite.client.owo.instruction.Command;
+import net.runelite.client.plugins.owo.OwoPlugin;
 
 public abstract class OwoLogic {
     protected final OwoServer server;
     protected final Client client;
+    protected final OwoPlugin plugin;
 
-    public OwoLogic(OwoServer server, Client client) {
-        this.server = server;
-        this.client = client;
+    protected Item[] inventoryItems = new Item[28];
+
+    public OwoLogic(OwoPlugin plugin) {
+        this.server = plugin.getServer();
+        this.client = plugin.getClient();
+        this.plugin = plugin;
     }
 
     public void startUp() { }
 
     public void  shutdown() { }
 
-    private int ticksSinceCombat = 0;
+    private WorldPoint lastLocation;
+    private int ticksSinceAction = 0;
 
-    protected boolean isIdle() {
-        return ticksSinceCombat >= 10;
+    protected boolean isPerformingAction() {
+        return ticksSinceAction < 7;
+    }
+
+    protected void idle() {
+        // Wait for action to complete
+        Command command = InstructionFactory.createDefaultIdle();
+        server.updateCommand(command);
+        plugin.setDebugText("Performing action");
+        plugin.setDebugTargetPoint(null);
     }
 
     public void onGameTick(GameTick e) {
@@ -29,13 +45,29 @@ public abstract class OwoLogic {
             return;
         }
 
-        boolean inCombat = local.getAnimation() != -1 || local.getInteracting() != null;
+        boolean performingAction = local.getAnimation() != -1 || local.getInteracting() != null;
 
-        if (inCombat) {
-            ticksSinceCombat = 0;
+        WorldPoint current = local.getWorldLocation();
+        boolean isMoving = lastLocation != null && !current.equals(lastLocation);
+        lastLocation = current;
+
+        if (performingAction || isMoving) {
+            ticksSinceAction = 0;
         } else {
-            ticksSinceCombat++;
+            ticksSinceAction++;
         }
+    }
+
+    public void onWorldChanged(WorldChanged worldChanged) {
+
+    }
+
+    public void onItemContainerChanged(ItemContainerChanged event) {
+        if (event.getContainerId() != InventoryID.INV) {
+            return;
+        }
+
+        inventoryItems = event.getItemContainer().getItems();
     }
 
     public void onGameObjectSpawned(GameObjectSpawned event) {}

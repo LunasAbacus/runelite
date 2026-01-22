@@ -53,7 +53,6 @@ public class OwoOverlay extends Overlay
 			graphics.drawOval(point.getX() - 5, point.getY() - 5, 10, 10);
         }
 		graphics.drawString(plugin.getDebugText(), 25, 300);
-		graphics.drawString("State: " + plugin.getDebugState(), 25, 325);
 
 		return null;
 	}
