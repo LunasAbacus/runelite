@@ -27,13 +27,14 @@ package net.runelite.client.plugins.slayer;
 
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
-import java.util.Map;
-import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.gameval.ItemID;
 
+import javax.annotation.Nullable;
+import java.util.Map;
+
 @Getter
-enum Task
+public enum Task
 {
 	//<editor-fold desc="Enums">
 	ABERRANT_SPECTRES("Aberrant spectres", ItemID.SLAYERGUIDE_ABERRANTSPECTER, "Spectre"),
@@ -228,7 +229,7 @@ enum Task
 	}
 
 	@Nullable
-	static Task getTask(String taskName)
+    public static Task getTask(String taskName)
 	{
 		return tasks.get(taskName.toLowerCase());
 	}

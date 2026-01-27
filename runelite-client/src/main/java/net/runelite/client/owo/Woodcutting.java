@@ -36,7 +36,7 @@ public class Woodcutting extends OwoLogic {
     public Woodcutting(final OwoPlugin plugin) {
         super(plugin);
 
-        Command command = InstructionFactory.createSimpleIdleCommand(500, 1000);
+        Command command = InstructionFactory.createDefaultIdle();
         server.updateCommand(command);
 
         plugin.setDebugText("Loaded Woodcutting");

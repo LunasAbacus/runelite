@@ -22,7 +22,7 @@ public abstract class OwoLogic {
 
     public void startUp() { }
 
-    public void  shutdown() { }
+    public void shutDown() { }
 
     private WorldPoint lastLocation;
     private int ticksSinceAction = 0;
@@ -58,9 +58,9 @@ public abstract class OwoLogic {
         }
     }
 
-    public void onWorldChanged(WorldChanged worldChanged) {
+    public void onWorldChanged(WorldChanged worldChanged) { }
 
-    }
+    public void onGameStateChanged(GameStateChanged event) { }
 
     public void onItemContainerChanged(ItemContainerChanged event) {
         if (event.getContainerId() != InventoryID.INV) {
@@ -73,6 +73,8 @@ public abstract class OwoLogic {
     public void onGameObjectSpawned(GameObjectSpawned event) {}
 
     public void onGameObjectDespawned(GameObjectDespawned event) {}
+
+    public void onVarbitChanged(VarbitChanged varbitChanged) {}
 
     public void onNpcSpawned(NpcSpawned npcSpawned) {}
 

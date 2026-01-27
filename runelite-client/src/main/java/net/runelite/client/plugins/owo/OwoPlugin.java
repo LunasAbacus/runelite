@@ -6,16 +6,22 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.events.*;
+import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.chat.ChatClient;
+import net.runelite.client.chat.ChatCommandManager;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
+import net.runelite.client.game.ItemManager;
 import net.runelite.client.owo.*;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
 import javax.inject.Inject;
+import java.util.concurrent.ScheduledExecutorService;
 
 @Slf4j
 @PluginDescriptor(
@@ -27,8 +33,33 @@ public class OwoPlugin extends Plugin
 	@Inject
 	private Client client;
 
+	@Getter
 	@Inject
 	private ClientThread clientThread;
+
+	@Getter
+	@Inject
+	private InfoBoxManager infoBoxManager;
+
+	@Getter
+	@Inject
+	private ItemManager itemManager;
+
+	@Getter
+	@Inject
+	private Notifier notifier;
+
+	@Getter
+	@Inject
+	private ChatCommandManager chatCommandManager;
+
+	@Getter
+	@Inject
+	private ScheduledExecutorService executor;
+
+	@Getter
+	@Inject
+	private ChatClient chatClient;
 
 	@Inject
 	private OwoConfig owoConfig;
@@ -68,6 +99,9 @@ public class OwoPlugin extends Plugin
 			case WOODCUTTING:
 				this.activeLogic = new Woodcutting(this);
 				break;
+			case SLAYER:
+				this.activeLogic = new SlayerMaster(this);
+				break;
 		}
 	}
 
@@ -81,12 +115,18 @@ public class OwoPlugin extends Plugin
 	@Override
 	protected void shutDown() throws Exception {
 		overlayManager.remove(overlay);
-//		activeLogic.shutDown();
+		setActiveLogic(LogicType.NO_OP);
+		activeLogic.shutDown();
 	}
 
 	@Subscribe
 	public void onWorldChanged(WorldChanged worldChanged) {
 		activeLogic.onWorldChanged(worldChanged);
+	}
+
+	@Subscribe
+	public void onGameStateChanged(GameStateChanged event) {
+		activeLogic.onGameStateChanged(event);
 	}
 
 	@Provides
@@ -119,6 +159,11 @@ public class OwoPlugin extends Plugin
 	@Subscribe
 	public void onGameObjectSpawned(GameObjectSpawned event) {
 		activeLogic.onGameObjectSpawned(event);
+	}
+
+	@Subscribe
+	public void onVarbitChanged(VarbitChanged varbitChanged) {
+		activeLogic.onVarbitChanged(varbitChanged);
 	}
 
 	@Subscribe

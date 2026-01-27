@@ -54,4 +54,30 @@ public class OwoUtils {
 
         return Optional.ofNullable(best);
     }
+
+    public static Optional<NPC> findClosestNPC(List<NPC> npcs, WorldPoint playerWp) {
+        NPC best = null;
+        int bestDist = Integer.MAX_VALUE;
+
+        for (NPC npc : npcs) {
+            if (npc == null) {
+                continue;
+            }
+
+            WorldPoint objWp = npc.getWorldLocation();
+
+            // If you only want same plane:
+            if (objWp.getPlane() != playerWp.getPlane()) {
+                continue;
+            }
+
+            int dist = playerWp.distanceTo(objWp);
+            if (dist < bestDist) {
+                bestDist = dist;
+                best = npc;
+            }
+        }
+
+        return Optional.ofNullable(best);
+    }
 }
