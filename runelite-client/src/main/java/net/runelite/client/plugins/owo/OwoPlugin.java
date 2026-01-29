@@ -17,6 +17,7 @@ import net.runelite.client.game.ItemManager;
 import net.runelite.client.owo.*;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
+import net.runelite.client.plugins.puzzlesolver.solver.pathfinding.Pathfinder;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
@@ -102,6 +103,9 @@ public class OwoPlugin extends Plugin
 			case SLAYER:
 				this.activeLogic = new SlayerMaster(this);
 				break;
+			case AGILITY_COURSE:
+				this.activeLogic = new AgilityCourse(this);
+				break;
 		}
 	}
 
@@ -149,6 +153,41 @@ public class OwoPlugin extends Plugin
 	public void onGameTick(GameTick e) {
 		// TODO Nate if allow random pauses, prevent active logic from running for a while
 		activeLogic.onGameTick(e);
+	}
+
+	@Subscribe
+	public void onDecorativeObjectSpawned(DecorativeObjectSpawned event) {
+		activeLogic.onDecorativeObjectSpawned(event);
+	}
+
+	@Subscribe
+	public void onDecorativeObjectDespawned(DecorativeObjectDespawned event) {
+		activeLogic.onDecorativeObjectDespawned(event);
+	}
+
+	@Subscribe
+	public void onGroundObjectSpawned(GroundObjectSpawned event) {
+		activeLogic.onGroundObjectSpawned(event);
+	}
+
+	@Subscribe
+	public void onGroundObjectDespawned(GroundObjectDespawned event) {
+		activeLogic.onGroundObjectDespawned(event);
+	}
+
+	@Subscribe
+	public void onStatChanged(StatChanged event) {
+		activeLogic.onStatChanged(event);
+	}
+
+	@Subscribe
+	public void onItemSpawned(ItemSpawned itemSpawned) {
+		activeLogic.onItemSpawned(itemSpawned);
+	}
+
+	@Subscribe
+	public void onItemDespawned(ItemDespawned itemDespawned) {
+		activeLogic.onItemDespawned(itemDespawned);
 	}
 
 	@Subscribe
