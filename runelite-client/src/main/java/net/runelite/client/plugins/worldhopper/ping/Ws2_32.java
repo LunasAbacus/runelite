@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 Abex
+ * Copyright (c) 2026, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,40 +22,19 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.worldhopper.ping;
 
-import java.awt.Canvas;
+import com.sun.jna.Library;
+import com.sun.jna.Native;
+import com.sun.jna.Pointer;
+import com.sun.jna.platform.win32.WinNT;
+import com.sun.jna.ptr.IntByReference;
 
-/**
- * Represents the client game engine.
- */
-public interface GameEngine
+interface Ws2_32 extends Library
 {
-	/**
-	 * Gets the canvas that contains everything.
-	 *
-	 * @return the game canvas
-	 */
-	Canvas getCanvas();
+	Ws2_32 INSTANCE = Native.loadLibrary("Ws2_32", Ws2_32.class);
 
-	/**
-	 * Gets the client main thread.
-	 *
-	 * @return the main thread
-	 */
-	Thread getClientThread();
+	int SIO_TCP_INFO = 0xD800_0027;
 
-	/**
-	 * Checks whether this code is executing on the client main thread.
-	 *
-	 * @return true if on the main thread, false otherwise
-	 */
-	boolean isClientThread();
-
-	void resizeCanvas();
-
-	/**
-	 * Releases the startup block if "runelite.delaystart" is set true
-	 */
-	public void unblockStartup();
+	int WSAIoctl(WinNT.HANDLE socket, int dwIoControlCode, Pointer lpvInBuffer, int cbInBuffer, Pointer lpvOutBuffer, int cbOutBuffer, IntByReference lpcbBytesReturned, Pointer lpOverlapped, Pointer lpCompletionRoutine);
 }
