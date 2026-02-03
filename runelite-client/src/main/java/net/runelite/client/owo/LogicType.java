@@ -1,5 +1,5 @@
 package net.runelite.client.owo;
 
 public enum LogicType {
-    NO_OP, GEMSTONE_CRAB, WOODCUTTING, SLAYER
+    NO_OP, GEMSTONE_CRAB, WOODCUTTING, SLAYER, AGILITY_COURSE
 }
