@@ -52,7 +52,9 @@ public class OwoOverlay extends Overlay
 			graphics.setColor(Color.WHITE);
 			graphics.drawOval(point.getX() - 5, point.getY() - 5, 10, 10);
         }
-		graphics.drawString(plugin.getDebugText(), 25, 300);
+		if (plugin.getDebugText() != null) {
+			graphics.drawString(plugin.getDebugText(), 25, 300);
+		}
 
 		return null;
 	}

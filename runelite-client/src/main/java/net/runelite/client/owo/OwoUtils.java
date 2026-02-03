@@ -5,11 +5,13 @@ import net.runelite.api.*;
 import net.runelite.api.Point;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.events.MenuOptionClicked;
 import net.runelite.api.events.StatChanged;
 
 import java.awt.*;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Slf4j
 public class OwoUtils {
@@ -63,8 +65,11 @@ public class OwoUtils {
         Rectangle bounds = clickbox.getBounds();
         int centerX = bounds.x + bounds.width / 2;
         int centerY = bounds.y + bounds.height / 2;
+
         return Optional.of(new Point(centerX, centerY));
     }
+
+    // TODO Nate safety check point is on screen
 
     public static Optional<GameObject> findClosestGameObject(List<GameObject> gameObjects, WorldPoint playerWp) {
         GameObject best = null;
@@ -117,4 +122,16 @@ public class OwoUtils {
 
         return Optional.ofNullable(best);
     }
+
+    private static final Set<String> WALK_OPTIONS = Set.of(
+            "Walk here",
+            "Walk"
+    );
+    public static boolean isWalkAction(MenuOptionClicked event)
+    {
+        String option = event.getMenuOption();
+        return WALK_OPTIONS.contains(option);
+    }
+
+
 }

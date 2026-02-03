@@ -112,8 +112,8 @@ public class ExternalPluginManager
 		this.okHttpClient = okHttpClient;
 		this.gson = gson;
 
-		executor.scheduleWithFixedDelay(() -> externalPluginClient.submitPlugins(getInstalledExternalPlugins()),
-			new Random().nextInt(60), 180, TimeUnit.MINUTES);
+//		executor.scheduleWithFixedDelay(() -> externalPluginClient.submitPlugins(getInstalledExternalPlugins()),
+//			new Random().nextInt(60), 180, TimeUnit.MINUTES);
 	}
 
 	public void loadExternalPlugins() throws PluginInstantiationException

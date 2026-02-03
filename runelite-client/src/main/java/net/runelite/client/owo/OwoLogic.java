@@ -103,6 +103,12 @@ public abstract class OwoLogic {
     public void onDecorativeObjectDespawned(DecorativeObjectDespawned event) {
     }
 
+    public void onWallObjectSpawned(WallObjectSpawned event) {
+    }
+
+    public void onWallObjectDespawned(WallObjectDespawned event) {
+    }
+
     public void onGroundObjectSpawned(GroundObjectSpawned event) {
     }
 
@@ -184,5 +190,5 @@ public abstract class OwoLogic {
 
     public void onAnimationChanged(AnimationChanged event) {}
 
-
+    public void onMenuOptionClicked(MenuOptionClicked event) {}
 }

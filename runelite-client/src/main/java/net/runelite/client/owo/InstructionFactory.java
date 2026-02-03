@@ -18,14 +18,39 @@ public class InstructionFactory {
      * @param y Coordinate y to click
      */
     public static Command createClickCommand(int x, int y) {
+        return createClickCommand(x, y, 1);
+    }
+
+    /**
+     * Create command to click at the current coordinates and waits for 1-2 ticks
+     * @param x Coordinate x to click
+     * @param y Coordinate y to click
+     * @param sleepTicks number of ticks to sleep
+     */
+    public static Command createClickCommand(int x, int y, int sleepTicks) {
         InstructionParameters instructionParameters = InstructionParameters.builder()
                 .x(x)
                 .y(y)
                 .clickButton(Left_CLICK_BUTTON)
+                .waitMinMillis(sleepTicks * tickMillis)
+                .waitMaxMillis(sleepTicks * tickMillis + tickMillis)
+                .build();
+        return new Command(List.of(new Instruction(InstructionType.CLICK, instructionParameters)));
+    }
+
+    /**
+     * Create command to hover at the current coordinates and waits for 1-2 ticks
+     * @param x Coordinate x to click
+     * @param y Coordinate y to click
+     */
+    public static Command createHoverCommand(int x, int y) {
+        InstructionParameters instructionParameters = InstructionParameters.builder()
+                .x(x)
+                .y(y)
                 .waitMinMillis(tickMillis)
                 .waitMaxMillis(tickMillis * 2)
                 .build();
-        return new Command(List.of(new Instruction(InstructionType.CLICK, instructionParameters)));
+        return new Command(List.of(new Instruction(InstructionType.HOVER, instructionParameters)));
     }
 
     public static Command createSimpleIdleCommand(int minWait, int maxWait) {

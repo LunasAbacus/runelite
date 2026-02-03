@@ -166,6 +166,21 @@ public class OwoPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onWallObjectSpawned(WallObjectSpawned event) {
+		activeLogic.onWallObjectSpawned(event);
+	}
+
+	@Subscribe
+	public void onWallObjectDespawned(WallObjectDespawned event) {
+		activeLogic.onWallObjectDespawned(event);
+	}
+
+	@Subscribe
+	public void onMenuOptionClicked(MenuOptionClicked event) {
+		activeLogic.onMenuOptionClicked(event);
+	}
+
+	@Subscribe
 	public void onGroundObjectSpawned(GroundObjectSpawned event) {
 		activeLogic.onGroundObjectSpawned(event);
 	}
