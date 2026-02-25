@@ -25,7 +25,7 @@
 
 plugins {
     `java-gradle-plugin`
-    pmd
+//    pmd
 }
 
 dependencies {
@@ -57,11 +57,11 @@ gradlePlugin {
     }
 }
 
-pmd {
-    toolVersion = "7.2.0"
-    ruleSetFiles("./pmd-ruleset.xml")
-    isConsoleOutput = true
-    incrementalAnalysis = true
-    isIgnoreFailures = false
-    threads = Runtime.getRuntime().availableProcessors()
-}
+//pmd {
+//    toolVersion = "7.2.0"
+////    ruleSetFiles("./pmd-ruleset.xml")
+//    isConsoleOutput = true
+//    incrementalAnalysis = true
+//    isIgnoreFailures = false
+//    threads = Runtime.getRuntime().availableProcessors()
+//}

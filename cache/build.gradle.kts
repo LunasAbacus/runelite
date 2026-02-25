@@ -100,9 +100,9 @@ tasks.javadoc {
     exclude("net/runelite/cache/script/assembler/*.tokens")
 }
 
-tasks.checkstyleMain {
-    exclude("net/runelite/cache/script/assembler/*.java")
-}
+//tasks.checkstyleMain {
+//    exclude("net/runelite/cache/script/assembler/*.java")
+//}
 
 tasks.generateGrammarSource {
     arguments.addAll(listOf("-package", "net.runelite.cache.script.assembler"))

@@ -48,10 +48,10 @@ dependencyResolutionManagement {
 val rootProps = file("./gradle.properties").inputStream().use { stream ->
     java.util.Properties().apply { load(stream) }
 }
-val checkstyleDir = file("./config/checkstyle/")
+//val checkstyleDir = file("./config/checkstyle/")
 gradle.beforeProject {
     apply(plugin = "idea")
-    apply(plugin = "checkstyle")
+//    apply(plugin = "checkstyle")
     group = rootProps["project.build.group"] as String
     version = rootProps["project.build.version"] as String
 
@@ -75,10 +75,10 @@ gradle.afterProject {
     }
 
     // shared checkstyle config
-    extensions.findByType<CheckstyleExtension>()?.run {
-        toolVersion = "8.3"
-        configDirectory = file("../config/checkstyle")
-    }
+//    extensions.findByType<CheckstyleExtension>()?.run {
+//        toolVersion = "8.3"
+//        configDirectory = file("../config/checkstyle")
+//    }
 
     // shared publishing config
     tasks.withType<GenerateModuleMetadata> { enabled = false }

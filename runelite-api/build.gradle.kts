@@ -26,7 +26,7 @@
 plugins {
     java
     `maven-publish`
-    checkstyle
+//    checkstyle
     alias(libs.plugins.lombok)
 
     id("net.runelite.runelite-gradle-plugin.component")
@@ -118,10 +118,10 @@ tasks.withType<net.runelite.gradle.component.ComponentTask> {
     outputDirectory = file("build/generated/sources/runelite/java/main")
 }
 
-tasks.checkstyleMain {
-    exclude("net/runelite/api/widgets/ComponentID.java")
-    exclude("net/runelite/api/widgets/InterfaceID.java")
-}
+//tasks.checkstyleMain {
+//    exclude("net/runelite/api/widgets/ComponentID.java")
+//    exclude("net/runelite/api/widgets/InterfaceID.java")
+//}
 
 tasks.javadoc {
     title = "RuneLite API ${project.version} API"

@@ -23,8 +23,6 @@ public class GemstoneCrab extends OwoLogic {
     private NPC gemstoneCrab = null;
     private GameObject tunnel = null;
 
-    // TODO Nate rewrite this completely with new method
-
     public GemstoneCrab(OwoPlugin plugin) {
         super(plugin);
 
@@ -32,6 +30,15 @@ public class GemstoneCrab extends OwoLogic {
         server.updateCommand(command);
 
         plugin.setDebugText("Loaded GemstoneCrab");
+
+        // Check for gemstone grab on load
+        for (NPC npc : client.getNpcs()) {
+            if (npc.getId() == GEMSTONE_CRAB_ID) {
+                gemstoneCrab = npc;
+                isCrabKilled = false;
+                break;
+            }
+        }
     }
 
     @Override
@@ -42,15 +49,14 @@ public class GemstoneCrab extends OwoLogic {
             // Wait for action to complete
             Command command = InstructionFactory.createSimpleIdleCommand(1000, 2000);
             server.updateCommand(command);
+            plugin.setDebugTargetPoint(null);
             return;
         }
 
         if (gemstoneCrab != null) {
             handleAttackingState();
-        } else if (isCrabKilled) {
-            handleTunnelingState();
         } else {
-            handleSearchingState();
+            handleTunnelingState();
         }
     }
 
@@ -64,22 +70,12 @@ public class GemstoneCrab extends OwoLogic {
             if (point.isEmpty()) {
                 return;
             }
-            Command command = InstructionFactory.createClickCommand(point.get().getX(), point.get().getY());
+            Command command = InstructionFactory.createClickCommand(point.get().getX(), point.get().getY(), 20);
             server.updateCommand(command);
 
-            plugin.setDebugText("Tunnel Point: " + point);
+            plugin.setDebugText("Entering Tunnel");
             plugin.setDebugTargetPoint(point.get());
         }
-    }
-
-    /**
-     * State: wait for crab to spawn
-     * Next: fight crab
-     */
-    private void handleSearchingState() {
-        plugin.setDebugTargetPoint(null);
-        Command command = InstructionFactory.createSimpleIdleCommand(2000, 3000);
-        server.updateCommand(command);
     }
 
     /**
@@ -90,7 +86,7 @@ public class GemstoneCrab extends OwoLogic {
         if (gemstoneCrab != null) {
             Point point = OwoUtils.getNpcClickPoint(gemstoneCrab);
 
-            plugin.setDebugText("Crab Point: " + point);
+            plugin.setDebugText("Attacking Crab");
             plugin.setDebugTargetPoint(point);
 
             Command command = InstructionFactory.createClickCommand(point.getX(), point.getY());
@@ -103,8 +99,7 @@ public class GemstoneCrab extends OwoLogic {
         final GameObject gameObject = event.getGameObject();
 
         // Track tunnels in the scene
-        if (gameObject.getId() == TUNNEL_OBJECT_ID)
-        {
+        if (gameObject.getId() == TUNNEL_OBJECT_ID) {
             log.debug("Found tunnel object");
             tunnel = gameObject;
         }
@@ -114,8 +109,7 @@ public class GemstoneCrab extends OwoLogic {
     public void onGameObjectDespawned(GameObjectDespawned event) {
         final GameObject gameObject = event.getGameObject();
 
-        if (gameObject.getId() == TUNNEL_OBJECT_ID)
-        {
+        if (gameObject.getId() == TUNNEL_OBJECT_ID) {
             tunnel = null;
         }
     }

@@ -22,12 +22,16 @@ public class Woodcutting extends OwoLogic {
 
     private final List<Integer> treeIds = List.of(
         // Draynor willows
-        10819,10829,10831,10833
+        10819,10829,10831,10833,
+        // Seer Maples
+        0
     );
 
     private final List<Integer> bankIds = List.of(
         // Draynor Kiosks
-        10528, 10355
+        10528, 10355,
+        // Seer Kiosks
+        0
     );
 
     private final List<GameObject> activeTrees = new ArrayList<>();

@@ -21,7 +21,7 @@ public class OwoServer {
         objectMapper = new ObjectMapper();
 
         // Bind to localhost only
-        InetSocketAddress addr = new InetSocketAddress("127.0.0.1", 8080);
+        InetSocketAddress addr = new InetSocketAddress("127.0.0.1", 8081);
         server = HttpServer.create(addr, 0);
 
         httpExecutor = Executors.newSingleThreadExecutor();
