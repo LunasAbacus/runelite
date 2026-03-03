@@ -106,6 +106,9 @@ public class OwoPlugin extends Plugin
 			case AGILITY_COURSE:
 				this.activeLogic = new AgilityCourse(this);
 				break;
+			case SMELT_GOLD_BRACELET:
+				this.activeLogic = new SmeltGoldBracelet(this);
+				break;
 		}
 	}
 
