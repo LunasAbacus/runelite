@@ -1,14 +1,17 @@
 package net.runelite.client.owo.instruction;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.util.List;
+import java.util.UUID;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class Command {
+
     List<Instruction> instructions;
+    UUID id;
+
+    public Command(List<Instruction> instructions) {
+        this.instructions = instructions;
+        this.id = UUID.randomUUID();
+    }
 }

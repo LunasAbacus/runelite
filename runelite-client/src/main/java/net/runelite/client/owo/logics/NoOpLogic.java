@@ -1,5 +1,7 @@
-package net.runelite.client.owo;
+package net.runelite.client.owo.logics;
 
+import net.runelite.client.owo.instruction.InstructionFactory;
+import net.runelite.client.owo.OwoLogic;
 import net.runelite.client.owo.instruction.Command;
 import net.runelite.client.plugins.owo.OwoPlugin;
 

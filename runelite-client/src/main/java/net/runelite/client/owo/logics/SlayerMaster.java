@@ -1,4 +1,4 @@
-package net.runelite.client.owo;
+package net.runelite.client.owo.logics;
 
 import com.google.common.annotations.VisibleForTesting;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +9,9 @@ import net.runelite.api.events.*;
 import net.runelite.api.gameval.DBTableID;
 import net.runelite.api.gameval.VarPlayerID;
 import net.runelite.api.gameval.VarbitID;
+import net.runelite.client.owo.OwoLogic;
+import net.runelite.client.owo.instruction.InstructionFactory;
+import net.runelite.client.owo.utils.OwoUtils;
 import net.runelite.client.owo.instruction.Command;
 import net.runelite.client.plugins.owo.OwoPlugin;
 import net.runelite.client.plugins.slayer.*;

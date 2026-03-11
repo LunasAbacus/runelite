@@ -1,7 +1,6 @@
-package net.runelite.client.owo;
+package net.runelite.client.owo.instruction;
 
 import com.sun.net.httpserver.HttpServer;
-import net.runelite.client.owo.instruction.Command;
 
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
@@ -14,7 +13,7 @@ public class OwoServer {
     private ExecutorService httpExecutor;
     private ObjectMapper objectMapper;
 
-    private Command command = new Command();
+    private Command command = InstructionFactory.createDefaultIdle();
 
 
     public OwoServer() throws Exception {

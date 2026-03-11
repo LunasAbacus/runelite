@@ -15,9 +15,11 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.game.ItemManager;
 import net.runelite.client.owo.*;
+import net.runelite.client.owo.LogicType;
+import net.runelite.client.owo.instruction.OwoServer;
+import net.runelite.client.owo.logics.*;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
-import net.runelite.client.plugins.puzzlesolver.solver.pathfinding.Pathfinder;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.ui.overlay.infobox.InfoBoxManager;
 
@@ -108,6 +110,15 @@ public class OwoPlugin extends Plugin
 				break;
 			case SMELT_GOLD_BRACELET:
 				this.activeLogic = new SmeltGoldBracelet(this);
+				break;
+			case SMELT_STEEL_BAR:
+				this.activeLogic = new SmeltBarEdgeville(this, SmeltBarEdgeville.BarType.STEEL);
+				break;
+			case SMELT_MITHRIL_BAR:
+				this.activeLogic = new SmeltBarEdgeville(this, SmeltBarEdgeville.BarType.MITHRIL);
+				break;
+			case ALCHER:
+				this.activeLogic = new Alcher(this);
 				break;
 		}
 	}

@@ -1,9 +1,12 @@
-package net.runelite.client.owo;
+package net.runelite.client.owo.logics;
 
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.Point;
 import net.runelite.api.events.*;
+import net.runelite.client.owo.OwoLogic;
+import net.runelite.client.owo.instruction.InstructionFactory;
+import net.runelite.client.owo.utils.OwoUtils;
 import net.runelite.client.owo.instruction.Command;
 import net.runelite.client.plugins.owo.OwoPlugin;
 

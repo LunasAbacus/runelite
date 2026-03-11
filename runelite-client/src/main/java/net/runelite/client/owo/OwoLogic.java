@@ -2,11 +2,12 @@ package net.runelite.client.owo;
 
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
-import net.runelite.api.coords.WorldArea;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.*;
 import net.runelite.api.gameval.InventoryID;
-import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.owo.instruction.InstructionFactory;
+import net.runelite.client.owo.instruction.OwoServer;
+import net.runelite.client.owo.utils.OwoUtils;
 import net.runelite.client.owo.instruction.Command;
 import net.runelite.client.plugins.owo.OwoPlugin;
 import org.apache.commons.lang3.tuple.Pair;
@@ -47,12 +48,16 @@ public abstract class OwoLogic {
         return ticksSinceAction < ticks;
     }
 
-    protected void idle() {
+    protected void idle(String msgDetail) {
         // Wait for action to complete
         Command command = InstructionFactory.createDefaultIdle();
         server.updateCommand(command);
-        plugin.setDebugText("Performing action");
+        plugin.setDebugText("Performing action - " + msgDetail);
         plugin.setDebugTargetPoint(null);
+    }
+
+    protected void idle() {
+        idle("");
     }
 
     public void onGameTick(GameTick e) {

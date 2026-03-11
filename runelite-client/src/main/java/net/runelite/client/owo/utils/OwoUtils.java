@@ -1,4 +1,4 @@
-package net.runelite.client.owo;
+package net.runelite.client.owo.utils;
 
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;

@@ -1,13 +1,16 @@
-package net.runelite.client.owo;
+package net.runelite.client.owo.logics;
 
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.GameObject;
 import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.*;
-import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.owo.OwoLogic;
+import net.runelite.client.owo.instruction.InstructionFactory;
+import net.runelite.client.owo.utils.BankUtils;
+import net.runelite.client.owo.utils.OwoUtils;
 import net.runelite.client.owo.instruction.Command;
 import net.runelite.client.plugins.owo.OwoPlugin;
 
@@ -24,14 +27,14 @@ public class Woodcutting extends OwoLogic {
         // Draynor willows
         10819,10829,10831,10833,
         // Seer Maples
-        0
+        10832
     );
 
     private final List<Integer> bankIds = List.of(
         // Draynor Kiosks
         10528, 10355,
         // Seer Kiosks
-        0
+        25808, 27264
     );
 
     private final List<GameObject> activeTrees = new ArrayList<>();
@@ -57,25 +60,21 @@ public class Woodcutting extends OwoLogic {
         super.onGameTick(t);
 
         // If performing an action, idle
-        if (isPerformingAction()) {
+        if (isPerformingAction(3)) {
             idle();
             return;
         }
 
+        // TODO Look for and pickup birdnests
+
         // If bank interface open, deposit
-        if (isBankInterfaceOpen()) {
+        if (BankUtils.isBankInterfaceOpen(client)) {
             depositInventoryInBank();
         } else if (!isInventoryFull()) {
             clickNearestTree();
         } else {
             clickNearestBank();
         }
-    }
-
-    public boolean isBankInterfaceOpen() {
-        // For deposit boxes
-        // client.getItemContainer(InventoryID.DEPOSIT_BOX) != null;
-        return client.getItemContainer(InventoryID.BANK) != null;
     }
 
     public boolean isInventoryFull() {
