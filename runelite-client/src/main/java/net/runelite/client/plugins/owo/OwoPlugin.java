@@ -79,6 +79,10 @@ public class OwoPlugin extends Plugin
 
 	@Setter
 	@Getter
+	private String currentState;
+
+	@Setter
+	@Getter
 	private Point debugTargetPoint;
 
 	@Getter
@@ -119,6 +123,9 @@ public class OwoPlugin extends Plugin
 				break;
 			case ALCHER:
 				this.activeLogic = new Alcher(this);
+				break;
+			case WINE_BUYER:
+				this.activeLogic = new WineBuyer(this);
 				break;
 		}
 	}

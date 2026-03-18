@@ -55,6 +55,9 @@ public class OwoOverlay extends Overlay
 		if (plugin.getDebugText() != null) {
 			graphics.drawString(plugin.getDebugText(), 25, 300);
 		}
+		if (plugin.getCurrentState() != null) {
+			graphics.drawString("Current state: " + plugin.getCurrentState(), 25, 330);
+		}
 
 		return null;
 	}

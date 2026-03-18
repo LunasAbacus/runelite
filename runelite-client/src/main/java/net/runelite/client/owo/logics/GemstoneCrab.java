@@ -13,7 +13,7 @@ import net.runelite.client.plugins.owo.OwoPlugin;
 import java.util.Optional;
 
 @Slf4j
-public class GemstoneCrab extends OwoLogic {
+public class GemstoneCrab extends OwoLogic<DummyState> {
 
     // Tunnel game object ID
     private static final int TUNNEL_OBJECT_ID = 57631;
@@ -27,7 +27,7 @@ public class GemstoneCrab extends OwoLogic {
     private GameObject tunnel = null;
 
     public GemstoneCrab(OwoPlugin plugin) {
-        super(plugin);
+        super(plugin, DummyState.NO_OP);
 
         Command command = InstructionFactory.createSimpleIdleCommand(500, 1000);
         server.updateCommand(command);

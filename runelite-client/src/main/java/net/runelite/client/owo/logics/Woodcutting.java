@@ -19,10 +19,7 @@ import java.util.*;
 import java.util.List;
 
 @Slf4j
-public class Woodcutting extends OwoLogic {
-
-    private Random random = new Random();
-
+public class Woodcutting extends OwoLogic<DummyState> {
     private final List<Integer> treeIds = List.of(
         // Draynor willows
         10819,10829,10831,10833,
@@ -41,7 +38,7 @@ public class Woodcutting extends OwoLogic {
     private final List<GameObject> activeBanks = new ArrayList<>();
 
     public Woodcutting(final OwoPlugin plugin) {
-        super(plugin);
+        super(plugin, DummyState.NO_OP);
 
         Command command = InstructionFactory.createDefaultIdle();
         server.updateCommand(command);
@@ -69,7 +66,7 @@ public class Woodcutting extends OwoLogic {
 
         // If bank interface open, deposit
         if (BankUtils.isBankInterfaceOpen(client)) {
-            depositInventoryInBank();
+            BankUtils.depositInventoryInBank(plugin);
         } else if (!isInventoryFull()) {
             clickNearestTree();
         } else {
@@ -87,28 +84,6 @@ public class Woodcutting extends OwoLogic {
         return filledSlots == 28;
     }
 
-    public void depositInventoryInBank() {
-        Widget depositInv = client.getWidget(WidgetInfo.BANK_DEPOSIT_INVENTORY);
-        if (depositInv != null && !depositInv.isHidden())
-        {
-            Rectangle bounds = depositInv.getBounds();
-            int x = bounds.x;
-            int y = bounds.y;
-            int w = bounds.width;
-            int h = bounds.height;
-
-            int cx = bounds.x + bounds.width / 2;
-            int cy = bounds.y + bounds.height / 2;
-
-
-            Command command = InstructionFactory.createBankDepositCommand(cx, cy);
-            server.updateCommand(command);
-            plugin.setDebugText("Depositing inventory in bank");
-        } else {
-            plugin.setDebugText("Failed to find deposit button");
-        }
-    }
-
     public void clickNearestTree() {
         // Set debug click point + action
         WorldPoint playerWp = client.getLocalPlayer().getWorldLocation();
@@ -118,12 +93,6 @@ public class Woodcutting extends OwoLogic {
             server.updateCommand(InstructionFactory.createDefaultIdle());
             return;
         }
-
-        // Pick random tree every x times to shake things up
-        // This is causing to click the far off willows on accident
-//        if (random.nextInt(6) < 1) { // ~15% chance
-//            closestTree = Optional.of(activeTrees.get(random.nextInt(activeTrees.size())));
-//        }
 
         Optional<Point> point = OwoUtils.getGameObjectClickPoint(closestTree.get());
         if (point.isEmpty()) {

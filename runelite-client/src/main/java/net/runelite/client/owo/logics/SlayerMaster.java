@@ -23,7 +23,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Slf4j
-public class SlayerMaster extends OwoLogic {
+public class SlayerMaster extends OwoLogic<DummyState> {
 
     private final List<NPC> targets = new ArrayList<>();
 
@@ -36,7 +36,7 @@ public class SlayerMaster extends OwoLogic {
     private final List<Pattern> targetNames = new ArrayList<>();
 
     public SlayerMaster(final OwoPlugin plugin) {
-        super(plugin);
+        super(plugin, DummyState.NO_OP);
 
         Command command = InstructionFactory.createDefaultIdle();
         server.updateCommand(command);

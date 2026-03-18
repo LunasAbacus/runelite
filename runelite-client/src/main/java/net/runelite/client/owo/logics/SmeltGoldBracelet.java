@@ -24,8 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class SmeltGoldBracelet extends OwoLogic {
-    private enum State {
+public class SmeltGoldBracelet extends OwoLogic<SmeltGoldBracelet.State> {
+    protected enum State {
         OPEN_BANK,
         DEPOSIT_ITEMS,
         WITHDRAW_SUPPLIES,
@@ -51,7 +51,7 @@ public class SmeltGoldBracelet extends OwoLogic {
     private final List<GameObject> activeBanks = new ArrayList<>();
 
     public SmeltGoldBracelet(OwoPlugin plugin) {
-        super(plugin);
+        super(plugin, State.OPEN_BANK);
 
         Command command = InstructionFactory.createDefaultIdle();
         server.updateCommand(command);
@@ -73,16 +73,6 @@ public class SmeltGoldBracelet extends OwoLogic {
             actionHandleSafetyConfirm();
             return;
         }
-//
-//        if (shouldHandleRandomEvent()) {
-//            actionHandleRandomEvent();
-//            return;
-//        }
-//
-//        if (shouldTakeRandomPause()) {
-//            idle();
-//            return;
-//        }
 
         switch (state) {
             case OPEN_BANK:
@@ -156,7 +146,7 @@ public class SmeltGoldBracelet extends OwoLogic {
         }
 
         server.updateCommand(InstructionFactory.createClickCommand(point.get().getX(), point.get().getY()));
-        plugin.setDebugText("Depositing item with shift-click");
+        plugin.setDebugText("Depositing item");
         plugin.setDebugTargetPoint(point.get());
     }
 
@@ -293,17 +283,4 @@ public class SmeltGoldBracelet extends OwoLogic {
         plugin.setDebugText("Handling safety confirm");
     }
 
-    private boolean shouldTakeRandomPause() {
-        // TODO Implement randomized pause cadence.
-        return false;
-    }
-
-    private boolean shouldHandleRandomEvent() {
-        // TODO Implement random event detection.
-        return false;
-    }
-
-    private void actionHandleRandomEvent() {
-        server.updateCommand(InstructionFactory.createDefaultIdle());
-    }
 }

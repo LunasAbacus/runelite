@@ -13,11 +13,19 @@ import net.runelite.client.plugins.owo.OwoPlugin;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static net.runelite.api.TileItem.OWNERSHIP_SELF;
 
 @Slf4j
-public abstract class OwoLogic {
+public abstract class OwoLogic<S extends Enum<S>> {
+    protected S state;
+    private long nextActionTime = 0;
+
+    public enum TaskIntensity {
+        LOW, MEDIUM, HIGH
+    }
+
     protected final OwoServer server;
     protected final Client client;
     protected final OwoPlugin plugin;
@@ -27,15 +35,32 @@ public abstract class OwoLogic {
     protected Set<Integer> desiredLoot = new HashSet<>();
     protected List<Pair<TileItem, Tile>> loot = new ArrayList<>();
 
-    public OwoLogic(OwoPlugin plugin) {
+    public OwoLogic(OwoPlugin plugin, S initialState) {
         this.server = plugin.getServer();
         this.client = plugin.getClient();
         this.plugin = plugin;
+        this.state = initialState;
     }
 
     public void startUp() { }
 
     public void shutDown() { }
+
+    protected boolean canAct() {
+        return System.currentTimeMillis() >= nextActionTime;
+    }
+
+    protected void debounce(long delayMs) {
+        nextActionTime = System.currentTimeMillis() + delayMs;
+    }
+
+    protected void setState(S newState) {
+        if (state != newState) {
+            state = newState;
+            nextActionTime = 0;
+            plugin.setCurrentState(newState.name());
+        }
+    }
 
     private WorldPoint lastLocation;
     private int ticksSinceAction = 0;
@@ -54,6 +79,55 @@ public abstract class OwoLogic {
         server.updateCommand(command);
         plugin.setDebugText("Performing action - " + msgDetail);
         plugin.setDebugTargetPoint(null);
+    }
+
+    private int ticksSinceLastIdle = 0;
+    private int nextIdleAfterTicks = -1;
+    private TaskIntensity nextIdleIntensity;
+
+    /**
+     * Calculates when and for how long to idle based on a given task intensity. Tracks time since last idle.
+     * @param taskIntensity How intense the task is. For example Gemstone Crab -> Smelting -> Cleaning herbs
+     * @return Suggested number of ticks to idle based on the intensity
+     */
+    protected int shouldRandomIdle(final TaskIntensity taskIntensity) {
+        final int baseFrequencyTicks;
+        final int baseDurationTicks;
+
+        switch (taskIntensity) {
+            case HIGH:
+                baseFrequencyTicks = 500;
+                baseDurationTicks = 50;
+                break;
+            case MEDIUM:
+                baseFrequencyTicks = 1500;
+                baseDurationTicks = 100;
+                break;
+            case LOW:
+            default:
+                baseFrequencyTicks = 3000;
+                baseDurationTicks = 200;
+                break;
+        }
+
+        if (nextIdleAfterTicks < 0 || nextIdleIntensity != taskIntensity) {
+            nextIdleAfterTicks = varyByTwentyPercent(baseFrequencyTicks);
+            nextIdleIntensity = taskIntensity;
+        }
+
+        if (ticksSinceLastIdle < nextIdleAfterTicks) {
+            return 0;
+        }
+
+        ticksSinceLastIdle = 0;
+        nextIdleAfterTicks = -1;
+        return varyByTwentyPercent(baseDurationTicks);
+    }
+
+    private int varyByTwentyPercent(int baseTicks) {
+        int minTicks = Math.max(1, (int) Math.floor(baseTicks * 0.8));
+        int maxTicks = Math.max(minTicks, (int) Math.ceil(baseTicks * 1.2));
+        return ThreadLocalRandom.current().nextInt(minTicks, maxTicks + 1);
     }
 
     protected void idle() {
@@ -77,6 +151,8 @@ public abstract class OwoLogic {
         } else {
             ticksSinceAction++;
         }
+
+        ticksSinceLastIdle++;
     }
 
     public void onWorldChanged(WorldChanged worldChanged) { }
@@ -87,7 +163,6 @@ public abstract class OwoLogic {
     {
         TileItem item = itemSpawned.getItem();
         Tile tile = itemSpawned.getTile();
-        ItemLayer layer = tile.getItemLayer();
         int ownership = item.getOwnership();
 
         // Keep track of items owned by player

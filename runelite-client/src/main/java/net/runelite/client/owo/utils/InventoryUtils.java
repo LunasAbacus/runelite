@@ -4,8 +4,8 @@ import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.Point;
+import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -22,9 +22,9 @@ public class InventoryUtils {
 
         int canonicalItemId = canonicalizeItemId(client, itemId);
 
-        Widget inventoryWidget = client.getWidget(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER);
+        Widget inventoryWidget = client.getWidget(InterfaceID.Bankside.ITEMS);
         if (inventoryWidget == null || inventoryWidget.isHidden()) {
-            inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
+            inventoryWidget = client.getWidget(InterfaceID.INVENTORY);
         }
         if (inventoryWidget == null || inventoryWidget.isHidden()) {
             return Optional.empty();
@@ -61,10 +61,6 @@ public class InventoryUtils {
         }
 
         ItemComposition itemComposition = client.getItemDefinition(itemId);
-        if (itemComposition == null) {
-            return itemId;
-        }
-
         return itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
     }
 

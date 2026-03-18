@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public class SmeltBarEdgeville extends OwoLogic {
+public class SmeltBarEdgeville extends OwoLogic<DummyState> {
     private enum State {
         OPEN_BANK,
         DEPOSIT_ITEMS,
@@ -54,7 +54,7 @@ public class SmeltBarEdgeville extends OwoLogic {
     private final List<GameObject> activeBanks = new ArrayList<>();
 
     public SmeltBarEdgeville(OwoPlugin plugin, BarType barType) {
-        super(plugin);
+        super(plugin, DummyState.NO_OP);
 
         if (Objects.requireNonNull(barType) == BarType.MITHRIL) {
             this.oreId = ItemID.MITHRIL_ORE;

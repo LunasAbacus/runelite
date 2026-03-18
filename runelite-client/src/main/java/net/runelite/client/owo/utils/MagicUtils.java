@@ -14,8 +14,8 @@ public class MagicUtils {
         return spellbook != null && !spellbook.isHidden();
     }
 
-    public static Optional<Point> findSpellPoint(final Client client) {
-        Widget spellWidget = client.getWidget(InterfaceID.MagicSpellbook.HIGH_ALCHEMY);
+    public static Optional<Point> findSpellPoint(final Client client, int widgetId) {
+        Widget spellWidget = client.getWidget(widgetId);
         if (spellWidget != null && !spellWidget.isHidden())
         {
             Rectangle bounds = spellWidget.getBounds();

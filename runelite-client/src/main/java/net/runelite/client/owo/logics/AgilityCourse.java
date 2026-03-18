@@ -15,7 +15,7 @@ import java.util.*;
 import static net.runelite.api.Skill.AGILITY;
 
 @Slf4j
-public class AgilityCourse extends OwoLogic {
+public class AgilityCourse extends OwoLogic<DummyState> {
     // Falador
 //    Integer[] activeCourse = {
 //            ObjectID.ROOFTOPS_FALADOR_WALLCLIMB, // Working
@@ -66,7 +66,7 @@ public class AgilityCourse extends OwoLogic {
     boolean preventMisclicks = false;
 
     public AgilityCourse(final OwoPlugin plugin) {
-        super(plugin);
+        super(plugin, DummyState.NO_OP);
         server.updateCommand(InstructionFactory.createDefaultIdle());
         plugin.setDebugText("Loaded Agility Course");
     }
