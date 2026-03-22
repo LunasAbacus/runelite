@@ -92,7 +92,7 @@ public class OwoPlugin extends Plugin
 
 	@Inject
 	public OwoPlugin() throws Exception {
-		server = new OwoServer();
+		server = new OwoServer(this);
 	}
 
 	private void setActiveLogic(LogicType type) {
@@ -127,6 +127,8 @@ public class OwoPlugin extends Plugin
 			case WINE_BUYER:
 				this.activeLogic = new WineBuyer(this);
 				break;
+			case ARDY_KNIGHTS:
+				this.activeLogic = new ArdyKnights(this);
 		}
 	}
 
@@ -258,4 +260,9 @@ public class OwoPlugin extends Plugin
 
 	@Subscribe
 	public void onAnimationChanged(AnimationChanged event) { activeLogic.onAnimationChanged(event); }
+
+	@Subscribe
+	public void onChatMessage(ChatMessage chatMessage) {
+		activeLogic.onChatMessage(chatMessage);
+	}
 }

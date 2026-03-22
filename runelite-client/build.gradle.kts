@@ -55,6 +55,7 @@ dependencies {
     compileOnly(libs.rl.orange)
 
     implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
+    implementation("net.dv8tion:JDA:5.0.0-beta.20")
 
     api(libs.slf4j.api)
     api(libs.logback.classic) {

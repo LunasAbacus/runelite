@@ -48,6 +48,8 @@
         </encoder>
     </appender>
 
+    <logger name="net.runelite.client.owo" level="DEBUG"/>
+
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>

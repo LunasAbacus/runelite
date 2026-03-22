@@ -1,8 +1,6 @@
 package net.runelite.client.owo.logics;
 
 import lombok.extern.slf4j.Slf4j;
-import net.runelite.api.GameObject;
-import net.runelite.api.NPC;
 import net.runelite.api.Point;
 import net.runelite.api.events.*;
 import net.runelite.api.gameval.InventoryID;
@@ -14,7 +12,6 @@ import net.runelite.client.owo.instruction.InstructionFactory;
 import net.runelite.client.owo.utils.*;
 import net.runelite.client.plugins.owo.OwoPlugin;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
@@ -30,12 +27,7 @@ public class WineBuyer extends OwoLogic<WineBuyer.State> {
         WALKING_TO_SHOP
     }
 
-    private final int BANK_ID = 57330;
-
-    private final List<NPC> activeShopNPCs = new ArrayList<>();
-    private final List<GameObject> activeBanks = new ArrayList<>();
-
-    private final List<ItemAmount> wineInventory = List.of(new ItemAmount(ItemID.JUG_WINE, 27));
+    private final List<ItemAmount> wineInventory = List.of(ItemAmount.ofCount(ItemID.JUG_WINE, 27));
 
     public WineBuyer(OwoPlugin plugin) {
         super(plugin, State.WALKING_TO_SHOP);
@@ -62,42 +54,6 @@ public class WineBuyer extends OwoLogic<WineBuyer.State> {
         }
 
         updateState();
-    }
-
-    @Override
-    public void onWorldChanged(WorldChanged worldChanged) {
-        activeShopNPCs.clear();
-        activeBanks.clear();
-    }
-
-    @Override
-    public void onGameObjectSpawned(GameObjectSpawned event) {
-        GameObject object = event.getGameObject();
-        if (object.getId() == BANK_ID) {
-            activeBanks.add(object);
-        }
-    }
-
-    @Override
-    public void onGameObjectDespawned(GameObjectDespawned event) {
-        GameObject object = event.getGameObject();
-        if (object.getId() == BANK_ID) {
-            activeBanks.remove(object);
-        }
-    }
-
-    @Override
-    public void onNpcSpawned(NpcSpawned npcSpawned) {
-        NPC npc = npcSpawned.getNpc();
-        if (npc.getId() == NpcID.AUBURN_BARTENDER) {
-            activeShopNPCs.add(npc);
-        }
-    }
-
-    @Override
-    public void onNpcDespawned(NpcDespawned npcDespawned) {
-        NPC npc = npcDespawned.getNpc();
-        activeShopNPCs.remove(npc);
     }
 
     private void updateState() {
@@ -166,7 +122,7 @@ public class WineBuyer extends OwoLogic<WineBuyer.State> {
     }
 
     private void actionOpenShop() {
-        ShopUtils.openShop(plugin, activeShopNPCs);
+        interactionManager.clickClosestNpc(List.of(NpcID.AUBURN_BARTENDER), "Auburn Bartender");
     }
 
     private void actionBuyItem() {
@@ -196,10 +152,11 @@ public class WineBuyer extends OwoLogic<WineBuyer.State> {
     }
 
     private void actionOpenBank() {
-        BankUtils.clickClosestBank(plugin, activeBanks);
+        int BANK_ID = 57330;
+        interactionManager.clickClosestGameObject(List.of(BANK_ID), "Bank");
     }
 
     private void actionDepositItems() {
-        BankUtils.depositItemInBank(plugin, inventoryItems, ItemID.JUG_WINE);
+        interactionManager.performBankTransaction(List.of(ItemID.JUG_WINE), List.of());
     }
 }

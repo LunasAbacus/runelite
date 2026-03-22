@@ -5,16 +5,14 @@ import net.runelite.api.GameObject;
 import net.runelite.api.Point;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.*;
-import net.runelite.api.widgets.Widget;
-import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.owo.OwoLogic;
 import net.runelite.client.owo.instruction.InstructionFactory;
+import net.runelite.client.owo.modules.InteractionManager;
 import net.runelite.client.owo.utils.BankUtils;
 import net.runelite.client.owo.utils.OwoUtils;
 import net.runelite.client.owo.instruction.Command;
 import net.runelite.client.plugins.owo.OwoPlugin;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
@@ -66,7 +64,7 @@ public class Woodcutting extends OwoLogic<DummyState> {
 
         // If bank interface open, deposit
         if (BankUtils.isBankInterfaceOpen(client)) {
-            BankUtils.depositInventoryInBank(plugin);
+            interactionManager.depositInventoryInBank();
         } else if (!isInventoryFull()) {
             clickNearestTree();
         } else {

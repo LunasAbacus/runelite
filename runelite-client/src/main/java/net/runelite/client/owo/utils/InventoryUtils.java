@@ -1,11 +1,12 @@
 package net.runelite.client.owo.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.Point;
-import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
+import net.runelite.api.widgets.WidgetInfo;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -13,20 +14,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Slf4j
 public class InventoryUtils {
 
     public static Optional<Point> findInventoryItemPoint(Client client, Item[] inventoryItems, int itemId) {
         if (client == null || inventoryItems == null) {
+            log.debug("Client or Inventory Items are null");
             return Optional.empty();
         }
 
         int canonicalItemId = canonicalizeItemId(client, itemId);
 
-        Widget inventoryWidget = client.getWidget(InterfaceID.Bankside.ITEMS);
+        Widget inventoryWidget = client.getWidget(WidgetInfo.BANK_INVENTORY_ITEMS_CONTAINER);
         if (inventoryWidget == null || inventoryWidget.isHidden()) {
-            inventoryWidget = client.getWidget(InterfaceID.INVENTORY);
+            inventoryWidget = client.getWidget(WidgetInfo.INVENTORY);
         }
         if (inventoryWidget == null || inventoryWidget.isHidden()) {
+            log.debug("Inventory is missing or closed");
             return Optional.empty();
         }
 
@@ -52,6 +56,7 @@ public class InventoryUtils {
             return Optional.of(new Point(x, y));
         }
 
+        log.debug("No items in inventory matched given itemId: {}", itemId);
         return Optional.empty();
     }
 
@@ -80,17 +85,16 @@ public class InventoryUtils {
                 continue;
             }
 
-            // Count by occupied slots, not stack quantity.
-            inventoryCounts.merge(item.getId(), 1, Integer::sum);
+            inventoryCounts.merge(item.getId(), item.getQuantity(), Integer::sum);
         }
 
         for (ItemAmount requiredItem : requiredItems) {
-            if (requiredItem == null || requiredItem.getAmount() <= 0) {
+            if (requiredItem == null || requiredItem.getInventoryCount() <= 0) {
                 continue;
             }
 
             int available = inventoryCounts.getOrDefault(requiredItem.getItemId(), 0);
-            if (available < requiredItem.getAmount()) {
+            if (available < requiredItem.getInventoryCount() * requiredItem.getStackSize()) {
                 return false;
             }
         }

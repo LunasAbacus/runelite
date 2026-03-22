@@ -2,12 +2,14 @@ package net.runelite.client.owo.instruction;
 
 import net.runelite.api.Point;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class InstructionFactory {
     private static final int tickMillis = 600;
     public static final String RIGHT_CLICK_BUTTON = "Right";
     public static final String Left_CLICK_BUTTON = "Left";
+    public static final String MIDDLE_CLICK_BUTTON = "Middle";
 
     /**
      * Create command to click at the current coordinates and waits for 1-2 ticks
@@ -20,6 +22,10 @@ public class InstructionFactory {
 
     public static Command createClickCommand(Point point) {
         return createClickCommand(point.getX(), point.getY());
+    }
+
+    public static Command createHoverCommand(Point point) {
+        return new Command(List.of(createClickInstruction(point.getX(), point.getY(), MIDDLE_CLICK_BUTTON)));
     }
 
     public static Command createShiftClickCommand(int x, int y) {
@@ -40,12 +46,20 @@ public class InstructionFactory {
     }
 
     public static Instruction createClickInstruction(int x, int y) {
+        return createClickInstruction(x, y, Left_CLICK_BUTTON);
+    }
+
+    public static Instruction createClickInstruction(int x, int y, String clickButton) {
         InstructionParameters instructionParameters = InstructionParameters.builder()
                 .x(x)
                 .y(y)
-                .clickButton(Left_CLICK_BUTTON)
+                .clickButton(clickButton)
                 .build();
         return new Instruction(InstructionType.CLICK, instructionParameters);
+    }
+
+    public static Instruction createClickInstruction(Point point) {
+        return createClickInstruction(point.getX(), point.getY());
     }
 
     public static Command createShiftClickCommand(int x, int y, int sleepTicks) {
@@ -86,11 +100,14 @@ public class InstructionFactory {
     }
 
     public static Command createTypeCommand(String key) {
+        return new Command(List.of(createTypeInstruction(key)));
+    }
+
+    public static Instruction createTypeInstruction(String key) {
         InstructionParameters typeParams = InstructionParameters.builder()
                 .keys(List.of(key))
                 .build();
-        Instruction typeInstruction = new Instruction(InstructionType.TYPE, typeParams);
-        return new Command(List.of(typeInstruction));
+        return new Instruction(InstructionType.TYPE, typeParams);
     }
 
     /**
@@ -100,33 +117,19 @@ public class InstructionFactory {
         return new Command(List.of(createIdleByMillisInstruction(tickMillis, tickMillis * 2)));
     }
 
-    public static Command createBankDepositCommand(int x, int y) {
-        // Click deposit button + Hit escape key
-        InstructionParameters clickParams = InstructionParameters.builder()
-                .x(x)
-                .y(y)
-                .clickButton(Left_CLICK_BUTTON)
-                .build();
-        Instruction deposit = new Instruction(InstructionType.CLICK, clickParams);
+    public static Command createBankTransactionCommand(List<Point> points) {
+        List<Instruction> instructions = new ArrayList<>();
 
-        InstructionParameters afterClickWaitParams = InstructionParameters.builder()
-                .waitMinMillis(200)
-                .waitMaxMillis(500)
-                .build();
-        Instruction afterClickWait = new Instruction(InstructionType.SLEEP, afterClickWaitParams);
+        for (Point point : points) {
+            instructions.add(createClickInstruction(point));
+        }
 
-        InstructionParameters typeParams = InstructionParameters.builder()
-                .keys(List.of("{Esc}"))
-                .build();
-        Instruction escape = new Instruction(InstructionType.TYPE, typeParams);
+        // Wait for withdraw action to complete before closing
+        instructions.add(createIdleByMillisInstruction(300, 600));
 
-        InstructionParameters waitParams = InstructionParameters.builder()
-                .waitMinMillis(tickMillis)
-                .waitMaxMillis(tickMillis * 2)
-                .build();
-        Instruction wait = new Instruction(InstructionType.SLEEP, waitParams);
+        instructions.add(createTypeInstruction("{Esc}"));
 
-        return new Command(List.of(deposit, afterClickWait, escape, wait));
+        return new Command(instructions);
     }
 
     public static Command createClickAndConfirmCommand(int x, int y, int tickWait) {

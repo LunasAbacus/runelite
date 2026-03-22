@@ -44,8 +44,8 @@ public class SmeltGoldBracelet extends OwoLogic<SmeltGoldBracelet.State> {
     private static final int GOLD_BRACELET_ID = ItemID.JEWL_GOLD_BRACELET;
     private static final int BRACELET_MOULD_ID = ItemID.JEWL_BRACELET_MOULD;
 
-    private static final List<ItemAmount> FINISHED_BAR_INVENTORY = List.of(new ItemAmount(GOLD_BAR_ID, 27));
-    private static final List<ItemAmount> FINISHED_BRACELET_INVENTORY = List.of(new ItemAmount(GOLD_BRACELET_ID, 27));
+    private static final List<ItemAmount> FINISHED_BAR_INVENTORY = List.of(ItemAmount.ofCount(GOLD_BAR_ID, 27));
+    private static final List<ItemAmount> FINISHED_BRACELET_INVENTORY = List.of(ItemAmount.ofCount(GOLD_BRACELET_ID, 27));
 
     private final List<GameObject> activeFurnaces = new ArrayList<>();
     private final List<GameObject> activeBanks = new ArrayList<>();
