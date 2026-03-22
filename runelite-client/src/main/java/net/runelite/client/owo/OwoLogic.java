@@ -7,6 +7,8 @@ import net.runelite.api.events.*;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.client.owo.instruction.InstructionFactory;
 import net.runelite.client.owo.instruction.OwoServer;
+import net.runelite.client.owo.modules.InteractionManager;
+import net.runelite.client.owo.modules.PlayerModule;
 import net.runelite.client.owo.utils.OwoUtils;
 import net.runelite.client.owo.instruction.Command;
 import net.runelite.client.plugins.owo.OwoPlugin;
@@ -26,20 +28,34 @@ public abstract class OwoLogic<S extends Enum<S>> {
         LOW, MEDIUM, HIGH
     }
 
+    private static final int STUCK_TIMEOUT = 300;
+
     protected final OwoServer server;
     protected final Client client;
     protected final OwoPlugin plugin;
 
+    // TODO Refactor other logics to use interactionManager and remove this variable
     protected Item[] inventoryItems = new Item[28];
 
     protected Set<Integer> desiredLoot = new HashSet<>();
     protected List<Pair<TileItem, Tile>> loot = new ArrayList<>();
 
+    protected final InteractionManager interactionManager;
+
+    protected final PlayerModule playerModule;
+
+
     public OwoLogic(OwoPlugin plugin, S initialState) {
+        this(plugin, initialState, List.of(), List.of());
+    }
+
+    public OwoLogic(OwoPlugin plugin, S initialState, List<Integer> npcsToTrack, List<Integer> gameObjectsToTrack) {
         this.server = plugin.getServer();
         this.client = plugin.getClient();
         this.plugin = plugin;
         this.state = initialState;
+        this.playerModule = new PlayerModule(plugin);
+        this.interactionManager = new InteractionManager(plugin, npcsToTrack, gameObjectsToTrack);
     }
 
     public void startUp() { }
@@ -54,9 +70,11 @@ public abstract class OwoLogic<S extends Enum<S>> {
         nextActionTime = System.currentTimeMillis() + delayMs;
     }
 
+    private int lastStateChangeTick = Integer.MAX_VALUE;
     protected void setState(S newState) {
         if (state != newState) {
             state = newState;
+            lastStateChangeTick = client.getTickCount();
             nextActionTime = 0;
             plugin.setCurrentState(newState.name());
         }
@@ -134,10 +152,21 @@ public abstract class OwoLogic<S extends Enum<S>> {
         idle("");
     }
 
+    public void postDiscordMessage(final String message) {
+        server.postDiscordMessage(message);
+    }
+
     public void onGameTick(GameTick e) {
         Player local = client.getLocalPlayer();
         if (local == null) {
             return;
+        }
+
+        // Alert if stuck for more than 3 minutes and idle
+        if (lastStateChangeTick + STUCK_TIMEOUT < client.getTickCount() && ticksSinceLastIdle > STUCK_TIMEOUT) {
+            lastStateChangeTick = Integer.MAX_VALUE;
+            log.debug("No state change in {} ticks. Requesting manual help.", STUCK_TIMEOUT);
+            postDiscordMessage("Father, I am stuck! Please provide assistance.");
         }
 
         boolean performingAction = local.getAnimation() != -1 || local.getInteracting() != null;
@@ -155,7 +184,9 @@ public abstract class OwoLogic<S extends Enum<S>> {
         ticksSinceLastIdle++;
     }
 
-    public void onWorldChanged(WorldChanged worldChanged) { }
+    public void onWorldChanged(WorldChanged worldChanged) {
+        interactionManager.clearTrackedObjects();
+    }
 
     public void onGameStateChanged(GameStateChanged event) { }
 
@@ -198,6 +229,7 @@ public abstract class OwoLogic<S extends Enum<S>> {
     public void onStatChanged(StatChanged event) {
     }
 
+    // TODO Migrate this out somewhere else
     public boolean pickupLoot(int distance) {
         if (loot.isEmpty()) return false;
 
@@ -256,19 +288,39 @@ public abstract class OwoLogic<S extends Enum<S>> {
         }
 
         inventoryItems = event.getItemContainer().getItems();
+        interactionManager.setInventoryItems(event.getItemContainer().getItems());
+        playerModule.setInventoryItems(event.getItemContainer().getItems());
     }
 
-    public void onGameObjectSpawned(GameObjectSpawned event) {}
+    public void onGameObjectSpawned(GameObjectSpawned event) {
+        GameObject object = event.getGameObject();
+        interactionManager.trackGameObject(object);
+    }
 
-    public void onGameObjectDespawned(GameObjectDespawned event) {}
+    public void onGameObjectDespawned(GameObjectDespawned event) {
+        GameObject object = event.getGameObject();
+        interactionManager.untrackGameObject(object);
+    }
+
+    public void onNpcSpawned(NpcSpawned npcSpawned) {
+        NPC npc = npcSpawned.getNpc();
+        interactionManager.trackNPC(npc);
+    }
+
+    public void onNpcDespawned(NpcDespawned npcDespawned) {
+        NPC npc = npcDespawned.getNpc();
+        interactionManager.untrackNPC(npc);
+    }
 
     public void onVarbitChanged(VarbitChanged varbitChanged) {}
-
-    public void onNpcSpawned(NpcSpawned npcSpawned) {}
-
-    public void onNpcDespawned(NpcDespawned npcDespawned) {}
 
     public void onAnimationChanged(AnimationChanged event) {}
 
     public void onMenuOptionClicked(MenuOptionClicked event) {}
+
+    public void onChatMessage(ChatMessage chatMessage) {
+        if (chatMessage.getMessage().contains("You've been stunned")) {
+            playerModule.reportStunned();
+        }
+    }
 }

@@ -192,7 +192,7 @@ public class LootManager
 		final LocalPoint location = tile.getLocalLocation();
 		final int packed = location.getSceneX() << 8 | location.getSceneY();
 		itemSpawns.put(packed, item);
-		log.debug("Item spawn {} ({}) location {}", item.getId(), item.getQuantity(), location);
+		//log.debug("Item spawn {} ({}) location {}", item.getId(), item.getQuantity(), location);
 	}
 
 	@Subscribe
@@ -200,7 +200,7 @@ public class LootManager
 	{
 		final TileItem item = itemDespawned.getItem();
 		final LocalPoint location = itemDespawned.getTile().getLocalLocation();
-		log.debug("Item despawn {} ({}) location {}", item.getId(), item.getQuantity(), location);
+		//log.debug("Item despawn {} ({}) location {}", item.getId(), item.getQuantity(), location);
 	}
 
 	@Subscribe
@@ -286,7 +286,7 @@ public class LootManager
 			int itemId = (int) scriptEvent.getArguments()[3];
 			int qty = (int) scriptEvent.getArguments()[4];
 
-			log.debug("loottracker_add_loot npc={} event={} item={} qty={}", npcId, eventId, itemId, qty);
+//			log.debug("loottracker_add_loot npc={} event={} item={} qty={}", npcId, eventId, itemId, qty);
 
 			if (scriptEventId != eventId)
 			{

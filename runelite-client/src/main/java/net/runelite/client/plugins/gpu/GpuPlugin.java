@@ -1286,7 +1286,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		if (!z.invalidate)
 		{
 			z.invalidate = true;
-			log.debug("Zone invalidated: wx={} x={} z={}", scene.getWorldViewId(), zx, zz);
+			//log.debug("Zone invalidated: wx={} x={} z={}", scene.getWorldViewId(), zx, zz);
 		}
 	}
 
@@ -1357,7 +1357,7 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 				zone.initialized = true;
 				zone.dirty = true;
 
-				log.debug("Rebuilt zone wv={} x={} z={}", wv.getId(), x, z);
+				//log.debug("Rebuilt zone wv={} x={} z={}", wv.getId(), x, z);
 			}
 		}
 	}

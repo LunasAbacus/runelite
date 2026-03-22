@@ -888,7 +888,7 @@ public class ConfigManager
 			return;
 		}
 
-		log.debug("Setting configuration value for {} to {}", wholeKey, value);
+		//log.debug("Setting configuration value for {} to {}", wholeKey, value);
 		handler.invalidate();
 
 		ConfigChanged configChanged = new ConfigChanged();

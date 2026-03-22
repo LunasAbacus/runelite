@@ -60,14 +60,14 @@ public class SmeltBarEdgeville extends OwoLogic<DummyState> {
             this.oreId = ItemID.MITHRIL_ORE;
             this.catalystId = ItemID.COAL;
             this.barId = ItemID.MITHRIL_BAR;
-            this.withdrawValidationInventory = List.of(new ItemAmount(ItemID.MITHRIL_ORE, 5), new ItemAmount(ItemID.COAL, 20));
-            this.smeltValidationInventory = List.of(new ItemAmount(ItemID.MITHRIL_BAR, 5));
+            this.withdrawValidationInventory = List.of(ItemAmount.ofCount(ItemID.MITHRIL_ORE, 5), ItemAmount.ofCount(ItemID.COAL, 20));
+            this.smeltValidationInventory = List.of(ItemAmount.ofCount(ItemID.MITHRIL_BAR, 5));
         } else {
             this.oreId = ItemID.IRON_ORE;
             this.catalystId = ItemID.COAL;
             this.barId = ItemID.STEEL_BAR;
-            this.withdrawValidationInventory = List.of(new ItemAmount(ItemID.IRON_ORE, 9), new ItemAmount(ItemID.COAL, 18));
-            this.smeltValidationInventory = List.of(new ItemAmount(ItemID.STEEL_BAR, 9));
+            this.withdrawValidationInventory = List.of(ItemAmount.ofCount(ItemID.IRON_ORE, 9), ItemAmount.ofCount(ItemID.COAL, 18));
+            this.smeltValidationInventory = List.of(ItemAmount.ofCount(ItemID.STEEL_BAR, 9));
         }
 
         server.updateCommand(InstructionFactory.createDefaultIdle());
