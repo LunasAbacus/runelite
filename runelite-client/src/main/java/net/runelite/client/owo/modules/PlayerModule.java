@@ -22,7 +22,7 @@ public class PlayerModule {
 
     private int stunnedTick = 0;
     public boolean isStunned() {
-        return client.getTickCount() <= stunnedTick + 5;
+        return client.getTickCount() <= stunnedTick + 7;
     }
 
     public void reportStunned() {
@@ -39,5 +39,13 @@ public class PlayerModule {
 
     public boolean doesInventoryContainAllItems(List<ItemAmount> items) {
         return InventoryUtils.doesInventoryContainItems(inventoryItems, items);
+    }
+
+    public boolean isInventoryEmpty() {
+        return InventoryUtils.inventorySpotsUsed(inventoryItems) == 0;
+    }
+
+    public boolean isInventoryFull() {
+        return InventoryUtils.inventorySpotsUsed(inventoryItems) == 28;
     }
 }

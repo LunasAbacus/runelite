@@ -1,13 +1,6 @@
 package net.runelite.client.owo.logics;
 
-import net.runelite.api.GameObject;
-import net.runelite.api.Item;
-import net.runelite.api.Point;
 import net.runelite.api.events.GameTick;
-import net.runelite.api.events.GameObjectDespawned;
-import net.runelite.api.events.GameObjectSpawned;
-import net.runelite.api.events.WorldChanged;
-import net.runelite.api.gameval.InventoryID;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
@@ -15,18 +8,14 @@ import net.runelite.client.owo.utils.BankUtils;
 import net.runelite.client.owo.utils.ItemAmount;
 import net.runelite.client.owo.OwoLogic;
 import net.runelite.client.owo.instruction.InstructionFactory;
-import net.runelite.client.owo.utils.InventoryUtils;
-import net.runelite.client.owo.utils.OwoUtils;
-import net.runelite.client.owo.instruction.Command;
 import net.runelite.client.plugins.owo.OwoPlugin;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class SmeltGoldBracelet extends OwoLogic<SmeltGoldBracelet.State> {
     protected enum State {
         OPEN_BANK,
+        BANK_OPEN,
         DEPOSIT_ITEMS,
         WITHDRAW_SUPPLIES,
         SMELT_GOLD,
@@ -36,31 +25,32 @@ public class SmeltGoldBracelet extends OwoLogic<SmeltGoldBracelet.State> {
 
     private State state = State.OPEN_BANK;
 
-    private final int FURNACE_ID = 16469;
-    private final int BANK_ID = 10355;
+    private static final int FURNACE_ID = 16469;
+    private static final int BANK_ID = 10355;
 
     private static final int GOLD_ORE_ID = ItemID.GOLD_ORE;
     private static final int GOLD_BAR_ID = ItemID.GOLD_BAR;
     private static final int GOLD_BRACELET_ID = ItemID.JEWL_GOLD_BRACELET;
-    private static final int BRACELET_MOULD_ID = ItemID.JEWL_BRACELET_MOULD;
 
     private static final List<ItemAmount> FINISHED_BAR_INVENTORY = List.of(ItemAmount.ofCount(GOLD_BAR_ID, 27));
     private static final List<ItemAmount> FINISHED_BRACELET_INVENTORY = List.of(ItemAmount.ofCount(GOLD_BRACELET_ID, 27));
 
-    private final List<GameObject> activeFurnaces = new ArrayList<>();
-    private final List<GameObject> activeBanks = new ArrayList<>();
-
     public SmeltGoldBracelet(OwoPlugin plugin) {
-        super(plugin, State.OPEN_BANK);
-
-        Command command = InstructionFactory.createDefaultIdle();
-        server.updateCommand(command);
+        super(plugin, State.OPEN_BANK, List.of(), List.of(FURNACE_ID, BANK_ID));
         plugin.setDebugText("Loaded SmeltGoldBracelet");
     }
 
+    // TODO Use built in state management
+    private int idleDuration = 0;
     @Override
     public void onGameTick(GameTick t) {
         super.onGameTick(t);
+
+        if (idleDuration > 0) {
+            idleDuration--;
+            return;
+        }
+
         if (isPerformingAction()) {
             idle(state.name());
             return;
@@ -75,204 +65,47 @@ public class SmeltGoldBracelet extends OwoLogic<SmeltGoldBracelet.State> {
         }
 
         switch (state) {
+            // TODO Replace with bank transaction
             case OPEN_BANK:
-                if (isBankOpen()) {
+                if (BankUtils.isBankInterfaceOpen(client)) {
                     state = State.DEPOSIT_ITEMS;
                 } else {
-                    actionOpenBank();
+                    interactionManager.clickClosestGameObject(List.of(BANK_ID), "Bank");
                 }
                 break;
 
-            case DEPOSIT_ITEMS:
-                if (isInventoryDeposited()) {
-                    state = State.WITHDRAW_SUPPLIES;
-                } else {
-                    actionDepositItems();
+            case BANK_OPEN:
+                if (!BankUtils.isBankInterfaceOpen(client)) {
+                    setState(State.SMELT_GOLD);
+                    break;
                 }
-                break;
-
-            case WITHDRAW_SUPPLIES:
-                if (hasSmeltingSuppliesInInventory()) {
-                    state = State.SMELT_GOLD;
-                } else {
-                    actionWithdrawSupplies();
+                if (canAct()) {
+                    interactionManager.performBankTransaction(List.of(GOLD_BRACELET_ID), List.of(GOLD_ORE_ID));
+                    debounce(2000);
                 }
                 break;
 
             case SMELT_GOLD:
-                if (isSmeltingComplete(FINISHED_BAR_INVENTORY)) {
+                if (playerModule.doesInventoryContainAllItems(FINISHED_BAR_INVENTORY)) {
                     state = State.SMELT_BRACELETS;
                 } else {
-                    actionClickFurnace(9);
+                    interactionManager.clickClosestGameObject(List.of(FURNACE_ID), "Furnace");
+                    idleDuration = 9;
                 }
                 break;
 
             case SMELT_BRACELETS:
-                if (isSmeltingComplete(FINISHED_BRACELET_INVENTORY)) {
+                if (playerModule.doesInventoryContainAllItems(FINISHED_BRACELET_INVENTORY)) {
                     state = State.OPEN_BANK;
                 } else {
-                    actionClickFurnace(1);
+                    interactionManager.clickClosestGameObject(List.of(FURNACE_ID), "Furnace");
+                    idleDuration = 2;
                 }
                 break;
         }
     }
 
-    private void actionOpenBank() {
-        Optional<GameObject> closestBank = findClosestBank();
-        if (closestBank.isEmpty()) {
-            plugin.setDebugText("No bank object tracked");
-            server.updateCommand(InstructionFactory.createDefaultIdle());
-            return;
-        }
-
-        Optional<Point> point = OwoUtils.getGameObjectClickPoint(closestBank.get());
-        if (point.isEmpty()) {
-            plugin.setDebugText("Bank is off screen");
-            server.updateCommand(InstructionFactory.createDefaultIdle());
-            return;
-        }
-
-        server.updateCommand(InstructionFactory.createClickCommand(point.get().getX(), point.get().getY()));
-        plugin.setDebugText("Opening bank");
-        plugin.setDebugTargetPoint(point.get());
-    }
-
-    private void actionDepositItems() {
-        Optional<Point> point = InventoryUtils.findInventoryItemPoint(client, inventoryItems, GOLD_BRACELET_ID);
-        if (point.isEmpty()) {
-            plugin.setDebugText("No bracelets found in inventory to deposit");
-            server.updateCommand(InstructionFactory.createDefaultIdle());
-            return;
-        }
-
-        server.updateCommand(InstructionFactory.createClickCommand(point.get().getX(), point.get().getY()));
-        plugin.setDebugText("Depositing item");
-        plugin.setDebugTargetPoint(point.get());
-    }
-
-    private void actionWithdrawSupplies() {
-        Optional<Point> point = BankUtils.findBankItemPoint(client, GOLD_ORE_ID);
-        if (point.isEmpty()) {
-            plugin.setDebugText("No gold bars found in bank");
-            server.updateCommand(InstructionFactory.createDefaultIdle());
-            return;
-        }
-
-        server.updateCommand(InstructionFactory.createClickCommand(point.get().getX(), point.get().getY(), 2));
-        plugin.setDebugText("Withdrawing supplies with shift-click");
-        plugin.setDebugTargetPoint(point.get());
-    }
-
-    private void actionClickFurnace(int tickWait) {
-        Optional<GameObject> closestFurnace = findClosestFurnace();
-        if (closestFurnace.isEmpty()) {
-            plugin.setDebugText("No furnace object tracked");
-            server.updateCommand(InstructionFactory.createDefaultIdle());
-            return;
-        }
-
-        Optional<Point> point = OwoUtils.getGameObjectClickPoint(closestFurnace.get());
-        if (point.isEmpty()) {
-            plugin.setDebugText("Furnace is off screen");
-            server.updateCommand(InstructionFactory.createDefaultIdle());
-            return;
-        }
-
-        server.updateCommand(InstructionFactory.createClickAndConfirmCommand(point.get().getX(), point.get().getY(), tickWait));
-        plugin.setDebugText("Clicking furnace - " + state.name());
-        plugin.setDebugTargetPoint(point.get());
-    }
-
-    private boolean isBankOpen() {
-        return client.getItemContainer(InventoryID.BANK) != null;
-    }
-
-    private boolean isInventoryDeposited() {
-        if (inventoryItems == null) {
-            return false;
-        }
-
-        for (Item item : inventoryItems) {
-            if (item == null || item.getId() <= 0) {
-                continue;
-            }
-
-            if (item.getId() != BRACELET_MOULD_ID) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean hasSmeltingSuppliesInInventory() {
-        if (inventoryItems == null) {
-            return false;
-        }
-
-        boolean hasMould = false;
-        boolean hasGoldBars = false;
-        for (Item item : inventoryItems) {
-            if (item == null || item.getId() <= 0) {
-                continue;
-            }
-
-            if (item.getId() == BRACELET_MOULD_ID) {
-                hasMould = true;
-            }
-            if (item.getId() == GOLD_ORE_ID) {
-                hasGoldBars = true;
-            }
-        }
-        return hasMould && hasGoldBars;
-    }
-
-
-    private boolean isSmeltingComplete(List<ItemAmount> requiredItems) {
-        return InventoryUtils.doesInventoryContainItems(inventoryItems, requiredItems);
-    }
-
-    @Override
-    public void onWorldChanged(WorldChanged worldChanged) {
-        activeFurnaces.clear();
-        activeBanks.clear();
-    }
-
-    @Override
-    public void onGameObjectSpawned(GameObjectSpawned event) {
-        GameObject object = event.getGameObject();
-        if (object.getId() == FURNACE_ID) {
-            activeFurnaces.add(object);
-        }
-        if (object.getId() == BANK_ID) {
-            activeBanks.add(object);
-        }
-    }
-
-    @Override
-    public void onGameObjectDespawned(GameObjectDespawned event) {
-        GameObject object = event.getGameObject();
-        if (object.getId() == FURNACE_ID) {
-            activeFurnaces.remove(object);
-        }
-        if (object.getId() == BANK_ID) {
-            activeBanks.remove(object);
-        }
-    }
-
-    private Optional<GameObject> findClosestBank() {
-        if (client.getLocalPlayer() == null) {
-            return Optional.empty();
-        }
-        return OwoUtils.findClosestGameObject(activeBanks, client.getLocalPlayer().getWorldLocation());
-    }
-
-    private Optional<GameObject> findClosestFurnace() {
-        if (client.getLocalPlayer() == null) {
-            return Optional.empty();
-        }
-        return OwoUtils.findClosestGameObject(activeFurnaces, client.getLocalPlayer().getWorldLocation());
-    }
-
+    // TODO Move to playermodule
     private boolean checkForLevelUpMessage() {
         Widget levelUpWidget = client.getWidget(WidgetInfo.LEVEL_UP);
         return levelUpWidget != null && !levelUpWidget.isHidden();

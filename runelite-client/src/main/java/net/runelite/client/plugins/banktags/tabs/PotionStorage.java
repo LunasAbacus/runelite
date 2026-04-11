@@ -80,7 +80,7 @@ class PotionStorage
 	{
 		if (cachePotions)
 		{
-			log.debug("Rebuilding potions");
+			//log.debug("Rebuilding potions");
 			cachePotions = false;
 			rebuildPotions();
 

@@ -90,6 +90,6 @@ class RuntimeConfigRefresher
 	private void refreshConfig(RuntimeConfig runtimeConfig)
 	{
 		managedRuntimeConfig.refresh(runtimeConfig);
-		log.debug("Successfully refreshed the runtimeConfig");
+		//log.debug("Successfully refreshed the runtimeConfig");
 	}
 }

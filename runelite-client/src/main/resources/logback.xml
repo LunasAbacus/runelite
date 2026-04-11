@@ -50,6 +50,20 @@
 
     <logger name="net.runelite.client.owo" level="DEBUG"/>
 
+    <turboFilter class="ch.qos.logback.classic.turbo.MatchingFilter">
+        <Name>filterChatSpam</Name>
+        <OnMatch>DENY</OnMatch>
+        <OnMismatch>NEUTRAL</OnMismatch>
+        <regex>Chat message type SPAM</regex>
+    </turboFilter>
+
+    <turboFilter class="ch.qos.logback.classic.turbo.MatchingFilter">
+        <Name>filterChatSpam</Name>
+        <OnMatch>DENY</OnMatch>
+        <OnMismatch>NEUTRAL</OnMismatch>
+        <regex>Replacing archive</regex>
+    </turboFilter>
+
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>

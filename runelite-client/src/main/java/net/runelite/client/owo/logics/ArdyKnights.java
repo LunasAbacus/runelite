@@ -26,9 +26,7 @@ public class ArdyKnights extends OwoLogic<ArdyKnights.State> {
     }
 
     // World 302 is the usual world
-
     private static final int POUCH_ID = ItemID.PICKPOCKET_COIN_POUCH_KNIGHT;
-    // 10355 is the top ardy bank, 10356 is the middle
     private static final List<Integer> bankIds = List.of(10355);
     private static final List<Integer> knightIds = List.of(NpcID.KNIGHT_OF_ARDOUGNE, NpcID.KNIGHT_OF_ARDOUGNE_F, NpcID.KNIGHT_OF_ARDOUGNE2);
 
@@ -37,7 +35,6 @@ public class ArdyKnights extends OwoLogic<ArdyKnights.State> {
     public ArdyKnights(OwoPlugin plugin) {
         super(plugin, State.START, knightIds, bankIds);
         plugin.setDebugText("Loaded Ardy Knights");
-//        postDiscordMessage("I am starting");
     }
 
     private int idleDuration = 0;
@@ -65,7 +62,7 @@ public class ArdyKnights extends OwoLogic<ArdyKnights.State> {
 
     private void initialStateSelector() {
         // Has available food
-        if (!InventoryUtils.doesInventoryContainItems(inventoryItems, List.of(ItemAmount.ofCount(FOOD_ID, 1)))) {
+        if (!playerModule.doesInventoryContainItem(FOOD_ID)) {
             setState(State.OUT_OF_FOOD);
             return;
         }
@@ -77,7 +74,7 @@ public class ArdyKnights extends OwoLogic<ArdyKnights.State> {
         }
 
         // Pouches are full
-        if (playerModule.doesInventoryContainAllItems(List.of(ItemAmount.ofStack(POUCH_ID, 20)))) {
+        if (playerModule.doesInventoryContainAllItems(List.of(ItemAmount.ofStack(POUCH_ID, 25)))) {
             setState(State.POUCHES_FULL);
             return;
         }
@@ -90,7 +87,7 @@ public class ArdyKnights extends OwoLogic<ArdyKnights.State> {
         if (playerModule.isStunned()) {
             if (playerModule.isHurt(20)) {
                 setState(State.HURT);
-            } else if (playerModule.doesInventoryContainItem(POUCH_ID)) {
+            } else if (playerModule.doesInventoryContainAllItems(List.of(ItemAmount.ofStack(POUCH_ID, 10)))) {
                 setState(State.POUCHES_FULL);
             } else {
                 setState(State.STUNNED);
@@ -101,6 +98,12 @@ public class ArdyKnights extends OwoLogic<ArdyKnights.State> {
         setState(State.READY_TO_PICKPOCKET);
     }
 
+    // TODO Nate look into improving timing of thieves. I'm running about 60% efficiency right now
+    // Look into way to decouple timing from tick rate
+    // For example have a custom tick rate in base method, and register methods to it on plugin startup
+    // Supply jitter for actions like thieving
+    private int timesLost = 0;
+    private boolean sentDiscordMessage = false;
     private void updateState() {
         switch (state) {
             case HURT:
@@ -147,21 +150,25 @@ public class ArdyKnights extends OwoLogic<ArdyKnights.State> {
                 }
                 break;
             case KNIGHT_MOVED:
-                // Wait and hope resets in 120 seconds
-                idleDuration = 200;
+                // Wait and hope resets in 30 seconds
+                idleDuration = 50;
                 setState(State.START);
-                postDiscordMessage("I have lost the target. Knight has escaped containment.");
+                timesLost++;
+                if (timesLost > 4 && !sentDiscordMessage) {
+                    sentDiscordMessage = true;
+                    postDiscordMessage("Father, I have lost the target. Knight has escaped containment.");
+                }
                 break;
             case READY_TO_PICKPOCKET:
                 plugin.setDebugText("Pickpocketing");
+                sentDiscordMessage = false;
                 interactionManager.clickClosestNpc(knightIds, "Knight");
-                idleDuration = 1;
+                timesLost = 0;
                 setState(State.START);
                 break;
             case STUNNED:
                 plugin.setDebugText("Stunned");
                 interactionManager.hoverClosestNpc(knightIds, "Knight");
-                idleDuration = 8;
                 setState(State.START);
                 break;
         }
@@ -170,14 +177,12 @@ public class ArdyKnights extends OwoLogic<ArdyKnights.State> {
     /*
         Bank bounds
         |-------|---
-        | a | b |
-        |---|===|---
-        | c | d | B
-        |-------|---
-        a = 2654, 3287
-        b = 2655, 3287
-        c = 2654, 3286
-        d = 2655, 3286
+        | a | b |       a = 2654, 3287
+        |---|===|---    b = 2655, 3287
+        | c | d | B     c = 2654, 3286
+        |---|===|---    d = 2655, 3286
+        | e | f |       e = 2654, 3285
+        |-------|---    f = 2655, 3285
      */
     private boolean isKnightWithinBounds() {
         Optional<NPC> ardyKnight = interactionManager.findClosestNPC(knightIds);
@@ -186,6 +191,8 @@ public class ArdyKnights extends OwoLogic<ArdyKnights.State> {
         }
 
         WorldPoint knightPosition = ardyKnight.get().getWorldLocation();
-        return knightPosition.getX() == 2655 && knightPosition.getY() == 3287;
+        int x = knightPosition.getX();
+        int y = knightPosition.getY();
+        return (x == 2654 || x == 2655) && (y == 3287 || y == 3286 || y == 3285);
     }
 }

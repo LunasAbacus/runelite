@@ -235,7 +235,7 @@ public class TabInterface
 			int height = intStack[intStackSize - 3];
 			if (w.getWidth() != width || w.getHeight() != height)
 			{
-				log.debug("Bank resize!");
+				//log.debug("Bank resize!");
 				// This is right before the bank is resized, so wait until after so the computed tab layer size is right
 				clientThread.invokeLater(() ->
 				{

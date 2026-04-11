@@ -65,21 +65,11 @@ public class Woodcutting extends OwoLogic<DummyState> {
         // If bank interface open, deposit
         if (BankUtils.isBankInterfaceOpen(client)) {
             interactionManager.depositInventoryInBank();
-        } else if (!isInventoryFull()) {
+        } else if (!playerModule.isInventoryFull()) {
             clickNearestTree();
         } else {
             clickNearestBank();
         }
-    }
-
-    public boolean isInventoryFull() {
-        if (inventoryItems == null) {
-            return false;
-        }
-
-        // Take item count
-        long filledSlots = Arrays.stream(inventoryItems).filter(i -> i != null && i.getId() > 0).count();
-        return filledSlots == 28;
     }
 
     public void clickNearestTree() {

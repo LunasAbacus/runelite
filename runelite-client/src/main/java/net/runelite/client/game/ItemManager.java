@@ -281,7 +281,7 @@ public class ItemManager
 				itemPrices = map.build();
 			}
 
-			log.debug("Loaded {} prices", itemPrices.size());
+			//log.debug("Loaded {} prices", itemPrices.size());
 		}
 		catch (IOException e)
 		{
@@ -299,7 +299,7 @@ public class ItemManager
 				itemStats = ImmutableMap.copyOf(stats);
 			}
 
-			log.debug("Loaded {} stats", itemStats.size());
+			//log.debug("Loaded {} stats", itemStats.size());
 		}
 		catch (IOException e)
 		{

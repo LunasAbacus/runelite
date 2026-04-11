@@ -21,8 +21,11 @@ import static net.runelite.api.TileItem.OWNERSHIP_SELF;
 
 @Slf4j
 public abstract class OwoLogic<S extends Enum<S>> {
+    private static final long DISCORD_MESSAGE_RATE_LIMIT_MS = 60_000L;
+
     protected S state;
     private long nextActionTime = 0;
+    private final Map<String, Long> lastDiscordMessageTimes = new HashMap<>();
 
     public enum TaskIntensity {
         LOW, MEDIUM, HIGH
@@ -34,9 +37,7 @@ public abstract class OwoLogic<S extends Enum<S>> {
     protected final Client client;
     protected final OwoPlugin plugin;
 
-    // TODO Refactor other logics to use interactionManager and remove this variable
-    protected Item[] inventoryItems = new Item[28];
-
+    // TODO Migrate to WorldTrackingModule
     protected Set<Integer> desiredLoot = new HashSet<>();
     protected List<Pair<TileItem, Tile>> loot = new ArrayList<>();
 
@@ -114,8 +115,8 @@ public abstract class OwoLogic<S extends Enum<S>> {
 
         switch (taskIntensity) {
             case HIGH:
-                baseFrequencyTicks = 500;
-                baseDurationTicks = 50;
+                baseFrequencyTicks = 600;
+                baseDurationTicks = 45;
                 break;
             case MEDIUM:
                 baseFrequencyTicks = 1500;
@@ -153,6 +154,14 @@ public abstract class OwoLogic<S extends Enum<S>> {
     }
 
     public void postDiscordMessage(final String message) {
+        long now = System.currentTimeMillis();
+        Long lastSentAt = lastDiscordMessageTimes.get(message);
+        if (lastSentAt != null && now - lastSentAt < DISCORD_MESSAGE_RATE_LIMIT_MS) {
+            log.debug("Skipping Discord message due to rate limit: {}", message);
+            return;
+        }
+
+        lastDiscordMessageTimes.put(message, now);
         server.postDiscordMessage(message);
     }
 
@@ -229,7 +238,7 @@ public abstract class OwoLogic<S extends Enum<S>> {
     public void onStatChanged(StatChanged event) {
     }
 
-    // TODO Migrate this out somewhere else
+    // TODO Migrate this out to InteractionManager
     public boolean pickupLoot(int distance) {
         if (loot.isEmpty()) return false;
 
@@ -287,7 +296,6 @@ public abstract class OwoLogic<S extends Enum<S>> {
             return;
         }
 
-        inventoryItems = event.getItemContainer().getItems();
         interactionManager.setInventoryItems(event.getItemContainer().getItems());
         playerModule.setInventoryItems(event.getItemContainer().getItems());
     }

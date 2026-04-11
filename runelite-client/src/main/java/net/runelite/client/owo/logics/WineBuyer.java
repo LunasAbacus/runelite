@@ -59,7 +59,7 @@ public class WineBuyer extends OwoLogic<WineBuyer.State> {
     private void updateState() {
         switch (state) {
             case SHOP_OPEN:
-                if (InventoryUtils.doesInventoryContainItems(inventoryItems, wineInventory)) {
+                if (playerModule.doesInventoryContainAllItems(wineInventory)) {
                     setState(State.ITEMS_BOUGHT);
                     break;
                 }

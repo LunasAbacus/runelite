@@ -102,15 +102,16 @@ public class SmeltBarEdgeville extends OwoLogic<DummyState> {
 
         switch (state) {
             case OPEN_BANK:
-                if (isBankOpen()) {
+                if (BankUtils.isBankInterfaceOpen(client)) {
                     state = State.DEPOSIT_ITEMS;
                 } else {
-                    actionOpenBank();
+                    interactionManager.clickClosestGameObject(List.of(BANK_ID), "Bank");
                 }
                 break;
 
+                // TODO Refactor to use bank transaction instead
             case DEPOSIT_ITEMS:
-                if (isInventoryDeposited()) {
+                if (playerModule.isInventoryEmpty()) {
                     state = State.WITHDRAW_SUPPLIES;
                 } else {
                     actionDepositItems();
@@ -118,7 +119,7 @@ public class SmeltBarEdgeville extends OwoLogic<DummyState> {
                 break;
 
             case WITHDRAW_SUPPLIES:
-                if (hasSmeltingSuppliesInInventory()) {
+                if (playerModule.doesInventoryContainAllItems(withdrawValidationInventory)) {
                     state = State.SMELT_BARS;
                 } else {
                     actionWithdrawSupplies();
@@ -126,33 +127,13 @@ public class SmeltBarEdgeville extends OwoLogic<DummyState> {
                 break;
 
             case SMELT_BARS:
-                if (isSmeltingComplete()) {
+                if (playerModule.doesInventoryContainAllItems(smeltValidationInventory)) {
                     state = State.OPEN_BANK;
                 } else {
                     actionClickFurnace(9);
                 }
                 break;
         }
-    }
-
-    private void actionOpenBank() {
-        Optional<GameObject> closestBank = findClosestBank();
-        if (closestBank.isEmpty()) {
-            plugin.setDebugText("No bank object tracked");
-            server.updateCommand(InstructionFactory.createDefaultIdle());
-            return;
-        }
-
-        Optional<Point> point = OwoUtils.getGameObjectClickPoint(closestBank.get());
-        if (point.isEmpty()) {
-            plugin.setDebugText("Bank is off screen");
-            server.updateCommand(InstructionFactory.createDefaultIdle());
-            return;
-        }
-
-        server.updateCommand(InstructionFactory.createClickCommand(point.get().getX(), point.get().getY()));
-        plugin.setDebugText("Opening bank");
-        plugin.setDebugTargetPoint(point.get());
     }
 
     private void actionDepositItems() {
@@ -207,33 +188,6 @@ public class SmeltBarEdgeville extends OwoLogic<DummyState> {
         server.updateCommand(InstructionFactory.createClickAndConfirmCommand(point.get().getX(), point.get().getY(), tickWait));
         plugin.setDebugText("Clicking furnace - " + state.name());
         plugin.setDebugTargetPoint(point.get());
-    }
-
-    private boolean isBankOpen() {
-        return client.getItemContainer(InventoryID.BANK) != null;
-    }
-
-    private boolean isInventoryDeposited() {
-        if (inventoryItems == null) {
-            return false;
-        }
-
-        for (Item item : inventoryItems) {
-            if (item == null || item.getId() <= 0) {
-                continue;
-            }
-            return false;
-        }
-        return true;
-    }
-
-    private boolean hasSmeltingSuppliesInInventory() {
-        return InventoryUtils.doesInventoryContainItems(inventoryItems, withdrawValidationInventory);
-    }
-
-
-    private boolean isSmeltingComplete() {
-        return InventoryUtils.doesInventoryContainItems(inventoryItems, smeltValidationInventory);
     }
 
     @Override

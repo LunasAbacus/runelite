@@ -86,7 +86,7 @@ public class ClientSessionManager
 		}
 		catch (IOException ex)
 		{
-			log.warn("Unable to ping session service", ex);
+			//log.warn("Unable to ping session service", ex);
 		}
 	}
 

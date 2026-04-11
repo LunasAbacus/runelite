@@ -1395,7 +1395,7 @@ public class ConfigManager
 			return;
 		}
 
-		log.debug("Saving profile {} (patch size: {})", profile.getName(), patch.size());
+		//log.debug("Saving profile {} (patch size: {})", profile.getName(), patch.size());
 
 		if (profile.isSync() && sessionManager.getAccountSession() != null)
 		{

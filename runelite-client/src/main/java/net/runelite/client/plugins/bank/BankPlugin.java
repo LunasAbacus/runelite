@@ -639,7 +639,7 @@ public class BankPlugin extends Plugin
 		if (itemContainer != null && children != null)
 		{
 			long geTotal = 0, haTotal = 0;
-			log.debug("Computing bank price of {} items", itemContainer.size());
+			//log.debug("Computing bank price of {} items", itemContainer.size());
 
 			// In the bank, the first components are the bank items, followed by tabs etc. There are always enough
 			// components for the max bank regardless of the bank size, but we only need to check up to the bank size.

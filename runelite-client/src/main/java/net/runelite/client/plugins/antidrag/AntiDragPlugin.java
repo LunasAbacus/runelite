@@ -307,7 +307,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 	private void setDragDelay()
 	{
 		final int delay = config.dragDelay();
-		log.debug("Set delay to {}", delay);
+		//log.debug("Set delay to {}", delay);
 		client.setInventoryDragDelay(delay);
 		setInvDragDelay(delay);
 		setBankDragDelay(delay);
@@ -317,7 +317,7 @@ public class AntiDragPlugin extends Plugin implements KeyListener
 
 	private void resetDragDelay()
 	{
-		log.debug("Reset delay to {}", DEFAULT_DELAY);
+		//log.debug("Reset delay to {}", DEFAULT_DELAY);
 		client.setInventoryDragDelay(DEFAULT_DELAY);
 		setInvDragDelay(DEFAULT_DELAY);
 		setBankDragDelay(DEFAULT_DELAY);

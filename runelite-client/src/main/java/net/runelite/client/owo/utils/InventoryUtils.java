@@ -69,6 +69,19 @@ public class InventoryUtils {
         return itemComposition.getNote() != -1 ? itemComposition.getLinkedNoteId() : itemId;
     }
 
+    public static int inventorySpotsUsed(Item[] inventoryItems) {
+        if (inventoryItems == null || inventoryItems.length == 0) {
+            return 0;
+        }
+        int usedSlots = 0;
+        for (Item item : inventoryItems) {
+            if (item != null && item.getId() <= 0) {
+                usedSlots++;
+            }
+        }
+        return usedSlots;
+    }
+
     public static boolean doesInventoryContainItems(Item[] inventoryItems, List<ItemAmount> requiredItems) {
         if (requiredItems == null || requiredItems.isEmpty()) {
             return true;

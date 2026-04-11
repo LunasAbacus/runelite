@@ -51,18 +51,7 @@ public class Alcher extends OwoLogic<DummyState> {
 
             }
         } else if (!clickedItem) {
-            // Click point
-            int itemId = ItemID.JEWL_GOLD_BRACELET;
-            ItemComposition item = plugin.getItemManager().getItemComposition(itemId);
-            int notedId = item.getLinkedNoteId();
-            Optional<Point> point = InventoryUtils.findInventoryItemPoint(client, inventoryItems, notedId);
-            if (point.isPresent()) {
-                plugin.setDebugText("Clicking alchable item");
-                server.updateCommand(InstructionFactory.createClickCommand(point.get()));
-                clickedItem = true;
-            } else {
-                plugin.setDebugText("Could not find alchable item");
-            }
+            interactionManager.clickItemInInventory(ItemID.JEWL_GOLD_BRACELET, "Gold Bracelet");
         }
     }
 }
