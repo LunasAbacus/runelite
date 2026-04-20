@@ -4,8 +4,10 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.Point;
+import net.runelite.api.annotations.Interface;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.owo.instruction.Command;
 import net.runelite.client.owo.instruction.InstructionFactory;
 import net.runelite.client.owo.instruction.OwoServer;
 import net.runelite.client.owo.utils.BankUtils;
@@ -60,6 +62,11 @@ public class InteractionManager {
         }
 
         server.updateCommand(InstructionFactory.createBankTransactionCommand(clickPoints));
+    }
+
+    public void closeInterface(String name) {
+        plugin.setDebugText("Closing interface: " + name);
+        server.updateCommand(new Command(List.of(InstructionFactory.createTypeInstruction("{Esc}"))));
     }
 
     public void clearTrackedObjects() {
@@ -124,5 +131,66 @@ public class InteractionManager {
             plugin.setDebugText("Failed to find inventory item: " + name);
             log.debug("Failed to find inventory item: {}", name);
         }
+    }
+
+    public void useItemOnAnother(final int firstItem, final int secondItem, final String actionName) {
+        Optional<Point> point1 = InventoryUtils.findInventoryItemPoint(client, inventoryItems, firstItem);
+        Optional<Point> point2 = InventoryUtils.findInventoryItemPoint(client, inventoryItems, secondItem);
+        if (point1.isPresent() && point2.isPresent()) {
+            server.updateCommand(new Command(List.of(
+                    InstructionFactory.createClickInstruction(point1.get()),
+                    InstructionFactory.createClickInstruction(point2.get())
+            )));
+        } else {
+            plugin.setDebugText("Failed to find inventory items for action: " + actionName);
+            log.debug("Failed to find inventory item for action: {}", actionName);
+        }
+    }
+
+    // TODO Nate if can ever figure out a reliable way to see confirmation popup would be better than waiting x amount of time
+    // TODO Nate use isWidgetVisible with SKILLMULTI
+    public void useItemOnAnotherAndConfirm(final int firstItem, final int secondItem, final String actionName) {
+        Optional<Point> point1 = InventoryUtils.findInventoryItemPoint(client, inventoryItems, firstItem);
+        Optional<Point> point2 = InventoryUtils.findInventoryItemPoint(client, inventoryItems, secondItem);
+        if (point1.isPresent() && point2.isPresent()) {
+            server.updateCommand(new Command(List.of(
+                    InstructionFactory.createClickInstruction(point1.get()),
+                    InstructionFactory.createClickInstruction(point2.get()),
+                    InstructionFactory.createIdleByMillisInstruction(800, 1000),
+                    InstructionFactory.createTypeInstruction(" ")
+            )));
+        } else {
+            plugin.setDebugText("Failed to find inventory items for action: " + actionName);
+            log.debug("Failed to find inventory item for action: {}", actionName);
+        }
+    }
+
+    public void confirmSelection() {
+        server.updateCommand(InstructionFactory.createTypeCommandWithPreWait(" ", 600));
+    }
+
+
+    public void bankDepositAll() {
+        Optional<Point> point = BankUtils.findDepositAllButton(client);
+        if (point.isPresent()) {
+            plugin.setDebugText("Clicking deposit all button");
+            server.updateCommand(InstructionFactory.createClickCommand(point.get()));
+        } else {
+            plugin.setDebugText("Failed to find deposit all button");
+            log.debug("Failed to find deposit all button");
+        }
+    }
+
+    public boolean isWidgetVisible(int componentId) {
+        Widget widget = client.getWidget(componentId);
+        if (widget == null) {
+            log.debug("Widget {} is null", componentId);
+            return false;
+        }
+        if (widget.isSelfHidden()) {
+            log.debug("Widget {} is self-hidden", componentId);
+            return false;
+        }
+        return true;
     }
 }

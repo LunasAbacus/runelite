@@ -34,7 +34,7 @@ public class WorldTrackingModule {
                 client.getLocalPlayer().getWorldLocation()
         );
         if (closestGameObject.isPresent()) {
-            return OwoUtils.getGameObjectClickPoint(closestGameObject.get());
+            return OwoUtils.getGameObjectClickPoint(closestGameObject.get(), client);
         }
         return Optional.empty();
     }

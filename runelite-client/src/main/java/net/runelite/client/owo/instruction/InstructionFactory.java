@@ -62,6 +62,25 @@ public class InstructionFactory {
         return createClickInstruction(point.getX(), point.getY());
     }
 
+    public static Instruction createClickStormInstruction(Point point, int count) {
+        return createClickStormInstruction(point.getX(), point.getY(), false, count);
+    }
+
+    public static Instruction createClickStormInstruction(int x, int y, boolean isShift, int count) {
+        InstructionParameters instructionParameters = InstructionParameters.builder()
+                .x(x)
+                .y(y)
+                .isShift(isShift ? 1 : 0)
+                .count(count)
+                .clickButton(Left_CLICK_BUTTON)
+                .build();
+        return new Instruction(InstructionType.CLICKSTORM, instructionParameters);
+    }
+
+    public static Command createClickStormCommand(Point point, int count) {
+        return new Command(List.of(createClickStormInstruction(point, count)));
+    }
+
     public static Command createShiftClickCommand(int x, int y, int sleepTicks) {
         return new Command(List.of(
                 createShiftClickInstruction(x, y),
@@ -101,6 +120,13 @@ public class InstructionFactory {
 
     public static Command createTypeCommand(String key) {
         return new Command(List.of(createTypeInstruction(key)));
+    }
+
+    public static Command createTypeCommandWithPreWait(String key, int waitMillis) {
+        return new Command(List.of(
+           createIdleByMillisInstruction(waitMillis, waitMillis + 200),
+           createTypeInstruction(key)
+        ));
     }
 
     public static Instruction createTypeInstruction(String key) {

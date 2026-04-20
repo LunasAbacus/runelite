@@ -69,7 +69,7 @@ public class GemstoneCrab extends OwoLogic<DummyState> {
      */
     private void handleTunnelingState() {
         if (tunnel != null) {
-            Optional<Point> point = OwoUtils.getGameObjectClickPoint(tunnel);
+            Optional<Point> point = OwoUtils.getGameObjectClickPoint(tunnel, client);
             if (point.isEmpty()) {
                 return;
             }

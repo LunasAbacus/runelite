@@ -9,6 +9,7 @@ import net.runelite.client.owo.instruction.InstructionFactory;
 import net.runelite.client.owo.instruction.OwoServer;
 import net.runelite.client.owo.modules.InteractionManager;
 import net.runelite.client.owo.modules.PlayerModule;
+import net.runelite.client.owo.utils.BankUtils;
 import net.runelite.client.owo.utils.OwoUtils;
 import net.runelite.client.owo.instruction.Command;
 import net.runelite.client.plugins.owo.OwoPlugin;

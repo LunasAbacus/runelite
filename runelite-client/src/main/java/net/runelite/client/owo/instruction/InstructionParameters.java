@@ -20,6 +20,7 @@ public class InstructionParameters {
     // Click
     private Integer x;
     private Integer y;
+    private Integer count;
     private Integer radius;
     private Integer waitMinMillis;
     private Integer waitMaxMillis;

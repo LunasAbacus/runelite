@@ -24,10 +24,14 @@ public class WorldUtils {
         Polygon poly = Perspective.getCanvasTilePoly(client, lp);
         if (poly != null) {
             Rectangle r = poly.getBounds();
-            return Optional.of(new Point(
+            Point point = new Point(
                     r.x + r.width / 2,
                     r.y + r.height / 2
-            ));
+            );
+            if (!OwoUtils.isPointOnScreen(point, client)) {
+                return Optional.empty();
+            }
+            return Optional.of(point);
         } else {
             return Optional.empty();
         }

@@ -41,7 +41,11 @@ public class ShopUtils {
 
             int x = (int) bounds.getCenterX();
             int y = (int) bounds.getCenterY();
-            return Optional.of(new Point(x, y));
+            Point point = new Point(x, y);
+            if (!OwoUtils.isPointOnScreen(point, client)) {
+                return Optional.empty();
+            }
+            return Optional.of(point);
         }
         log.debug("No items in inventory matched given item id");
         return Optional.empty();

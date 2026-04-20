@@ -178,7 +178,7 @@ public class SmeltBarEdgeville extends OwoLogic<DummyState> {
             return;
         }
 
-        Optional<Point> point = OwoUtils.getGameObjectClickPoint(closestFurnace.get());
+        Optional<Point> point = OwoUtils.getGameObjectClickPoint(closestFurnace.get(), client);
         if (point.isEmpty()) {
             plugin.setDebugText("Furnace is off screen");
             server.updateCommand(InstructionFactory.createDefaultIdle());

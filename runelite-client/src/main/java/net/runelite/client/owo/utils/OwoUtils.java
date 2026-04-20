@@ -23,7 +23,7 @@ public class OwoUtils {
         return new Point(centerX, centerY);
     }
 
-    public static Optional<Point> getGameObjectClickPoint(GameObject gameObject) {
+    public static Optional<Point> getGameObjectClickPoint(GameObject gameObject, Client client) {
         Shape clickbox = gameObject.getClickbox();
         if (clickbox == null) {
             return Optional.empty();
@@ -32,7 +32,11 @@ public class OwoUtils {
         Rectangle bounds = clickbox.getBounds();
         int centerX = bounds.x + bounds.width / 2;
         int centerY = bounds.y + bounds.height / 2;
-        return Optional.of(new Point(centerX, centerY));
+        Point point = new Point(centerX, centerY);
+        if (!OwoUtils.isPointOnScreen(point, client)) {
+            return Optional.empty();
+        }
+        return Optional.of(point);
     }
 
     public static Optional<Point> getTileItemClickPoint(Tile tile, Client client) {
@@ -50,14 +54,17 @@ public class OwoUtils {
         Polygon poly = Perspective.getCanvasTilePoly(client, lp);
 
         Rectangle r = poly.getBounds();
-        Point click = new Point(
+        Point point = new Point(
                 r.x + r.width / 2,
                 r.y + r.height / 2
         );
-        return Optional.of(click);
+        if (!OwoUtils.isPointOnScreen(point, client)) {
+            return Optional.empty();
+        }
+        return Optional.of(point);
     }
 
-    public static Optional<Point> getTileObjectClickBox(TileObject tileObject) {
+    public static Optional<Point> getTileObjectClickBox(TileObject tileObject, Client client) {
         Shape clickbox = tileObject.getClickbox();
         if (clickbox == null) {
             return Optional.empty();
@@ -66,11 +73,26 @@ public class OwoUtils {
         Rectangle bounds = clickbox.getBounds();
         int centerX = bounds.x + bounds.width / 2;
         int centerY = bounds.y + bounds.height / 2;
-
-        return Optional.of(new Point(centerX, centerY));
+        Point point = new Point(centerX, centerY);
+        if (!OwoUtils.isPointOnScreen(point, client)) {
+            return Optional.empty();
+        }
+        return Optional.of(point);
     }
 
-    // TODO Nate safety check point is on screen
+    public static boolean isPointOnScreen(final Point point, final Client client) {
+        if (point == null || client == null) {
+            return false;
+        }
+
+        int x = point.getX();
+        int y = point.getY();
+
+        return x >= 0
+                && y >= 0
+                && x < client.getCanvasWidth()
+                && y < client.getCanvasHeight();
+    }
 
     public static Optional<GameObject> findClosestGameObject(List<GameObject> gameObjects, WorldPoint playerWp) {
         GameObject best = null;

@@ -129,6 +129,13 @@ public class OwoPlugin extends Plugin
 				break;
 			case ARDY_KNIGHTS:
 				this.activeLogic = new ArdyKnights(this);
+				break;
+			case SHILO_SMELTER:
+				this.activeLogic = new ShiloSmelter(this);
+				break;
+			case LEAGUE_ALDARIN_GEM:
+				this.activeLogic = new LEAGUESAldarinGem(this);
+				break;
 		}
 	}
 

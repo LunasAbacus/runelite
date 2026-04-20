@@ -82,7 +82,7 @@ public class Woodcutting extends OwoLogic<DummyState> {
             return;
         }
 
-        Optional<Point> point = OwoUtils.getGameObjectClickPoint(closestTree.get());
+        Optional<Point> point = OwoUtils.getGameObjectClickPoint(closestTree.get(), client);
         if (point.isEmpty()) {
             return;
         }
@@ -103,7 +103,7 @@ public class Woodcutting extends OwoLogic<DummyState> {
             return;
         }
 
-        Optional<Point> point = OwoUtils.getGameObjectClickPoint(closestBank.get());
+        Optional<Point> point = OwoUtils.getGameObjectClickPoint(closestBank.get(), client);
         if(point.isEmpty()) {
             plugin.setDebugText("Bank is off screen");
             server.updateCommand(InstructionFactory.createDefaultIdle());

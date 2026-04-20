@@ -103,7 +103,7 @@ public class AgilityCourse extends OwoLogic<DummyState> {
                 sleepTicks = 40 + (int)(Math.random() * 30);
             }
 
-            Optional<Point> point = OwoUtils.getTileObjectClickBox(activeCourseObjects.get(nextObstacleId));
+            Optional<Point> point = OwoUtils.getTileObjectClickBox(activeCourseObjects.get(nextObstacleId), client);
             if (point.isPresent()) {
                 Command command = InstructionFactory.createClickCommand(point.get().getX(), point.get().getY(), sleepTicks);
                 server.updateCommand(command);

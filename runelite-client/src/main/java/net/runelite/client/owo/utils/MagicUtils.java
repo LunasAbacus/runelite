@@ -22,8 +22,11 @@ public class MagicUtils {
 
             int cx = bounds.x + bounds.width / 2;
             int cy = bounds.y + bounds.height / 2;
-
-            return Optional.of(new Point(cx, cy));
+            Point point = new Point(cx, cy);
+            if (!OwoUtils.isPointOnScreen(point, client)) {
+                return Optional.empty();
+            }
+            return Optional.of(point);
         } else {
             return Optional.empty();
         }

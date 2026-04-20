@@ -5,6 +5,7 @@ import net.runelite.api.Point;
 import net.runelite.api.gameval.InterfaceID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
+import net.runelite.client.owo.instruction.InstructionFactory;
 
 import java.awt.*;
 import java.util.Optional;
@@ -37,9 +38,27 @@ public class BankUtils {
 
             int x = (int) bounds.getCenterX();
             int y = (int) bounds.getCenterY();
-            return Optional.of(new Point(x, y));
+            Point point = new Point(x, y);
+            if (!OwoUtils.isPointOnScreen(point, client)) {
+                return Optional.empty();
+            }
+            return Optional.of(point);
         }
 
+        return Optional.empty();
+    }
+
+    public static Optional<Point> findDepositAllButton(Client client) {
+        Widget depositInv = client.getWidget(WidgetInfo.BANK_DEPOSIT_INVENTORY);
+        if (depositInv != null && !depositInv.isHidden()) {
+            Rectangle bounds = depositInv.getBounds();
+            int cx = bounds.x + bounds.width / 2;
+            int cy = bounds.y + bounds.height / 2;
+            Point point = new Point(cx, cy);
+            if (OwoUtils.isPointOnScreen(point, client)) {
+                return Optional.of(point);
+            }
+        }
         return Optional.empty();
     }
 
