@@ -3,6 +3,7 @@ package net.runelite.client.owo.modules;
 import lombok.Setter;
 import net.runelite.api.Client;
 import net.runelite.api.Item;
+import net.runelite.api.Player;
 import net.runelite.client.owo.utils.InventoryUtils;
 import net.runelite.client.owo.utils.ItemAmount;
 import net.runelite.client.owo.utils.PlayerUtils;
@@ -31,6 +32,10 @@ public class PlayerModule {
 
     public boolean isHurt(final int hpLost) {
         return PlayerUtils.needsHealingByThreshold(client, hpLost);
+    }
+
+    public boolean isHurt(final double percentHpThreshold) {
+        return PlayerUtils.needsHealingByPercent(client, percentHpThreshold);
     }
 
     public boolean doesInventoryContainItem(final int itemId) {

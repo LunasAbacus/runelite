@@ -2,20 +2,22 @@ package net.runelite.client.owo.logics;
 
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.*;
 import net.runelite.api.gameval.ObjectID;
 import net.runelite.client.owo.OwoLogic;
-import net.runelite.client.owo.instruction.InstructionFactory;
-import net.runelite.client.owo.utils.OwoUtils;
-import net.runelite.client.owo.instruction.Command;
 import net.runelite.client.plugins.owo.OwoPlugin;
 
 import java.util.*;
 
-import static net.runelite.api.Skill.AGILITY;
-
 @Slf4j
-public class AgilityCourse extends OwoLogic<DummyState> {
+public class AgilityCourse extends OwoLogic<AgilityCourse.State> {
+    protected enum State {
+        MOVING,
+        IDLE,
+        EMERGENCY
+    }
+
     // Falador
 //    Integer[] activeCourse = {
 //            ObjectID.ROOFTOPS_FALADOR_WALLCLIMB, // Working
@@ -33,184 +35,121 @@ public class AgilityCourse extends OwoLogic<DummyState> {
 //            ObjectID.ROOFTOPS_FALADOR_EDGE // Game object
 //    };
 
-    // Colossal Wyrm Advanced
-    Integer[] activeCourse = {
-            ObjectID.VARLAMORE_WYRM_AGILITY_START_LADDER_TRIGGER, // x1
-            ObjectID.VARLAMORE_WYRM_AGILITY_BALANCE_1_TRIGGER, // x7
-            ObjectID.VARLAMORE_WYRM_AGILITY_BALANCE_1_TRIGGER,
-            ObjectID.VARLAMORE_WYRM_AGILITY_BALANCE_1_TRIGGER,
-            ObjectID.VARLAMORE_WYRM_AGILITY_BALANCE_1_TRIGGER,
-            ObjectID.VARLAMORE_WYRM_AGILITY_BALANCE_1_TRIGGER,
-            ObjectID.VARLAMORE_WYRM_AGILITY_BALANCE_1_TRIGGER,
-            ObjectID.VARLAMORE_WYRM_AGILITY_BALANCE_1_TRIGGER,
-            ObjectID.VARLAMORE_WYRM_AGILITY_ADVANCED_LADDER_1_TRIGGER, // x1
-            ObjectID.VARLAMORE_WYRM_AGILITY_ADVANCED_JUMP_1_TRIGGER, // x1
-            ObjectID.VARLAMORE_WYRM_AGILITY_ADVANCED_BALANCE_1_TRIGGER, // x2
-            ObjectID.VARLAMORE_WYRM_AGILITY_ADVANCED_BALANCE_1_TRIGGER,
-            ObjectID.VARLAMORE_WYRM_AGILITY_END_ZIPLINE_TRIGGER // x1
-    };
-    Map<Integer, Integer> lookaheadObjects = Map.of(
-            ObjectID.VARLAMORE_WYRM_AGILITY_START_LADDER_TRIGGER, ObjectID.VARLAMORE_WYRM_AGILITY_BALANCE_1_TRIGGER,
-            ObjectID.VARLAMORE_WYRM_AGILITY_BALANCE_1_TRIGGER, ObjectID.VARLAMORE_WYRM_AGILITY_ADVANCED_LADDER_1_TRIGGER,
-            ObjectID.VARLAMORE_WYRM_AGILITY_ADVANCED_LADDER_1_TRIGGER, ObjectID.VARLAMORE_WYRM_AGILITY_ADVANCED_JUMP_1_TRIGGER,
-            ObjectID.VARLAMORE_WYRM_AGILITY_ADVANCED_JUMP_1_TRIGGER, ObjectID.VARLAMORE_WYRM_AGILITY_ADVANCED_BALANCE_1_TRIGGER,
-            ObjectID.VARLAMORE_WYRM_AGILITY_ADVANCED_BALANCE_1_TRIGGER, ObjectID.VARLAMORE_WYRM_AGILITY_END_ZIPLINE_TRIGGER,
-            ObjectID.VARLAMORE_WYRM_AGILITY_END_ZIPLINE_TRIGGER, ObjectID.VARLAMORE_WYRM_AGILITY_START_LADDER_TRIGGER
+//    // Colossal Wyrm Advanced
+//    Integer[] activeCourse = {
+//            ObjectID.VARLAMORE_WYRM_AGILITY_START_LADDER_TRIGGER, // x1
+//            ObjectID.VARLAMORE_WYRM_AGILITY_BALANCE_1_TRIGGER, // x7
+//            ObjectID.VARLAMORE_WYRM_AGILITY_BALANCE_1_TRIGGER,
+//            ObjectID.VARLAMORE_WYRM_AGILITY_BALANCE_1_TRIGGER,
+//            ObjectID.VARLAMORE_WYRM_AGILITY_BALANCE_1_TRIGGER,
+//            ObjectID.VARLAMORE_WYRM_AGILITY_BALANCE_1_TRIGGER,
+//            ObjectID.VARLAMORE_WYRM_AGILITY_BALANCE_1_TRIGGER,
+//            ObjectID.VARLAMORE_WYRM_AGILITY_BALANCE_1_TRIGGER,
+//            ObjectID.VARLAMORE_WYRM_AGILITY_ADVANCED_LADDER_1_TRIGGER, // x1
+//            ObjectID.VARLAMORE_WYRM_AGILITY_ADVANCED_JUMP_1_TRIGGER, // x1
+//            ObjectID.VARLAMORE_WYRM_AGILITY_ADVANCED_BALANCE_1_TRIGGER, // x2
+//            ObjectID.VARLAMORE_WYRM_AGILITY_ADVANCED_BALANCE_1_TRIGGER,
+//            ObjectID.VARLAMORE_WYRM_AGILITY_END_ZIPLINE_TRIGGER // x1
+//    };
+
+    // Ape Atoll
+    private static final Map<WorldPoint, Integer> activeCourse = Map.of(
+            new WorldPoint(2770, 2747, 0), ObjectID._100_ILM_STEPPING_STONE,
+            new WorldPoint(2753, 2742, 0), ObjectID._100_ILM_CLIMBABLE_TREE,
+            new WorldPoint(2753, 2742, 2), ObjectID._100_ILM_MONKEYBARS_START,
+            new WorldPoint(2747, 2741, 0), ObjectID._100_ILM_CLIFF_CLIMB_1,
+            new WorldPoint(2742, 2741, 0), ObjectID._100_ILM_ROPE_SWING,
+            new WorldPoint(2756, 2731, 0), ObjectID._100_ILM_AGILITY_TREE_BASE,
+            // Failure recovery
+            new WorldPoint(2757, 2748, 0), ObjectID._100_ILM_STEPPING_STONE,
+            new WorldPoint(2755, 2741, 0), ObjectID._100_ILM_STEPPING_STONE,
+            new WorldPoint(2752, 2740, 0), ObjectID._100_ILM_CLIMBABLE_TREE,
+//            new Point(,), ObjectID._100_ILM_MONKEYBARS_START,
+            // ObjectID._100_ILM_CLIFF_CLIMB_1 covered by original case
+//            new Point(,), ObjectID._100_ILM_ROPE_SWING,
+            new WorldPoint(2758, 2735, 0), ObjectID._100_ILM_AGILITY_TREE_BASE
     );
 
-    Set<Integer> activeCourseObjectIds = new HashSet<>(Arrays.asList(activeCourse));
-    Map<Integer, TileObject> activeCourseObjects = new HashMap<>();
-
-    int activeObstaclesIndex = 0;
-    int lastAgilityXp = 999999999;
-    boolean preventMisclicks = false;
-
     public AgilityCourse(final OwoPlugin plugin) {
-        super(plugin, DummyState.NO_OP);
-        server.updateCommand(InstructionFactory.createDefaultIdle());
+        super(plugin, State.IDLE, List.of(), activeCourse.values(), List.of(), activeCourse.values(), List.of());
         plugin.setDebugText("Loaded Agility Course");
     }
 
+    private int idleDuration = 0;
     @Override
     public void onGameTick(GameTick t) {
         super.onGameTick(t);
 
-        // Already performing action
-        if (isPerformingAction(1)) {
-            preventMisclicks = false;
-            idle();
+        if (idleDuration > 0) {
+            idleDuration--;
             return;
         }
 
-        preventMisclicks = true;
-
-        // Pickup marks of grace
-        if (pickupLoot(3)) {
+        int randomIdle = shouldRandomIdle(TaskIntensity.LOW);
+        if (randomIdle > 0) {
+            log.debug("Taking a idle break for {} ticks", randomIdle);
+            idleDuration = randomIdle;
             return;
         }
 
-        // Click next obstacle
-        int nextObstacleId = activeCourse[activeObstaclesIndex];
-        handleNextObstacle(nextObstacleId);
+        if (playerModule.isHurt(0.5)) {
+            setState(State.EMERGENCY);
+        }
+
+        updateState();
     }
 
-    private void handleNextObstacle(int nextObstacleId) {
-        if (activeCourseObjects.containsKey(nextObstacleId)) {
-            int sleepTicks = 8;
-            // TODO Can make this more elegant with weighted long waits, but good enough for now
-            // Every ~ 50 obstacles take a short break
-            if (Math.random() < 0.015) {
-                sleepTicks = 40 + (int)(Math.random() * 30);
-            }
-
-            Optional<Point> point = OwoUtils.getTileObjectClickBox(activeCourseObjects.get(nextObstacleId), client);
-            if (point.isPresent()) {
-                Command command = InstructionFactory.createClickCommand(point.get().getX(), point.get().getY(), sleepTicks);
-                server.updateCommand(command);
-
-                if (sleepTicks > 8) {
-                    plugin.setDebugText("Clicking next obstacle after idle: " + sleepTicks + " ticks.");
-                    log.debug("Idling for {} ticks", sleepTicks);
-                } else {
-                    plugin.setDebugText("Clicking next obstacle");
+    private void updateState() {
+        switch (state) {
+            case IDLE:
+                if (isPerformingAction(1)) {
+                    setState(State.MOVING);
+                    break;
                 }
-                plugin.setDebugTargetPoint(point.get());
+                if (canAct()) {
+                    plugin.setDebugText("Clicking next obstacle");
+                    WorldPoint playerLocation = interactionManager.findPlayerLocation();
+                    Integer nextObstacleId = findClosestObstacleId(playerLocation);
+                    if (nextObstacleId != null) {
+                        interactionManager.clickClosestGameObject(List.of(nextObstacleId), "Next Obstacle");
+                    } else {
+                        plugin.setDebugText("No next obstacle configured for current location. " + playerLocation);
+                    }
+                    debounce(2000);
+                }
+                break;
+            case MOVING:
+                if (!isPerformingAction(1)) {
+                    setState(State.IDLE);
+                    break;
+                }
+                plugin.setDebugText("Navigating obstacle");
+                break;
+            case EMERGENCY:
+                if (!playerModule.isHurt(0.6)) {
+                    setState(State.IDLE);
+                }
+                plugin.setDebugText("Health got too low. Stopping");
+        }
+    }
+
+    private Integer findClosestObstacleId(final WorldPoint playerLocation) {
+        Integer exactMatch = activeCourse.get(playerLocation);
+        if (exactMatch != null) {
+            return exactMatch;
+        }
+
+        WorldPoint closestPoint = null;
+        int closestDistance = Integer.MAX_VALUE;
+
+        for (WorldPoint coursePoint : activeCourse.keySet()) {
+            int distance = playerLocation.distanceTo(coursePoint);
+            if (distance < closestDistance) {
+                closestDistance = distance;
+                closestPoint = coursePoint;
             }
-        } else {
-            plugin.setDebugText("No course object found");
-        }
-    }
-
-    @Override
-    public void onMenuOptionClicked(MenuOptionClicked event) {
-        log.debug("Menu option clicked: {}", event.getMenuOption());
-        if (preventMisclicks && OwoUtils.isWalkAction(event)) {
-            event.consume();
-        }
-    }
-
-    @Override
-    public void onStatChanged(StatChanged event) {
-        if (event.getSkill() != AGILITY) {
-            return;
         }
 
-        // Determine how much EXP was actually gained
-        int agilityXp = event.getXp();
-        int skillGained = agilityXp - lastAgilityXp;
-        lastAgilityXp = agilityXp;
-
-        if (skillGained > 0) {
-            // Increment to next obstacle
-            activeObstaclesIndex++;
-            if (activeObstaclesIndex >= activeCourse.length) {
-                activeObstaclesIndex = 0;
-            }
-            log.debug("Advancing to next obstacle. Index: {}", activeObstaclesIndex);
-        }
-    }
-
-    @Override
-    public void onDecorativeObjectSpawned(DecorativeObjectSpawned event) {
-        DecorativeObject object = event.getDecorativeObject();
-        if (activeCourseObjectIds.contains(object.getId())) {
-            activeCourseObjects.put(object.getId(), object);
-        }
-    }
-
-    @Override
-    public void onDecorativeObjectDespawned(DecorativeObjectDespawned event) {
-        DecorativeObject object = event.getDecorativeObject();
-        if (activeCourseObjectIds.contains(object.getId())) {
-            activeCourseObjects.remove(object.getId());
-        }
-    }
-
-    @Override
-    public void onGroundObjectSpawned(GroundObjectSpawned event) {
-        GroundObject object = event.getGroundObject();
-        if (activeCourseObjectIds.contains(object.getId())) {
-            activeCourseObjects.put(object.getId(), object);
-        }
-    }
-
-    @Override
-    public void onGroundObjectDespawned(GroundObjectDespawned event) {
-        GroundObject object = event.getGroundObject();
-        if (activeCourseObjectIds.contains(object.getId())) {
-            activeCourseObjects.remove(object.getId());
-        }
-    }
-
-    @Override
-    public void onGameObjectSpawned(GameObjectSpawned event) {
-        GameObject object = event.getGameObject();
-        if (activeCourseObjectIds.contains(object.getId())) {
-            activeCourseObjects.put(object.getId(), object);
-        }
-    }
-
-    @Override
-    public void onGameObjectDespawned(GameObjectDespawned event) {
-        GameObject object = event.getGameObject();
-        if (activeCourseObjectIds.contains(object.getId())) {
-            activeCourseObjects.remove(object.getId());
-        }
-    }
-
-    @Override
-    public void onWallObjectSpawned(WallObjectSpawned event) {
-        WallObject object = event.getWallObject();
-        if (activeCourseObjectIds.contains(object.getId())) {
-            activeCourseObjects.put(object.getId(), object);
-        }
-    }
-
-    @Override
-    public void onWallObjectDespawned(WallObjectDespawned event) {
-        WallObject object = event.getWallObject();
-        if (activeCourseObjectIds.contains(object.getId())) {
-            activeCourseObjects.remove(object.getId());
-        }
+        return closestPoint != null ? activeCourse.get(closestPoint) : null;
     }
 }

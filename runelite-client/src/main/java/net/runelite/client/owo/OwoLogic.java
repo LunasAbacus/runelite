@@ -48,16 +48,25 @@ public abstract class OwoLogic<S extends Enum<S>> {
 
 
     public OwoLogic(OwoPlugin plugin, S initialState) {
-        this(plugin, initialState, List.of(), List.of());
+        this(plugin, initialState, List.of(), List.of(), List.of(), List.of(), List.of());
     }
 
-    public OwoLogic(OwoPlugin plugin, S initialState, List<Integer> npcsToTrack, List<Integer> gameObjectsToTrack) {
+    public OwoLogic(OwoPlugin plugin, S initialState, Collection<Integer> npcsToTrack, Collection<Integer> gameObjectsToTrack) {
+        this(plugin, initialState, npcsToTrack, gameObjectsToTrack, List.of(), List.of(), List.of());
+    }
+
+    public OwoLogic(OwoPlugin plugin, S initialState,
+                    Collection<Integer> npcsToTrack,
+                    Collection<Integer> gameObjectsToTrack,
+                    Collection<Integer> decorationsToTrack,
+                    Collection<Integer> groundObjectsToTrack,
+                    Collection<Integer> wallObjectsToTrack) {
         this.server = plugin.getServer();
         this.client = plugin.getClient();
         this.plugin = plugin;
         this.state = initialState;
         this.playerModule = new PlayerModule(plugin);
-        this.interactionManager = new InteractionManager(plugin, npcsToTrack, gameObjectsToTrack);
+        this.interactionManager = new InteractionManager(plugin, npcsToTrack, gameObjectsToTrack, decorationsToTrack, groundObjectsToTrack, wallObjectsToTrack);
     }
 
     public void startUp() { }
@@ -219,21 +228,33 @@ public abstract class OwoLogic<S extends Enum<S>> {
     }
 
     public void onDecorativeObjectSpawned(DecorativeObjectSpawned event) {
+        DecorativeObject object = event.getDecorativeObject();
+        interactionManager.trackDecorativeObject(object);
     }
 
     public void onDecorativeObjectDespawned(DecorativeObjectDespawned event) {
+        DecorativeObject object = event.getDecorativeObject();
+        interactionManager.untrackDecorativeObject(object);
     }
 
     public void onWallObjectSpawned(WallObjectSpawned event) {
+        WallObject object = event.getWallObject();
+        interactionManager.trackWallObject(object);
     }
 
     public void onWallObjectDespawned(WallObjectDespawned event) {
+        WallObject object = event.getWallObject();
+        interactionManager.untrackWallObject(object);
     }
 
     public void onGroundObjectSpawned(GroundObjectSpawned event) {
+        GroundObject object = event.getGroundObject();
+        interactionManager.trackGroundObject(object);
     }
 
     public void onGroundObjectDespawned(GroundObjectDespawned event) {
+        GroundObject object = event.getGroundObject();
+        interactionManager.untrackGroundObject(object);
     }
 
     public void onStatChanged(StatChanged event) {

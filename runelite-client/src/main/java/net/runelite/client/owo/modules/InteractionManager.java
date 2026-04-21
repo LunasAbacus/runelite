@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.Point;
 import net.runelite.api.annotations.Interface;
+import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.widgets.Widget;
 import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.owo.instruction.Command;
@@ -16,6 +17,7 @@ import net.runelite.client.plugins.owo.OwoPlugin;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,8 +31,13 @@ public class InteractionManager {
     @Setter
     private Item[] inventoryItems = new Item[28];
 
-    public InteractionManager(OwoPlugin plugin, List<Integer> npcsToTrack, List<Integer> gameObjectsToTrack) {
-        this.worldTrackingModule = new WorldTrackingModule(npcsToTrack, gameObjectsToTrack);
+    public InteractionManager(OwoPlugin plugin,
+                              Collection<Integer> npcsToTrack,
+                              Collection<Integer> gameObjectsToTrack,
+                              Collection<Integer> decorationsToTrack,
+                              Collection<Integer> groundObjectsToTrack,
+                              Collection<Integer> wallObjectsToTrack) {
+        this.worldTrackingModule = new WorldTrackingModule(npcsToTrack, gameObjectsToTrack, decorationsToTrack, groundObjectsToTrack, wallObjectsToTrack);
         this.server = plugin.getServer();
         this.client = plugin.getClient();
         this.plugin = plugin;
@@ -87,6 +94,30 @@ public class InteractionManager {
 
     public void untrackGameObject(final GameObject gameObject) {
         worldTrackingModule.untrackGameObject(gameObject);
+    }
+
+    public void trackDecorativeObject(final DecorativeObject decorativeObject) {
+        worldTrackingModule.trackDecorativeObject(decorativeObject);
+    }
+
+    public void untrackDecorativeObject(final DecorativeObject decorativeObject) {
+        worldTrackingModule.untrackDecorativeObject(decorativeObject);
+    }
+
+    public void trackGroundObject(final GroundObject groundObject) {
+        worldTrackingModule.trackGroundObject(groundObject);
+    }
+
+    public void untrackGroundObject(final GroundObject groundObject) {
+        worldTrackingModule.untrackGroundObject(groundObject);
+    }
+
+    public void trackWallObject(final WallObject wallObject) {
+        worldTrackingModule.trackWallObject(wallObject);
+    }
+
+    public void untrackWallObject(final WallObject wallObject) {
+        worldTrackingModule.untrackWallObject(wallObject);
     }
 
     public void clickClosestGameObject(final List<Integer> gameObjectIds, final String name) {
@@ -192,5 +223,9 @@ public class InteractionManager {
             return false;
         }
         return true;
+    }
+
+    public WorldPoint findPlayerLocation() {
+        return client.getLocalPlayer().getWorldLocation();
     }
 }
