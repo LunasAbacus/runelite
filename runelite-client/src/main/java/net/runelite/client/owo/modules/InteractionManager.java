@@ -13,6 +13,7 @@ import net.runelite.client.owo.instruction.InstructionFactory;
 import net.runelite.client.owo.instruction.OwoServer;
 import net.runelite.client.owo.utils.BankUtils;
 import net.runelite.client.owo.utils.InventoryUtils;
+import net.runelite.client.owo.utils.OwoUtils;
 import net.runelite.client.plugins.owo.OwoPlugin;
 
 import java.awt.*;
@@ -128,6 +129,20 @@ public class InteractionManager {
             plugin.setDebugText("Failed to find GameObject: " + name);
             log.debug("Failed to find GameObject: {}", name);
         }
+    }
+
+    public void clickGameObject(final GameObject gameObject) {
+        Optional<Point> point = OwoUtils.getGameObjectClickPoint(gameObject, client);
+        if (point.isPresent()) {
+            server.updateCommand(InstructionFactory.createClickCommand(point.get()));
+        } else {
+            plugin.setDebugText("Failed to find game objects point on screen");
+            log.debug("Failed to find game objects point on screen");
+        }
+    }
+
+    public Collection<GameObject> getTrackedObjects(final int id) {
+        return worldTrackingModule.getGameObjects(id);
     }
 
     public void clickClosestNpc(final List<Integer> npcIds, final String name) {

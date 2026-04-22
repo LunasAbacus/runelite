@@ -56,6 +56,10 @@ public class WorldTrackingModule {
         return OwoUtils.getTileObjectClickBox(tileObject, client);
     }
 
+    public Collection<GameObject> getGameObjects(final int id) {
+        return trackedGameObjects.get(id);
+    }
+
     public void trackGameObject(final GameObject gameObject) {
         if (trackedGameObjects.containsKey(gameObject.getId())) {
             trackedGameObjects.get(gameObject.getId()).add(gameObject);

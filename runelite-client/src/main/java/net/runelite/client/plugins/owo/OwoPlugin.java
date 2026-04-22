@@ -133,6 +133,9 @@ public class OwoPlugin extends Plugin
 			case SHILO_SMELTER:
 				this.activeLogic = new ShiloSmelter(this);
 				break;
+			case CHINS:
+				this.activeLogic = new Chins(this);
+				break;
 			case LEAGUE_ALDARIN_GEM:
 				this.activeLogic = new LEAGUESAldarinGem(this);
 				break;
