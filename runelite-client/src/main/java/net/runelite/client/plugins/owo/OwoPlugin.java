@@ -139,6 +139,9 @@ public class OwoPlugin extends Plugin
 			case LEAGUE_ALDARIN_GEM:
 				this.activeLogic = new LEAGUESAldarinGem(this);
 				break;
+			case LEAGUE_ARDY_KNIGHTS:
+				this.activeLogic = new LEAGUESArdyKnights(this);
+				break;
 		}
 	}
 

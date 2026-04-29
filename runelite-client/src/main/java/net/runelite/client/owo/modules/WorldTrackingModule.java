@@ -118,7 +118,10 @@ public class WorldTrackingModule {
                 matchingNpcs,
                 client.getLocalPlayer().getWorldLocation()
         );
-        return closestNpc.map(OwoUtils::getNpcClickPoint);
+        if (closestNpc.isPresent()) {
+            return OwoUtils.getNpcClickPoint(closestNpc.get(), client);
+        }
+        return Optional.empty();
     }
 
     public Optional<NPC> findClosestNpc(final Client client, final List<Integer> ids) {

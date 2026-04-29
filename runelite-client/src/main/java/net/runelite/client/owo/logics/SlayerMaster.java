@@ -75,12 +75,16 @@ public class SlayerMaster extends OwoLogic<DummyState> {
             return;
         }
 
-        Point point = OwoUtils.getNpcClickPoint(closestTarget.get());
-        Command command = InstructionFactory.createClickCommand(point.getX(), point.getY());
+        Optional<Point> point = OwoUtils.getNpcClickPoint(closestTarget.get(), client);
+        if (point.isEmpty()) {
+            plugin.setDebugText("No target NPCs found.");
+            return;
+        }
+        Command command = InstructionFactory.createClickCommand(point.get().getX(), point.get().getY());
         server.updateCommand(command);
 
         plugin.setDebugText("Clicking closest target NPC for task: " + taskName);
-        plugin.setDebugTargetPoint(point);
+        plugin.setDebugTargetPoint(point.get());
     }
 
     @Override

@@ -87,12 +87,15 @@ public class GemstoneCrab extends OwoLogic<DummyState> {
      */
     private void handleAttackingState() {
         if (gemstoneCrab != null) {
-            Point point = OwoUtils.getNpcClickPoint(gemstoneCrab);
-
+            Optional<Point> point = OwoUtils.getNpcClickPoint(gemstoneCrab, client);
+            if (point.isEmpty()) {
+                plugin.setDebugText("Couldn't find Crab");
+                return;
+            }
             plugin.setDebugText("Attacking Crab");
-            plugin.setDebugTargetPoint(point);
+            plugin.setDebugTargetPoint(point.get());
 
-            Command command = InstructionFactory.createClickCommand(point.getX(), point.getY());
+            Command command = InstructionFactory.createClickCommand(point.get().getX(), point.get().getY());
             server.updateCommand(command);
         }
     }

@@ -16,11 +16,15 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @Slf4j
 public class OwoUtils {
-    public static Point getNpcClickPoint(NPC npc) {
+    public static Optional<Point> getNpcClickPoint(NPC npc, Client client) {
         Rectangle bounds = npc.getConvexHull().getBounds();
         int centerX = bounds.x + bounds.width / 2;
         int centerY = bounds.y + bounds.height / 2;
-        return new Point(centerX, centerY);
+        Point point = new Point(centerX, centerY);
+        if (!OwoUtils.isPointOnScreen(point, client)) {
+            return Optional.empty();
+        }
+        return Optional.of(point);
     }
 
     public static Optional<Point> getGameObjectClickPoint(GameObject gameObject, Client client) {
