@@ -53,6 +53,7 @@ dependencies {
     api(libs.rl.discord)
     api(libs.rl.awt)
     compileOnly(libs.rl.orange)
+    runtimeOnly(libs.rl.jagexauth)
 
     implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
     implementation("net.dv8tion:JDA:5.0.0-beta.20")
@@ -142,7 +143,6 @@ publishing {
 val assemble = tasks.withType<net.runelite.gradle.assemble.AssembleTask> {
     scriptDirectory = file("src/main/scripts")
     outputDirectory = sourceSets.main.map { File(it.output.resourcesDir, "runelite") }
-    componentsFile = file("../runelite-api/src/main/interfaces/interfaces.toml")
     longSupport = true
 }
 

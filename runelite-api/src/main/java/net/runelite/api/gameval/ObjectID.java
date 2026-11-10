@@ -2188,8 +2188,20 @@ public final class ObjectID extends ObjectID1
 	 * Buried skeleton
 	 */
 	public static final int HALFBURIEDSKELETON1 = 651;
+
+	/**
+	 * Bloodsplatter
+	 */
 	public static final int BLOODSPLATTER1 = 652;
+
+	/**
+	 * Bloodsplatter
+	 */
 	public static final int BLOODSPLATTER2 = 653;
+
+	/**
+	 * Bloodsplatter
+	 */
 	public static final int BLOODSPLATTER3 = 654;
 	public static final int BLOODSCRATCH = 655;
 	public static final int BLOODSCRATCH2 = 656;
@@ -6750,7 +6762,6 @@ public final class ObjectID extends ObjectID1
 	 * Palm tree
 	 */
 	public static final int ZQQUEST_HIDYTREE = 2237;
-	public static final int CLUESCROLL_TUTOR_ICON = 2238;
 	public static final int MIMIC_WALL_WOOD_01 = 2239;
 
 	/**
@@ -11021,7 +11032,7 @@ public final class ObjectID extends ObjectID1
 	public static final int PRISONWALL_REND = 3462;
 
 	/**
-	 * Cell door
+	 * Cell gate
 	 */
 	public static final int PIP_PRISONDOOR = 3463;
 	public static final int INACTIVE_PIPPRISONDOOR = 3464;
@@ -21260,7 +21271,7 @@ public final class ObjectID extends ObjectID1
 	public static final int ZOGRE_COFFIN_SPECIAL_SEARCHED = 6845;
 
 	/**
-	 * Broken Lecturn
+	 * Broken lectern
 	 */
 	public static final int ZOGRE_LECTURN = 6846;
 
@@ -32059,22 +32070,22 @@ public final class ObjectID extends ObjectID1
 	public static final int RIMMINGTON_COUNTER = 9616;
 
 	/**
-	 * Warehouse shelves
+	 * Shelves
 	 */
 	public static final int RIMMINGTON_WAREHOUSE_SHELVES = 9617;
 
 	/**
-	 * Warehouse shelves
+	 * Shelves
 	 */
 	public static final int RIMMINGTON_WAREHOUSE_SHELVES2 = 9618;
 
 	/**
-	 * Warehouse shelves
+	 * Shelves
 	 */
 	public static final int RIMMINGTON_WAREHOUSE_SHELVES3 = 9619;
 
 	/**
-	 * Warehouse shelves
+	 * Shelves
 	 */
 	public static final int RIMMINGTON_WAREHOUSE_SHELVES4 = 9620;
 
@@ -33238,9 +33249,9 @@ public final class ObjectID extends ObjectID1
 	public static final int MOTHERLODE_SHORTCUT = 10047;
 
 	/**
-	 * Trapdoor
+	 * Engorged bloodwood tree
 	 */
-	public static final int WIN05_TRAPDOOR_OPEN = 10048;
+	public static final int AFK_BLOODWOOD_TREE = 10048;
 
 	/**
 	 * Grave
@@ -35286,6 +35297,10 @@ public final class ObjectID extends ObjectID1
 	public static final int EXCHANGE_STAIRS_VAR01_69 = 10695;
 	public static final int EXCHANGE_STAIRS_VAR01_70 = 10696;
 	public static final int EXCHANGE_STAIRS_VAR02 = 10697;
+
+	/**
+	 * Trapdoor
+	 */
 	public static final int WIN05_TRAPDOOR = 10698;
 	public static final int EXCHANGE_STAIRS_VAR01_63_MIRROR = 10699;
 	public static final int EXCHANGE_STAIRS_VAR01_64_MIRROR = 10700;
@@ -35540,11 +35555,7 @@ public final class ObjectID extends ObjectID1
 	 * Boxes
 	 */
 	public static final int CW_BANK_BOXES_2 = 10803;
-
-	/**
-	 * Trapdoor
-	 */
-	public static final int WIN05_TRAPDOOR_CLOSED = 10804;
+	public static final int WALLKIT_WOODEN01_WINDOW01_UPPER = 10804;
 
 	/**
 	 * Sandy's Desk
@@ -41633,10 +41644,6 @@ public final class ObjectID extends ObjectID1
 	 * Door
 	 */
 	public static final int BURGH_VILLAGE_DOOR_INACTIVE = 12856;
-
-	/**
-	 * Bar pumps
-	 */
 	public static final int BURGH_BAR_PUMPS_DAMAGED = 12857;
 	public static final int BURGH_BAR_DAMAGED = 12858;
 	public static final int BURGH_STONE_WALL_BROKEN = 12859;
@@ -41754,7 +41761,7 @@ public final class ObjectID extends ObjectID1
 	public static final int BURGH_BARREL = 12891;
 
 	/**
-	 * Small Table
+	 * Table
 	 */
 	public static final int BURGH_SMALL_WOODEN_TABLE_SMALL = 12892;
 	public static final int BURGH_SHELVES = 12893;
@@ -46339,7 +46346,7 @@ public final class ObjectID extends ObjectID1
 	public static final int DUNGEONKIT_BARS02_EDGE01 = 14208;
 
 	/**
-	 * Herbs
+	 * Guam leaf
 	 */
 	public static final int HERB_GUAM_LEAF_SEED = 14209;
 	public static final int PEST_WALL_RANGE_FIXED = 14210;
@@ -55537,7 +55544,7 @@ public final class ObjectID extends ObjectID1
 	public static final int XBOWS_REGICIDE_GRAPPLE_TREE = 17046;
 
 	/**
-	 * Wall
+	 * Rough wall
 	 */
 	public static final int XBOWS_YANILLE_CASTLEWALL = 17047;
 
@@ -55547,12 +55554,12 @@ public final class ObjectID extends ObjectID1
 	public static final int XBOWS_YANILLE_CASTLEWALL_BATTLEMENT = 17048;
 
 	/**
-	 * Wall
+	 * Rough wall
 	 */
 	public static final int XBOWS_FAI_FALADOR_CASTLE_WALLS_HILLSKEW = 17049;
 
 	/**
-	 * Wall
+	 * Rough wall
 	 */
 	public static final int XBOWS_FAI_FALADOR_CASTLE_ARCHES_HILLSKEW = 17050;
 
@@ -80998,10 +81005,6 @@ public final class ObjectID extends ObjectID1
 	 * Statue
 	 */
 	public static final int KR_CAMELOT_KNIGHT_STATUE = 26073;
-
-	/**
-	 * Table
-	 */
 	public static final int KR_CAMELOT_TABLE = 26074;
 
 	/**
@@ -81544,16 +81547,6 @@ public final class ObjectID extends ObjectID1
 	public static final int ROUTE_SWAMPBRIDGE_1 = 26245;
 	public static final int ROUTE_SWAMPBRIDGE_2 = 26246;
 	public static final int ROUTE_SWAMPBRIDGE_3 = 26247;
-
-	/**
-	 * Tree
-	 */
-	public static final int ROUTE_TREEBASE_1OP = 26248;
-
-	/**
-	 * Tree
-	 */
-	public static final int ROUTE_TREEBASE_2OPS = 26249;
 	public static final int RCU_OUTER_MULTI8 = 26250;
 	public static final int RCU_OUTER_MULTI9 = 26251;
 	public static final int RCU_OUTER_MULTI10 = 26252;
@@ -83239,27 +83232,27 @@ public final class ObjectID extends ObjectID1
 	public static final int FEUD_BIRD_CAGE_TABLE_SMALLER = 26824;
 
 	/**
-	 * Herbs
+	 * Guam leaf
 	 */
 	public static final int HERB_GUAM_LEAF_1 = 26825;
 
 	/**
-	 * Herbs
+	 * Guam leaf
 	 */
 	public static final int HERB_GUAM_LEAF_2 = 26826;
 
 	/**
-	 * Herbs
+	 * Guam leaf
 	 */
 	public static final int HERB_GUAM_LEAF_3 = 26827;
 
 	/**
-	 * Herbs
+	 * Guam leaf
 	 */
 	public static final int HERB_GUAM_LEAF_FULLYGROWN = 26828;
 
 	/**
-	 * Herbs
+	 * Marrentill
 	 */
 	public static final int HERB_MARRENTILL_SEED = 26829;
 
@@ -84402,62 +84395,62 @@ public final class ObjectID extends ObjectID1
 	public static final int SHAYZIEN_LOUNGE_BED_SMALL = 27339;
 
 	/**
-	 * Ivory table
+	 * Table
 	 */
 	public static final int SHAYZIEN_SMALL_TABLE_01 = 27340;
 
 	/**
-	 * Ivory table
+	 * Table
 	 */
 	public static final int SHAYZIEN_SMALL_TABLE_01_W_PARCHMENT = 27341;
 
 	/**
-	 * Ivory table
+	 * Table
 	 */
 	public static final int SHAYZIEN_SMALL_TABLE_01_W_PARCHMENT_01 = 27342;
 
 	/**
-	 * Ivory table
+	 * Table
 	 */
 	public static final int SHAYZIEN_SMALL_TABLE_01_W_PARCHMENT_02 = 27343;
 
 	/**
-	 * Ivory table
+	 * Table
 	 */
 	public static final int SHAYZIEN_SMALL_TABLE_02 = 27344;
 
 	/**
-	 * Ivory table
+	 * Table
 	 */
 	public static final int SHAYZIEN_SMALL_TABLE_02_W_PARCHMENT = 27345;
 
 	/**
-	 * Ivory table
+	 * Table
 	 */
 	public static final int SHAYZIEN_SMALL_TABLE_02_W_PARCHMENT_01 = 27346;
 
 	/**
-	 * Ivory table
+	 * Table
 	 */
 	public static final int SHAYZIEN_SMALL_TABLE_02_W_PARCHMENT_02 = 27347;
 
 	/**
-	 * Ivory table
+	 * Table
 	 */
 	public static final int SHAYZIEN_SMALL_TABLE_03 = 27348;
 
 	/**
-	 * Ivory table
+	 * Table
 	 */
 	public static final int SHAYZIEN_SMALL_TABLE_03_W_PARCHMENT = 27349;
 
 	/**
-	 * Ivory table
+	 * Table
 	 */
 	public static final int SHAYZIEN_SMALL_TABLE_03_W_PARCHMENT_01 = 27350;
 
 	/**
-	 * Ivory table
+	 * Table
 	 */
 	public static final int SHAYZIEN_SMALL_TABLE_03_W_PARCHMENT_02 = 27351;
 	public static final int SHAYZIEN_WAR_TABLE = 27352;
@@ -85641,17 +85634,17 @@ public final class ObjectID extends ObjectID1
 	public static final int PISCARILIUS_CRATE_01 = 27754;
 
 	/**
-	 * Crate
+	 * Crates
 	 */
 	public static final int PISCARILIUS_CRATE_02 = 27755;
 
 	/**
-	 * Crate
+	 * Crates
 	 */
 	public static final int PISCARILIUS_CRATE_03 = 27756;
 
 	/**
-	 * Crate
+	 * Crates
 	 */
 	public static final int PISCARILIUS_CRATE_04 = 27757;
 
@@ -87929,7 +87922,15 @@ public final class ObjectID extends ObjectID1
 	public static final int ARCHEUUS_LIBRARY_RAILING_02 = 28370;
 	public static final int ARCHEUUS_LIBRARY_RAILING_03 = 28371;
 	public static final int ARCHEUUS_LIBRARY_RAILING_04 = 28372;
+
+	/**
+	 * Railing
+	 */
 	public static final int ARCHEUUS_LIBRARY_RAILING_05 = 28373;
+
+	/**
+	 * Railing
+	 */
 	public static final int ARCHEUUS_LIBRARY_RAILING_06 = 28374;
 	public static final int ARCHEUUS_LIBRARY_RAILING_STUDY_01 = 28375;
 	public static final int ARCHEUUS_LIBRARY_RAILING_STUDY_02 = 28376;
@@ -88489,12 +88490,12 @@ public final class ObjectID extends ObjectID1
 	public static final int LOVAKENGJ_SMALL_WHEELY_TABLE = 28526;
 
 	/**
-	 * Velvet stool
+	 * Stool
 	 */
 	public static final int LOVAKENG_LARGE_STOOL = 28527;
 
 	/**
-	 * Velvet stool
+	 * Stool
 	 */
 	public static final int LOVAKENG_SMALL_STOOL = 28528;
 
@@ -88509,7 +88510,7 @@ public final class ObjectID extends ObjectID1
 	public static final int LOVAKENG_WOODEN_CHAIR = 28530;
 
 	/**
-	 * Velvet round chair
+	 * Chair
 	 */
 	public static final int LOVAKENG_VELVET_ROUND_CHAIR = 28531;
 
@@ -91790,6 +91791,44 @@ public final class ObjectID extends ObjectID1
 	public static final int POH_THRONE_8 = 29459;
 
 	/**
+	 * Spade
+	 */
+	public static final int MOLE_HILL_SPADE = 29460;
+
+	/**
+	 * Buoy
+	 */
+	public static final int SAILING_BUOY_LAST_LIGHT_ESCAPE = 29461;
+	public static final int BGSOUND_SAILING_RED_REEF_OCEAN_WATER_LOOP_01 = 29462;
+
+	/**
+	 * Pirate cannon
+	 */
+	public static final int SAILING_PIRATE_CANNON = 29463;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_MIDSHIPS_DOWN_PIRATE = 29464;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_MIDSHIPS_UP_PIRATE = 29465;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_STERN_DOWN_PIRATE = 29466;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_PORT_STERN_UP_PIRATE = 29467;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_MIDSHIPS_DOWN_PIRATE = 29468;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_MIDSHIPS_UP_PIRATE = 29469;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_STERN_DOWN_PIRATE = 29470;
+	public static final int SAILING_BOAT_HULL_GUNPORTS_KANDARIN_3X8_STARBOARD_STERN_UP_PIRATE = 29471;
+	public static final int SAILING_BOAT_HULL_KANDARIN_3X8_PIRATE = 29472;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_RAFT_WOOD = 29473;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_RAFT_OAK = 29474;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_RAFT_TEAK = 29475;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_RAFT_MAHOGANY = 29476;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_RAFT_CAMPHOR = 29477;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_RAFT_IRONWOOD = 29478;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_RAFT_ROSEWOOD = 29479;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_SKIFF_WOOD = 29480;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_SKIFF_OAK = 29481;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_SKIFF_TEAK = 29482;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_SKIFF_MAHOGANY = 29483;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_SKIFF_CAMPHOR = 29484;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_SKIFF_IRONWOOD = 29485;
+
+	/**
 	 * Gate
 	 */
 	public static final int HILLGIANT_BOSS_ENTRANCE_R = 29486;
@@ -91834,11 +91873,543 @@ public final class ObjectID extends ObjectID1
 	 * Fairy ring
 	 */
 	public static final int FAIRYRING_MINORHUB = 29495;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_SKIFF_ROSEWOOD = 29496;
+	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_PIRATE = 29497;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_SLOOP_WOOD = 29498;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_SLOOP_OAK = 29499;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_SLOOP_TEAK = 29500;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_SLOOP_MAHOGANY = 29501;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_SLOOP_CAMPHOR = 29502;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_SLOOP_IRONWOOD = 29503;
+	public static final int SAILING_BOAT_SAIL_INTERFACE_SLOOP_ROSEWOOD = 29504;
+	public static final int SAILING_BOAT_MAST_INTRO = 29505;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_LINEN = 29506;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_CANVAS = 29507;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_COTTON = 29508;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_BLACK = 29509;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_YELLOW = 29510;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_PURPLE = 29511;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_GREEN = 29512;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_BLUE = 29513;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_PINK = 29514;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_1X3_RED = 29515;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_LINEN = 29516;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_CANVAS = 29517;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_COTTON = 29518;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_BLACK = 29519;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_YELLOW = 29520;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_PURPLE = 29521;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_GREEN = 29522;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_BLUE = 29523;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_PINK = 29524;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_2X5_RED = 29525;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_LINEN = 29526;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_CANVAS = 29527;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_COTTON = 29528;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_BLACK = 29529;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_YELLOW = 29530;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_PURPLE = 29531;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_GREEN = 29532;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_BLUE = 29533;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_PINK = 29534;
+
+	/**
+	 * Sails
+	 */
+	public static final int SAILING_BOAT_SAIL_KANDARIN_3X8_RED = 29535;
+
+	/**
+	 * Helm
+	 */
+	public static final int SAILING_BOAT_STEERING_KANDARIN_3X8_PIRATE = 29536;
+	public static final int SAILING_BOAT_SLOOP_TRIM_PIRATE = 29537;
+
+	/**
+	 * Bosun's workbench
+	 */
+	public static final int SAILING_BOSUNS_WORKBENCH_NORMAL = 29538;
+
+	/**
+	 * Bosun's workbench
+	 */
+	public static final int SAILING_BOSUNS_WORKBENCH_OAK = 29539;
+
+	/**
+	 * Bosun's workbench
+	 */
+	public static final int SAILING_BOSUNS_WORKBENCH_TEAK = 29540;
+
+	/**
+	 * Bosun's workbench
+	 */
+	public static final int SAILING_BOSUNS_WORKBENCH_MAHOGANY = 29541;
+
+	/**
+	 * Bosun's workbench
+	 */
+	public static final int SAILING_BOSUNS_WORKBENCH_CAMPHOR = 29542;
+
+	/**
+	 * Bosun's workbench
+	 */
+	public static final int SAILING_BOSUNS_WORKBENCH_IRONWOOD = 29543;
+
+	/**
+	 * Bosun's workbench
+	 */
+	public static final int SAILING_BOSUNS_WORKBENCH_ROSEWOOD = 29544;
+
+	/**
+	 * Helm
+	 */
+	public static final int SAILING_NPC_BOAT_STEERING_WOODEN = 29545;
+	public static final int _1V1ARENA_DUNGEON_LOWWALL = 29546;
+	public static final int _1V1ARENA_DUNGEON_LOWWALL_PILLAR = 29547;
+	public static final int _1V1ARENA_DUNGEON_PILLAR_DARK01 = 29548;
+	public static final int _1V1ARENA_DUNGEON_PILLAR_DARK02 = 29549;
+	public static final int _1V1ARENA_WALLSHIELD = 29550;
+
+	/**
+	 * Shield
+	 */
+	public static final int _1V1ARENA_WALLSHIELD_WIDE = 29551;
+
+	/**
+	 * Brazier
+	 */
+	public static final int _1V1ARENA_DUNGEON_BRAZIER_WIDE = 29552;
+
+	/**
+	 * Brazier
+	 */
+	public static final int _1V1ARENA_DUNGEON_BRAZIER_BLUE = 29553;
+
+	/**
+	 * Brazier
+	 */
+	public static final int _1V1ARENA_DUNGEON_BRAZIER_YELLOW = 29554;
+
+	/**
+	 * Brazier
+	 */
+	public static final int _1V1ARENA_DUNGEON_BRAZIER_WIDE_BLUE = 29555;
+
+	/**
+	 * Brazier
+	 */
+	public static final int _1V1ARENA_DUNGEON_BRAZIER_WIDE_YELLOW = 29556;
+
+	/**
+	 * Heroic statue
+	 */
+	public static final int _1V1ARENA_DUNGEON_STATUE_DARK01 = 29557;
+	public static final int _1V1ARENA_DUNGEON_SKEWSTEPS_RUG_MIDDLE = 29558;
+
+	/**
+	 * &#60;col=ffff00&#62;Death&#60;/col&#62;
+	 */
+	public static final int DEADMAN_DEATH_WIDER = 29559;
 
 	/**
 	 * Fairy ring
 	 */
 	public static final int FAIRYRING_HOMEHUB = 29560;
+
+	/**
+	 * Oak outfit stand
+	 */
+	public static final int POH_LEAGUEHALL_OUTFITSTAND_OAK_LEAGUE_6_T1 = 29561;
+
+	/**
+	 * Oak outfit stand
+	 */
+	public static final int POH_LEAGUEHALL_OUTFITSTAND_OAK_LEAGUE_6_T2 = 29562;
+
+	/**
+	 * Oak outfit stand
+	 */
+	public static final int POH_LEAGUEHALL_OUTFITSTAND_OAK_LEAGUE_6_T3 = 29563;
+
+	/**
+	 * Mahogany outfit stand
+	 */
+	public static final int POH_LEAGUEHALL_OUTFITSTAND_MAHOGANY_LEAGUE_6_T1 = 29564;
+
+	/**
+	 * Mahogany outfit stand
+	 */
+	public static final int POH_LEAGUEHALL_OUTFITSTAND_MAHOGANY_LEAGUE_6_T2 = 29565;
+
+	/**
+	 * Mahogany outfit stand
+	 */
+	public static final int POH_LEAGUEHALL_OUTFITSTAND_MAHOGANY_LEAGUE_6_T3 = 29566;
+
+	/**
+	 * Throne
+	 */
+	public static final int POH_INVISIBLE_THRONE_8 = 29567;
+
+	/**
+	 * Diseased guam leaf
+	 */
+	public static final int HERB_GUAM_LEAF_DISEASED_1 = 29568;
+
+	/**
+	 * Diseased guam leaf
+	 */
+	public static final int HERB_GUAM_LEAF_DISEASED_2 = 29569;
+
+	/**
+	 * Diseased guam leaf
+	 */
+	public static final int HERB_GUAM_LEAF_DISEASED_3 = 29570;
+
+	/**
+	 * Diseased marrentill
+	 */
+	public static final int HERB_MARENTILL_DISEASED_1 = 29571;
+
+	/**
+	 * Diseased marrentill
+	 */
+	public static final int HERB_MARENTILL_DISEASED_2 = 29572;
+
+	/**
+	 * Diseased marrentill
+	 */
+	public static final int HERB_MARENTILL_DISEASED_3 = 29573;
+
+	/**
+	 * Diseased tarromin
+	 */
+	public static final int HERB_TARROMIN_DISEASED_1 = 29574;
+
+	/**
+	 * Diseased tarromin
+	 */
+	public static final int HERB_TARROMIN_DISEASED_2 = 29575;
+
+	/**
+	 * Diseased tarromin
+	 */
+	public static final int HERB_TARROMIN_DISEASED_3 = 29576;
+
+	/**
+	 * Diseased harralander
+	 */
+	public static final int HERB_HARRALANDER_DISEASED_1 = 29577;
+
+	/**
+	 * Diseased harralander
+	 */
+	public static final int HERB_HARRALANDER_DISEASED_2 = 29578;
+
+	/**
+	 * Diseased harralander
+	 */
+	public static final int HERB_HARRALANDER_DISEASED_3 = 29579;
+
+	/**
+	 * Diseased ranarr weed
+	 */
+	public static final int HERB_RANARR_WEED_DISEASED_1 = 29580;
+
+	/**
+	 * Diseased ranarr weed
+	 */
+	public static final int HERB_RANARR_WEED_DISEASED_2 = 29581;
+
+	/**
+	 * Diseased ranarr weed
+	 */
+	public static final int HERB_RANARR_WEED_DISEASED_3 = 29582;
+
+	/**
+	 * Diseased irit leaf
+	 */
+	public static final int HERB_IRIT_LEAF_DISEASED_1 = 29583;
+
+	/**
+	 * Diseased irit leaf
+	 */
+	public static final int HERB_IRIT_LEAF_DISEASED_2 = 29584;
+
+	/**
+	 * Diseased irit leaf
+	 */
+	public static final int HERB_IRIT_LEAF_DISEASED_3 = 29585;
+
+	/**
+	 * Diseased avantoe
+	 */
+	public static final int HERB_AVANTOE_DISEASED_1 = 29586;
+
+	/**
+	 * Diseased avantoe
+	 */
+	public static final int HERB_AVANTOE_DISEASED_2 = 29587;
+
+	/**
+	 * Diseased avantoe
+	 */
+	public static final int HERB_AVANTOE_DISEASED_3 = 29588;
+
+	/**
+	 * Diseased toadflax
+	 */
+	public static final int HERB_TOADFLAX_DISEASED_1 = 29589;
+
+	/**
+	 * Diseased toadflax
+	 */
+	public static final int HERB_TOADFLAX_DISEASED_2 = 29590;
+
+	/**
+	 * Diseased toadflax
+	 */
+	public static final int HERB_TOADFLAX_DISEASED_3 = 29591;
+
+	/**
+	 * Diseased kwuarm
+	 */
+	public static final int HERB_KWUARM_DISEASED_1 = 29592;
+
+	/**
+	 * Diseased kwuarm
+	 */
+	public static final int HERB_KWUARM_DISEASED_2 = 29593;
+
+	/**
+	 * Diseased kwuarm
+	 */
+	public static final int HERB_KWUARM_DISEASED_3 = 29594;
+
+	/**
+	 * Diseased cadantine
+	 */
+	public static final int HERB_CADANTINE_DISEASED_1 = 29595;
+
+	/**
+	 * Diseased cadantine
+	 */
+	public static final int HERB_CADANTINE_DISEASED_2 = 29596;
+
+	/**
+	 * Diseased cadantine
+	 */
+	public static final int HERB_CADANTINE_DISEASED_3 = 29597;
+
+	/**
+	 * Diseased lantadyme
+	 */
+	public static final int HERB_LANTADYME_DISEASED_1 = 29598;
+
+	/**
+	 * Diseased lantadyme
+	 */
+	public static final int HERB_LANTADYME_DISEASED_2 = 29599;
+
+	/**
+	 * Diseased lantadyme
+	 */
+	public static final int HERB_LANTADYME_DISEASED_3 = 29600;
+
+	/**
+	 * Diseased dwarf weed
+	 */
+	public static final int HERB_DWARF_WEED_DISEASED_1 = 29601;
+
+	/**
+	 * Diseased dwarf weed
+	 */
+	public static final int HERB_DWARF_WEED_DISEASED_2 = 29602;
+
+	/**
+	 * Diseased dwarf weed
+	 */
+	public static final int HERB_DWARF_WEED_DISEASED_3 = 29603;
+
+	/**
+	 * Diseased torstol
+	 */
+	public static final int HERB_TORSTOL_DISEASED_1 = 29604;
+
+	/**
+	 * Diseased torstol
+	 */
+	public static final int HERB_TORSTOL_DISEASED_2 = 29605;
+
+	/**
+	 * Diseased torstol
+	 */
+	public static final int HERB_TORSTOL_DISEASED_3 = 29606;
+
+	/**
+	 * Diseased snapdragon
+	 */
+	public static final int HERB_SNAPDRAGON_DISEASED_1 = 29607;
+
+	/**
+	 * Diseased snapdragon
+	 */
+	public static final int HERB_SNAPDRAGON_DISEASED_2 = 29608;
+
+	/**
+	 * Diseased snapdragon
+	 */
+	public static final int HERB_SNAPDRAGON_DISEASED_3 = 29609;
+
+	/**
+	 * Diseased huasca
+	 */
+	public static final int HERB_HUASCA_DISEASED_1 = 29610;
+
+	/**
+	 * Diseased huasca
+	 */
+	public static final int HERB_HUASCA_DISEASED_2 = 29611;
+
+	/**
+	 * Diseased huasca
+	 */
+	public static final int HERB_HUASCA_DISEASED_3 = 29612;
+
+	/**
+	 * Castle Gates
+	 */
+	public static final int DARKM_CASTLE_DOOR_OUTSIDE_OP = 29613;
+
+	/**
+	 * Castle Gates
+	 */
+	public static final int DARKM_CASTLE_DOOR_OUTSIDE_NOOP = 29614;
+	public static final int VAMPYRIUM_CASTLE_WALL = 29615;
+	public static final int VAMPYRIUM_CASTLE_WALL_OUTSIDE_CORNER = 29616;
+	public static final int VAMPYRIUM_CASTLE_WALL_WINDOW = 29617;
+	public static final int VAMPYRIUM_CASTLE_WALL_DIAGONAL_WINDOW_LEFT = 29618;
+	public static final int VAMPYRIUM_CASTLE_WALL_DIAGONAL_WINDOW_RIGHT = 29619;
+	public static final int VAMPYRIUM_CASTLE_WALL_DIAGONAL_WINDOW = 29620;
+	public static final int VAMPYRIUM_CASTLE_FRONT_DOOR_01 = 29621;
+	public static final int VAMPYRIUM_CASTLE_FRONT_DOOR_02 = 29622;
+	public static final int VAMPYRIUM_CASTLE_FRONT_DOOR_03 = 29623;
+	public static final int VAMPYRIUM_CASTLE_FRONT_DOOR_04 = 29624;
 
 	/**
 	 * Mounted Max Cape
@@ -98956,12 +99527,12 @@ public final class ObjectID extends ObjectID1
 	public static final int SHAYZIENQUEST_LOUNGE_BED_FIXED = 31971;
 
 	/**
-	 * Ivory table
+	 * Table
 	 */
 	public static final int SHAYZIENQUEST_TABLE_FIXED = 31972;
 
 	/**
-	 * Ivory table
+	 * Table
 	 */
 	public static final int SHAYZIENQUEST_TABLE_FIXED_2 = 31973;
 

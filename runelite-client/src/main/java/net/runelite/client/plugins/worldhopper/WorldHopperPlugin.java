@@ -597,7 +597,7 @@ public class WorldHopperPlugin extends Plugin
 			world = worlds.get(worldIdx);
 
 			// Check world region if filter is enabled
-			if (!regionFilter.isEmpty() && !regionFilter.contains(RegionFilterMode.of(world.getRegion())))
+			if (!regionFilter.isEmpty() && world.getRegion() != null && !regionFilter.contains(RegionFilterMode.of(world.getRegion())))
 			{
 				continue;
 			}
@@ -696,7 +696,7 @@ public class WorldHopperPlugin extends Plugin
 		rsWorld.setAddress(world.getAddress());
 		rsWorld.setId(world.getId());
 		rsWorld.setPlayerCount(world.getPlayers());
-		rsWorld.setLocation(world.getLocation());
+		rsWorld.setLocation(world.getRegion().getId());
 		rsWorld.setTypes(WorldUtil.toWorldTypes(world.getTypes()));
 
 		if (client.getGameState() == GameState.LOGIN_SCREEN)

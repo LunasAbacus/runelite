@@ -46,6 +46,12 @@ public interface WorldView
 	boolean isTopLevel();
 
 	/**
+	 * Get the ambient sound effects
+	 * @return
+	 */
+	Deque<AmbientSoundEffect> getAmbientSoundEffects();
+
+	/**
 	 * Gets the worldview's scene
 	 */
 	Scene getScene();
@@ -214,20 +220,6 @@ public interface WorldView
 	 * @return the map regions
 	 */
 	int[] getMapRegions();
-
-	/**
-	 * Returns a 2D array containing XTEA encryption keys used to decrypt
-	 * map region files.
-	 * <p>
-	 * The array maps the region keys at index {@code n} to the region
-	 * ID held in {@link #getMapRegions()} at {@code n}.
-	 * <p>
-	 * The array of keys for the region make up a 128-bit encryption key
-	 * spread across 4 integers.
-	 *
-	 * @return the XTEA encryption keys
-	 */
-	int[][] getXteaKeys();
 
 	/**
 	 * Test if this worldview contains the given point

@@ -58,7 +58,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
-import javax.inject.Provider;
+import javax.inject.Named;
 import javax.inject.Singleton;
 import javax.management.ObjectName;
 import javax.net.ssl.SSLContext;
@@ -82,13 +82,13 @@ import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.externalplugins.ExternalPluginManager;
 import net.runelite.client.plugins.PluginManager;
 import net.runelite.client.rs.ClientLoader;
+import net.runelite.client.rs.auth.Account;
+import net.runelite.client.rs.auth.JagexAuthService;
+import net.runelite.client.rs.auth.Session;
 import net.runelite.client.ui.ClientUI;
 import net.runelite.client.ui.FatalErrorDialog;
 import net.runelite.client.ui.SplashScreen;
 import net.runelite.client.ui.overlay.OverlayManager;
-import net.runelite.client.ui.overlay.WidgetOverlay;
-import net.runelite.client.ui.overlay.tooltip.TooltipOverlay;
-import net.runelite.client.ui.overlay.worldmap.WorldMapOverlay;
 import net.runelite.client.util.OSType;
 import net.runelite.client.util.ReflectUtil;
 import net.runelite.http.api.RuneLiteAPI;
@@ -110,6 +110,7 @@ public class RuneLite
 	public static final File DEFAULT_SESSION_FILE = new File(RUNELITE_DIR, "session");
 	public static final File NOTIFICATIONS_DIR = new File(RuneLite.RUNELITE_DIR, "notifications");
 	public static final File FONTS_DIR = new File(RuneLite.RUNELITE_DIR, "fonts");
+	public static final Path PLUGIN_DATA = new File(RuneLite.RUNELITE_DIR, "plugin-data").toPath();
 
 	private static final int MAX_OKHTTP_CACHE_SIZE = 20 * 1024 * 1024; // 20mb
 	public static String USER_AGENT = "RuneLite/" + RuneLiteProperties.getVersion() + "-" + RuneLiteProperties.getCommit() + (RuneLiteProperties.isDirty() ? "+" : "");
@@ -145,12 +146,6 @@ public class RuneLite
 	private OverlayManager overlayManager;
 
 	@Inject
-	private Provider<TooltipOverlay> tooltipOverlay;
-
-	@Inject
-	private Provider<WorldMapOverlay> worldMapOverlay;
-
-	@Inject
 	private Gson gson;
 
 	@Inject
@@ -167,6 +162,14 @@ public class RuneLite
 	@Inject
 	private ScheduledExecutorService scheduledExecutorService;
 
+	@Inject
+	@Named("character")
+	@Nullable
+	private String character;
+
+	@Inject
+	private JagexAuthService jagexAuthService;
+
 	public static void main(String[] args) throws Exception
 	{
 		Locale.setDefault(Locale.ENGLISH);
@@ -181,6 +184,7 @@ public class RuneLite
 			.defaultsTo(RuneLiteProperties.getJavConfig());
 		parser.accepts("disable-telemetry", "Disable telemetry");
 		parser.accepts("profile", "Configuration profile to use").withRequiredArg();
+		parser.accepts("character", "Character name to use").withRequiredArg();
 		parser.accepts("noupdate", "Skips the launcher update");
 
 		final ArgumentAcceptingOptionSpec<File> sessionfile = parser.accepts("sessionfile", "Use a specified session file")
@@ -267,6 +271,7 @@ public class RuneLite
 				options.has("disable-telemetry"),
 				options.valueOf(sessionfile),
 				(String) options.valueOf("profile"),
+				(String) options.valueOf("character"),
 				options.has(insecureWriteCredentials),
 				options.has("noupdate")
 			));
@@ -299,12 +304,12 @@ public class RuneLite
 		setupSystemProps();
 		setupCompilerControl();
 
-		// Start the applet
 		copyJagexCache();
 
 		System.setProperty("jagex.disableBouncyCastle", "true");
 		System.setProperty("jagex.userhome", RUNELITE_DIR.getAbsolutePath());
 
+		// Start the applet
 		client.initialize();
 
 		SplashScreen.stage(.57, null, "Loading configuration");
@@ -352,9 +357,7 @@ public class RuneLite
 		eventBus.register(discordService);
 
 		// Add core overlays
-		WidgetOverlay.createOverlays(overlayManager, client).forEach(overlayManager::add);
-		overlayManager.add(worldMapOverlay.get());
-		overlayManager.add(tooltipOverlay.get());
+		overlayManager.init();
 
 		// Start plugins
 		pluginManager.startPlugins();
@@ -364,6 +367,8 @@ public class RuneLite
 		clientUI.show();
 
 		client.unblockStartup();
+
+		setCharacter();
 
 		if (telemetryClient != null)
 		{
@@ -431,14 +436,19 @@ public class RuneLite
 			.addInterceptor(chain ->
 			{
 				Request request = chain.request();
-				if (request.header("User-Agent") != null)
+				var ua = request.header("User-Agent");
+				if (ua == null)
 				{
-					return chain.proceed(request);
+					ua = USER_AGENT;
+				}
+				else if (!ua.startsWith("RuneLite"))
+				{
+					ua = USER_AGENT + " " + ua;
 				}
 
 				Request userAgentRequest = request
 					.newBuilder()
-					.header("User-Agent", USER_AGENT)
+					.header("User-Agent", ua)
 					.build();
 				return chain.proceed(userAgentRequest);
 			})
@@ -719,4 +729,40 @@ public class RuneLite
 		okHttpClientBuilder.sslSocketFactory(sc.getSocketFactory(), trustManager);
 	}
 	// endregion
+
+	private void setCharacter()
+	{
+		if (character == null)
+		{
+			return;
+		}
+
+		jagexAuthService.loadFromStore()
+			.thenRun(() ->
+			{
+				int numChars = 0;
+				for (Session session : jagexAuthService.getSessions())
+				{
+					Account[] accounts = jagexAuthService.getAccounts(session.getSessionId());
+					if (accounts == null)
+					{
+						continue;
+					}
+
+					numChars += accounts.length;
+					for (Account account : accounts)
+					{
+						String displayName = account.getDisplayName();
+						if (displayName != null && displayName.equalsIgnoreCase(character))
+						{
+							log.info("Switching to character {}", displayName);
+							jagexAuthService.switchJagexAccount(session.getSessionId(), Long.toString(account.getAccountId()), displayName);
+							return;
+						}
+					}
+				}
+
+				log.info("Unable to find character {} ({} sessions and {} characters total)", character, jagexAuthService.getSessions().size(), numChars);
+			});
+	}
 }

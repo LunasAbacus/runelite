@@ -46,9 +46,12 @@ public class ItemDefinition
 	public int zan2d = 0;
 
 	public int cost = 1;
-	public boolean isTradeable;
 	public int stackable = 0;
 	public int inventoryModel;
+
+	public boolean tradeable = true;
+	public boolean geTradeable = false;
+	public boolean bronzeman = false;
 
 	public int wearPos1 = -1;
 	public int wearPos2 = -1;
@@ -56,6 +59,7 @@ public class ItemDefinition
 
 	public boolean members = false;
 
+	public short fullRecolor = -1;
 	public short[] colorFind;
 	public short[] colorReplace;
 	public short[] textureFind;
@@ -90,6 +94,8 @@ public class ItemDefinition
 	public int femaleOffset;
 	public int femaleHeadModel = -1;
 	public int femaleHeadModel2 = -1;
+
+	public int[] holdingWhitelist;
 
 	public int category;
 
@@ -186,6 +192,6 @@ public class ItemDefinition
 		this.name = var2.name;
 		this.cost = 0;
 		this.members = false;
-		this.isTradeable = false;
+		this.tradeable = this.geTradeable = false;
 	}
 }

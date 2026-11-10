@@ -44,7 +44,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.inject.Named;
 import javax.inject.Singleton;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
@@ -54,6 +53,7 @@ import static net.runelite.api.Constants.CLIENT_DEFAULT_ZOOM;
 import net.runelite.api.GameState;
 import net.runelite.api.ItemComposition;
 import net.runelite.api.SpritePixels;
+import net.runelite.api.WorldType;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.gameval.ItemID;
 import net.runelite.api.widgets.ItemQuantityMode;
@@ -89,16 +89,6 @@ public class ItemManager
 	private final ItemClient itemClient;
 	private final RuneLiteConfig runeLiteConfig;
 	private final ScheduledExecutorService executor;
-
-	@Inject(optional = true)
-	@Named("activePriceThreshold")
-	@SuppressWarnings("PMD.ImmutableField")
-	private double activePriceThreshold = 5;
-
-	@Inject(optional = true)
-	@Named("lowPriceThreshold")
-	@SuppressWarnings("PMD.ImmutableField")
-	private int lowPriceThreshold = 1000;
 
 	private Map<Integer, ItemPrice> itemPrices = Collections.emptyMap();
 	private Instant itemPricesTime; // last attempted fetch time
@@ -313,7 +303,7 @@ public class ItemManager
 	 * @param itemID item id
 	 * @return item price
 	 */
-	public int getItemPrice(int itemID)
+	public long getItemPrice(int itemID)
 	{
 		return getItemPriceWithSource(itemID, runeLiteConfig.useWikiItemPrices());
 	}
@@ -325,7 +315,7 @@ public class ItemManager
 	 * @param useWikiPrice use the actively traded/wiki price
 	 * @return item price
 	 */
-	public int getItemPriceWithSource(int itemID, boolean useWikiPrice)
+	public long getItemPriceWithSource(int itemID, boolean useWikiPrice)
 	{
 		if (itemID == ItemID.COINS)
 		{
@@ -343,10 +333,8 @@ public class ItemManager
 		}
 		itemID = WORN_ITEMS.getOrDefault(itemID, itemID);
 
-		int price = 0;
-
+		long price = 0;
 		final Collection<ItemMapping> mappedItems = ItemMapping.map(itemID);
-
 		if (mappedItems == null)
 		{
 			final ItemPrice ip = itemPrices.get(itemID);
@@ -367,24 +355,9 @@ public class ItemManager
 		return price;
 	}
 
-	/**
-	 * Get the wiki price for an item, with checks to try and avoid excessive price manipulation
-	 * @param itemPrice
-	 * @return
-	 */
-	public int getWikiPrice(ItemPrice itemPrice)
+	public long getWikiPrice(ItemPrice itemPrice)
 	{
-		final int wikiPrice = itemPrice.getWikiPrice();
-		final int jagPrice = itemPrice.getPrice();
-		if (wikiPrice <= 0)
-		{
-			return jagPrice;
-		}
-		if (wikiPrice <= lowPriceThreshold)
-		{
-			return wikiPrice;
-		}
-		return wikiPrice < jagPrice * activePriceThreshold ? wikiPrice : jagPrice;
+		return client.getWorldType().contains(WorldType.HARDCORE_MAIN) ? itemPrice.getWikiPriceHcm() : itemPrice.getWikiPrice();
 	}
 
 	/**

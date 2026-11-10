@@ -238,7 +238,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * @see #getCameraX()
 	 * @return
 	 */
-	double getCameraFpX();
+	float getCameraFpX();
 
 	/**
 	 * Gets the y-axis coordinate of the camera.
@@ -255,7 +255,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * @see #getCameraY()
 	 * @return
 	 */
-	double getCameraFpY();
+	float getCameraFpY();
 
 	/**
 	 * Gets the z-axis coordinate of the camera.
@@ -272,13 +272,13 @@ public interface Client extends OAuthApi, GameEngine
 	 * @see #getCameraZ()
 	 * @return
 	 */
-	double getCameraFpZ();
+	float getCameraFpZ();
 
 	/**
 	 * Gets the pitch of the camera.
 	 * <p>
-	 * The value returned by this method is measured in JAU, or Jagex
-	 * Angle Unit, which is 1/1024 of a revolution.
+	 * The value returned by this method is measured in JAU14, or Jagex
+	 * Angle Unit (14 bit), where each unit is equivalent to 2π/(2^14) radians.
 	 *
 	 * @return the camera pitch
 	 */
@@ -289,10 +289,13 @@ public interface Client extends OAuthApi, GameEngine
 	 * @see #getCameraPitch()
 	 * @return
 	 */
-	double getCameraFpPitch();
+	float getCameraFpPitch();
 
 	/**
 	 * Gets the yaw of the camera.
+	 * <p>
+	 * The value returned by this method is measured in JAU14, or Jagex
+	 * Angle Unit (14 bit), where each unit is equivalent to 2π/(2^14) radians.
 	 *
 	 * @return the camera yaw
 	 */
@@ -303,7 +306,7 @@ public interface Client extends OAuthApi, GameEngine
 	 * @see #getCameraYaw()
 	 * @return
 	 */
-	double getCameraFpYaw();
+	float getCameraFpYaw();
 
 	/**
 	 * Gets the current world number of the logged in player.
@@ -625,6 +628,18 @@ public interface Client extends OAuthApi, GameEngine
 	void setMenuEntries(MenuEntry[] entries);
 
 	/**
+	 * Gets whether the mouse over text in top-left corner of the screen is enabled
+	 * @return
+	 */
+	boolean isMouseoverTextEnabled();
+
+	/**
+	 * Sets whether the mouse over text in top-left corner of the screen is enabled
+	 * @param enabled
+	 */
+	void setMouseoverTextEnabled(boolean enabled);
+
+	/**
 	 * Checks whether a right-click menu is currently open.
 	 *
 	 * @return true if a menu is open, false otherwise
@@ -686,15 +701,6 @@ public interface Client extends OAuthApi, GameEngine
 	int getMenuWidth();
 
 	/**
-	 * Gets the angle of the map, or target camera yaw.
-	 *
-	 * @return the map angle
-	 * @see #getCameraYawTarget()
-	 */
-	@Deprecated
-	int getMapAngle();
-
-	/**
 	 * Checks whether the client window is currently resized.
 	 *
 	 * @return true if resized, false otherwise
@@ -726,20 +732,27 @@ public interface Client extends OAuthApi, GameEngine
 	int[] getServerVarps();
 
 	/**
+	 * Gets an array of all client varplayers.
+	 *
+	 * @return local player variables
+	 */
+	@VisibleForDevtools
+	long[] getVarpsLong();
+
+	/**
+	 * Get an array of all server varplayers. These vars are only
+	 * modified by the server, and so represent the server's idea of
+	 * the varp values.
+	 * @return the server varps
+	 */
+	@VisibleForDevtools
+	long[] getServerVarpsLong();
+
+	/**
 	 * Gets an array of all client variables.
 	 */
 	@VisibleForDevtools
 	Map<Integer, Object> getVarcMap();
-
-	/**
-	 * Gets a value corresponding to the passed varbit.
-	 *
-	 * @param varbit the varbit id
-	 * @return the value
-	 * @see Client#getVarbitValue(int)
-	 */
-	@Deprecated
-	int getVar(@Varbit int varbit);
 
 	/**
 	 * Gets the value of the given varbit.
@@ -777,6 +790,39 @@ public interface Client extends OAuthApi, GameEngine
 	 * @return the value
 	 */
 	int getServerVarpValue(@Varp int varpId);
+
+	/**
+	 * Sets the value of a VarPlayer
+	 * @param varpId the VarPlayer id
+	 * @param value the value
+	 */
+	void setVarpValue(@Varp int varpId, int value);
+
+	/**
+	 * Gets the value of a given VarPlayer.
+	 *
+	 * @param varpId the VarPlayer id
+	 * @return the value
+	 */
+	long getVarpLongValue(@Varp int varpId);
+
+	/**
+	 * Gets the value of a given VarPlayer.
+	 * This returns the server's idea of the value, not the client's. This is
+	 * specifically the last value set by the server regardless of changes to
+	 * the var by the client.
+	 *
+	 * @param varpId the VarPlayer id
+	 * @return the value
+	 */
+	long getServerVarpLongValue(@Varp int varpId);
+
+	/**
+	 * Sets the value of a VarPlayer
+	 * @param varpId the VarPlayer id
+	 * @param value the value
+	 */
+	void setVarpLongValue(@Varp int varpId, long value);
 
 	/**
 	 * Gets the value of a given VarClientInt
@@ -1113,9 +1159,6 @@ public interface Client extends OAuthApi, GameEngine
 	ModelData mergeModels(ModelData[] models, int length);
 	ModelData mergeModels(ModelData ...models);
 
-	Model mergeModels(Model[] models, int length);
-	Model mergeModels(Model... models);
-
 	/**
 	 * Loads and lights a model from the cache
 	 *
@@ -1163,44 +1206,57 @@ public interface Client extends OAuthApi, GameEngine
 	 * and player-generated (e.g. mining, woodcutting) sound effects are
 	 * normally played.
 	 *
-	 * @param id the ID of the sound to play. Any int is allowed, but see
-	 * {@link SoundEffectID} for some common ones
+	 * @param id the ID of the sound effect to play
+	 * @see net.runelite.api.gameval.SoundEffectID
 	 */
 	void playSoundEffect(int id);
 
 	/**
 	 * Play a sound effect from some point in the world.
 	 *
-	 * @param id the ID of the sound to play. Any int is allowed, but see
-	 * {@link SoundEffectID} for some common ones
+	 * @param id the ID of the sound effect to play
 	 * @param x the ground coordinate on the x axis
 	 * @param y the ground coordinate on the y axis
-	 * @param range the number of tiles away that the sound can be heard
-	 * from
+	 * @param range the number of tiles away that the sound can be heard from
+	 * @see net.runelite.api.gameval.SoundEffectID
 	 */
 	void playSoundEffect(int id, int x, int y, int range);
 
 	/**
 	 * Play a sound effect from some point in the world.
 	 *
-	 * @param id the ID of the sound to play. Any int is allowed, but see
-	 * {@link SoundEffectID} for some common ones
+	 * @param id the ID of the sound effect to play
 	 * @param x the ground coordinate on the x axis
 	 * @param y the ground coordinate on the y axis
-	 * @param range the number of tiles away that the sound can be heard
-	 * from
+	 * @param range the number of tiles away that the sound can be heard from
 	 * @param delay the amount of frames before the sound starts playing
+	 * @see net.runelite.api.gameval.SoundEffectID
 	 */
 	void playSoundEffect(int id, int x, int y, int range, int delay);
 
 	/**
 	 * Plays a sound effect, even if the player's sound effect volume is muted.
 	 *
-	 * @param id     the ID of the sound effect - {@link SoundEffectID}
+	 * @param id     the ID of the sound effect to play
 	 * @param volume the volume to play the sound effect at, see {@link SoundEffectVolume} for values used
 	 *               in the settings interface. if the sound effect volume is not muted, uses the set volume
+	 * @see net.runelite.api.gameval.SoundEffectID
 	 */
 	void playSoundEffect(int id, int volume);
+
+	/**
+	 * Get the currently playing ambient sound
+	 * @see net.runelite.api.gameval.AmbientSoundID
+	 * @return
+	 */
+	@Nullable
+	AmbientSoundComposition getAmbientSound();
+
+	/**
+	 * Set the currently playing ambient sound
+	 * @param ambientSound
+	 */
+	void setAmbientSound(AmbientSoundComposition ambientSound);
 
 	/**
 	 * Get the currently playing midi requests.
@@ -1730,39 +1786,39 @@ public interface Client extends OAuthApi, GameEngine
 	 * Typically this is the player position, but can be other points in cutscenes or in free camera mode.
 	 * @return
 	 */
-	double getCameraFocalPointX();
+	float getCameraFocalPointX();
 
 	/**
 	 * Sets the camera focus point x. Requires the {@link #getCameraMode()} to be free camera.
 	 * @param x
 	 */
-	void setCameraFocalPointX(double x);
+	void setCameraFocalPointX(float x);
 
 	/**
 	 * Get the camera focus point y
 	 * Typically this is the player position, but can be other points in cutscenes or in free camera mode.
 	 * @return
 	 */
-	double getCameraFocalPointY();
+	float getCameraFocalPointY();
 
 	/**
 	 * Sets the camera focus point y. Requires the {@link #getCameraMode()} to be free camera.
 	 * @param y
 	 */
-	void setCameraFocalPointY(double y);
+	void setCameraFocalPointY(float y);
 
 	/**
 	 * Get the camera focus point z
 	 * Typically this is the player position, but can be other points in cutscenes or in free camera mode.
 	 * @return
 	 */
-	double getCameraFocalPointZ();
+	float getCameraFocalPointZ();
 
 	/**
 	 * Sets the camera focus point z. Requires the {@link #getCameraMode()} to be free camera.
 	 * @param z
 	 */
-	void setCameraFocalPointZ(double z);
+	void setCameraFocalPointZ(float z);
 
 	/**
 	 * Sets the normal moving speed when using oculus orb (default value is 12)
@@ -2147,21 +2203,6 @@ public interface Client extends OAuthApi, GameEngine
 	int[][][] getInstanceTemplateChunks();
 
 	/**
-	 * Returns a 2D array containing XTEA encryption keys used to decrypt
-	 * map region files.
-	 * <p>
-	 * The array maps the region keys at index {@code n} to the region
-	 * ID held in {@link #getMapRegions()} at {@code n}.
-	 * <p>
-	 * The array of keys for the region make up a 128-bit encryption key
-	 * spread across 4 integers.
-	 *
-	 * @return the XTEA encryption keys
-	 */
-	@Deprecated
-	int[][] getXteaKeys();
-
-	/**
 	 * Checks whether the scene is in an instanced region.
 	 * @see WorldView#isInstance()
 	 */
@@ -2413,6 +2454,7 @@ public interface Client extends OAuthApi, GameEngine
 	 *
 	 * @return
 	 */
+	@Nullable
 	CameraFocusableEntity getCameraFocusEntity();
 
 	/**
@@ -2425,4 +2467,11 @@ public interface Client extends OAuthApi, GameEngine
 
 	@Nullable
 	FileDescriptor getSocketFD();
+
+	/**
+	 * Expand macros such as @mes_hl_blu@, @blu@, etc. with their corresponding values, eg. &lt;col=0000ff&gt;
+	 */
+	String macroExpand(String s);
+
+	void switchJagexAccount(String sessionId, String characterId, String displayName);
 }

@@ -289,7 +289,6 @@ public final class SpriteID
 	public static final int MAP_RESIZE = 2523;
 	public static final int SCROLL_ICON = 2534;
 	public static final int AUTOMATIC_WIZARD = 2560;
-	public static final int LEAGUES_MEMBERSHIP_BANNER = 2590;
 	public static final int UPGRADE_MEMBERSHIP_BUTTON = 2591;
 	public static final int UPGRADE_MEMBERSHIP_BUTTON_HIGHLIGHT = 2592;
 	public static final int LEAGUE_MAP = 2603;
@@ -386,8 +385,6 @@ public final class SpriteID
 	public static final int TEXTURE_STONE01 = 4377;
 	public static final int GIANTS_FOUNDRY_QUALITY_BAR = 4513;
 	public static final int PVPA_HEART = 4522;
-	public static final int TOA_INVOCATIONS_PROGRESS_BAR_INDICATOR = 4659;
-	public static final int TOA_INFO_ICON = 4663;
 	public static final int FOG01 = 4664;
 	public static final int FOG02 = 4665;
 	public static final int FOG03 = 4666;
@@ -802,6 +799,87 @@ public final class SpriteID
 	public static final int LEAGUE_6_MAP_KOUREND = 8069;
 	public static final int LEAGUE_6_MAP_VARLAMORE = 8070;
 	public static final int LEAGUE_6_PROGRESS_BAR_INDICATOR = 8319;
+	public static final int CASTLE_DRAKAN_ROOM_1 = 8458;
+	public static final int CASTLE_DRAKAN_ROOM_1A = 8459;
+	public static final int CASTLE_DRAKAN_ROOM_2 = 8460;
+	public static final int CASTLE_DRAKAN_ROOM_2A = 8461;
+	public static final int CASTLE_DRAKAN_ROOM_3 = 8462;
+	public static final int CASTLE_DRAKAN_ROOM_3A = 8463;
+	public static final int CASTLE_DRAKAN_ROOM_4 = 8464;
+	public static final int CASTLE_DRAKAN_ROOM_5 = 8465;
+	public static final int CASTLE_DRAKAN_ROOM_6 = 8466;
+	public static final int CASTLE_DRAKAN_ROOM_7 = 8467;
+	public static final int CASTLE_DRAKAN_ROOM_8 = 8468;
+	public static final int CASTLE_DRAKAN_ROOM_9 = 8469;
+	public static final int CASTLE_DRAKAN_ROOM_10 = 8470;
+	public static final int CASTLE_DRAKAN_ROOM_11 = 8471;
+	public static final int CASTLE_DRAKAN_ROOM_12 = 8472;
+	public static final int CASTLE_DRAKAN_ROOM_13 = 8473;
+	public static final int CASTLE_DRAKAN_ROOM_14 = 8474;
+	public static final int CASTLE_DRAKAN_ROOM_15 = 8475;
+	public static final int CASTLE_DRAKAN_ROOM_16 = 8476;
+	public static final int CASTLE_DRAKAN_ROOM_17 = 8477;
+	public static final int CASTLE_DRAKAN_ROOM_18 = 8478;
+	public static final int CASTLE_DRAKAN_ROOM_19 = 8479;
+	public static final int CASTLE_DRAKAN_ROOM_20 = 8480;
+	public static final int CASTLE_DRAKAN_ROOM_21 = 8481;
+	public static final int CASTLE_DRAKAN_ROOM_22 = 8482;
+	public static final int CASTLE_DRAKAN_ROOM_23 = 8483;
+	public static final int CASTLE_DRAKAN_ROOM_24 = 8484;
+	public static final int CASTLE_DRAKAN_ROOM_25 = 8485;
+	public static final int CASTLE_DRAKAN_ROOM_26 = 8486;
+	public static final int CASTLE_DRAKAN_ROOM_27 = 8487;
+	public static final int CASTLE_DRAKAN_ROOM_28 = 8488;
+	public static final int CASTLE_DRAKAN_ROOM_29 = 8489;
+	public static final int CASTLE_DRAKAN_ROOM_30 = 8490;
+	public static final int CASTLE_DRAKAN_ROOM_31 = 8491;
+	public static final int CASTLE_DRAKAN_ROOM_32 = 8492;
+	public static final int CASTLE_DRAKAN_ROOM_33 = 8493;
+	public static final int CASTLE_DRAKAN_ROOM_34 = 8494;
+	public static final int CASTLE_DRAKAN_ROOM_35 = 8495;
+	public static final int CASTLE_DRAKAN_ROOM_36 = 8496;
+	public static final int CASTLE_DRAKAN_ROOM_37 = 8497;
+	public static final int CASTLE_DRAKAN_ROOM_38 = 8498;
+	public static final int CASTLE_DRAKAN_ROOM_39 = 8499;
+	public static final int CASTLE_DRAKAN_ROOM_40 = 8500;
+	public static final int CASTLE_DRAKAN_ROOM_41 = 8501;
+	public static final int CASTLE_DRAKAN_ROOM_42 = 8502;
+	public static final int CASTLE_DRAKAN_ROOM_43 = 8503;
+	public static final int CASTLE_DRAKAN_ROOM_44 = 8504;
+	public static final int CASTLE_DRAKAN_ROOM_45 = 8505;
+	public static final int CASTLE_DRAKAN_ROOM_46 = 8506;
+	public static final int CASTLE_DRAKAN_ROOM_47 = 8507;
+	public static final int CASTLE_DRAKAN_ROOM_48 = 8508;
+	public static final int CASTLE_DRAKAN_ROOM_49 = 8509;
+	public static final int CASTLE_DRAKAN_ROOM_50 = 8510;
+	public static final int CASTLE_DRAKAN_ROOM_51 = 8511;
+	public static final int LEAFYTREE_DARKWOOD = 8512;
+	public static final int LEAFYTREE_DARKWOOD_TILED = 8513;
+	public static final int SANGVESTI = 8515;
+	public static final int LEAFYTREE_AUTUMN01 = 8556;
+	public static final int LEAFYTREE_TILED_AUTUMN01 = 8557;
+	public static final int LEAFYTREE_AUTUMN02 = 8558;
+	public static final int LEAFYTREE_TILED_AUTUMN02 = 8559;
+	public static final int MINIMENU_ICONS = 8560;
+	public static final int ORB_FILLER_BORDER = 8603;
+	public static final int TFA_ICON_ROSETTE_TFA01 = 8677;
+	public static final int TOA_INVOCATIONS_PROGRESS_BAR_INDICATOR = 8798;
+	public static final int TOA_INFO_ICON = 8802;
+	public static final int STARS_TILED_GUTHIXIAN01 = 8803;
+	public static final int MEMBERSHIP_BANNER_HARDCOREMAIN = 8804;
+	public static final int GE_TEXTBACKDROP_NW = 8805;
+	public static final int GE_TEXTBACKDROP_N = 8806;
+	public static final int GE_TEXTBACKDROP_NE = 8807;
+	public static final int GE_TEXTBACKDROP_W = 8808;
+	public static final int GE_TEXTBACKDROP_C = 8809;
+	public static final int GE_TEXTBACKDROP_E = 8810;
+	public static final int GE_TEXTBACKDROP_SW = 8811;
+	public static final int GE_TEXTBACKDROP_S = 8812;
+	public static final int GE_TEXTBACKDROP_SE = 8813;
+	public static final int WOTW_SYMBOL_MAIN = 8870;
+	public static final int WOTW_SYMBOL_MAIN_RED = 8919;
+	public static final int ICON_GRAVESTONE = 8920;
+	public static final int LOGO_HCMAIN = 8921;
 
 	public static final class _2XStandardSpellsOn
 	{
@@ -1181,6 +1259,10 @@ public final class SpriteID
 		public static final int _29 = 1421;
 		public static final int _30 = 1422;
 		public static final int _31 = 1423;
+		public static final int _32 = 8595;
+		public static final int _33 = 8596;
+		public static final int _34 = 8597;
+		public static final int _35 = 8598;
 
 		public static final int THICK_SKIN = _0;
 		public static final int BURST_OF_STRENGTH = _1;
@@ -1214,6 +1296,7 @@ public final class SpriteID
 		public static final int AUGURY = _29;
 		public static final int DEADEYE = _30;
 		public static final int MYSTIC_VIGOUR = _31;
+		public static final int ZEAL = _32;
 	}
 
 	public static final class Prayeroff
@@ -1250,6 +1333,10 @@ public final class SpriteID
 		public static final int _29 = 1425;
 		public static final int _30 = 1426;
 		public static final int _31 = 1427;
+		public static final int _32 = 8599;
+		public static final int _33 = 8600;
+		public static final int _34 = 8601;
+		public static final int _35 = 8602;
 
 		public static final int THICK_SKIN_DISABLED = _0;
 		public static final int BURST_OF_STRENGTH_DISABLED = _1;
@@ -1283,6 +1370,7 @@ public final class SpriteID
 		public static final int AUGURY_DISABLED = _29;
 		public static final int DEADEYE_DISABLED = _30;
 		public static final int MYSTIC_VIGOUR_DISABLED = _31;
+		public static final int ZEAL_DISABLED = _32;
 	}
 
 	public static final class GeItembackdrop
@@ -2626,6 +2714,10 @@ public final class SpriteID
 		public static final int _57 = 5246;
 		public static final int _58 = 5247;
 		public static final int _59 = 5248;
+		public static final int _60 = 8516;
+		public static final int _61 = 8517;
+		public static final int _62 = 8518;
+		public static final int _63 = 8519;
 
 		public static final int YES = _0;
 		public static final int NO = _1;
@@ -3682,6 +3774,14 @@ public final class SpriteID
 		public static final int _21 = 5760;
 		public static final int _22 = 5761;
 		public static final int _23 = 5762;
+		public static final int _24 = 8604;
+		public static final int _25 = 8605;
+		public static final int _26 = 8606;
+		public static final int _27 = 8607;
+		public static final int _28 = 8608;
+		public static final int _29 = 8609;
+		public static final int _30 = 8610;
+		public static final int _31 = 8611;
 
 		public static final int PRAYER_ICON_ACTIVATED = _4;
 		public static final int HITPOINTS = _0;
@@ -3758,6 +3858,7 @@ public final class SpriteID
 		public static final int _1 = 1082;
 		public static final int _2 = 1083;
 		public static final int _3 = 2417;
+		public static final int _4 = 8357;
 
 		public static final int ALL_ITEMS = _0;
 		public static final int ADD = _1;
@@ -3946,6 +4047,27 @@ public final class SpriteID
 		public static final int _9 = 4936;
 		public static final int _10 = 4937;
 		public static final int _11 = 4938;
+		public static final int _12 = 8351;
+		public static final int _13 = 8352;
+		public static final int _14 = 8353;
+		public static final int _15 = 8354;
+		public static final int _16 = 8355;
+		public static final int _17 = 8356;
+		public static final int _18 = 8520;
+		public static final int _19 = 8521;
+		public static final int _20 = 8522;
+		public static final int _21 = 8523;
+		public static final int _22 = 8524;
+		public static final int _23 = 8525;
+		public static final int _24 = 8526;
+		public static final int _25 = 8527;
+		public static final int _26 = 8528;
+		public static final int _27 = 8529;
+		public static final int _28 = 8530;
+		public static final int _29 = 8531;
+		public static final int _30 = 8532;
+		public static final int _31 = 8533;
+		public static final int _32 = 8534;
 
 		public static final int NONE = _0;
 		public static final int USA = _1;
@@ -4368,6 +4490,10 @@ public final class SpriteID
 		public static final int _1 = 1440;
 		public static final int _2 = 2204;
 		public static final int _3 = 2205;
+		public static final int _4 = 8420;
+		public static final int _5 = 8421;
+		public static final int _6 = 8422;
+		public static final int _7 = 8423;
 
 		public static final int PLANET = _0;
 		public static final int PLANET_HOVERED = _1;
@@ -4735,6 +4861,10 @@ public final class SpriteID
 		public static final int _1 = 1699;
 		public static final int _2 = 2206;
 		public static final int _3 = 2207;
+		public static final int _4 = 8424;
+		public static final int _5 = 8425;
+		public static final int _6 = 8426;
+		public static final int _7 = 8427;
 	}
 
 	public static final class AccManIcons
@@ -5204,6 +5334,9 @@ public final class SpriteID
 		public static final int _0 = 2138;
 		public static final int _1 = 3517;
 		public static final int _2 = 3518;
+		public static final int _3 = 8612;
+		public static final int _4 = 8613;
+		public static final int _5 = 8614;
 	}
 
 	public static final class StonyBasalt
@@ -6777,6 +6910,10 @@ public final class SpriteID
 		public static final int _3 = 3389;
 		public static final int _4 = 3390;
 		public static final int _5 = 7318;
+		public static final int _6 = 8814;
+		public static final int _7 = 8815;
+		public static final int _8 = 8816;
+		public static final int _9 = 8817;
 	}
 
 	public static final class CaProgressBar
@@ -7759,6 +7896,26 @@ public final class SpriteID
 		public static final int _67 = 6350;
 		public static final int _68 = 6351;
 		public static final int _69 = 6352;
+		public static final int _70 = 8358;
+		public static final int _71 = 8359;
+		public static final int _72 = 8360;
+		public static final int _73 = 8361;
+		public static final int _74 = 8362;
+		public static final int _75 = 8363;
+		public static final int _76 = 8364;
+		public static final int _77 = 8365;
+		public static final int _78 = 8366;
+		public static final int _79 = 8367;
+		public static final int _80 = 8575;
+		public static final int _81 = 8576;
+		public static final int _82 = 8577;
+		public static final int _83 = 8578;
+		public static final int _84 = 8579;
+		public static final int _85 = 8580;
+		public static final int _86 = 8581;
+		public static final int _87 = 8582;
+		public static final int _88 = 8583;
+		public static final int _89 = 8584;
 
 		public static final int MIMIC = _0;
 		public static final int OBOR = _1;
@@ -7824,6 +7981,9 @@ public final class SpriteID
 		public static final int DOOM_OF_MOKHAIOTL = _64;
 		public static final int SHELLBANE_GRYPHON = _66;
 		public static final int BRUTUS = _69;
+		public static final int MAGGOT_KING = _70;
+		public static final int MAD_ANGEL = _71;
+		public static final int THE_FRACTURED_ARCHIVE = _72;
 	}
 
 	public static final class IconBoss50x50
@@ -7898,6 +8058,26 @@ public final class SpriteID
 		public static final int _67 = 6380;
 		public static final int _68 = 6381;
 		public static final int _69 = 6382;
+		public static final int _70 = 8368;
+		public static final int _71 = 8369;
+		public static final int _72 = 8370;
+		public static final int _73 = 8371;
+		public static final int _74 = 8372;
+		public static final int _75 = 8373;
+		public static final int _76 = 8374;
+		public static final int _77 = 8375;
+		public static final int _78 = 8376;
+		public static final int _79 = 8377;
+		public static final int _80 = 8585;
+		public static final int _81 = 8586;
+		public static final int _82 = 8587;
+		public static final int _83 = 8588;
+		public static final int _84 = 8589;
+		public static final int _85 = 8590;
+		public static final int _86 = 8591;
+		public static final int _87 = 8592;
+		public static final int _88 = 8593;
+		public static final int _89 = 8594;
 	}
 
 	public static final class ArrowsCurved
@@ -8090,123 +8270,123 @@ public final class SpriteID
 
 	public static final class ToaGroupingIcons
 	{
-		public static final int _0 = 4565;
-		public static final int _1 = 4566;
-		public static final int _2 = 4567;
-		public static final int _3 = 4568;
-		public static final int _4 = 4569;
-		public static final int _5 = 4570;
-		public static final int _6 = 4571;
-		public static final int _7 = 4572;
-		public static final int _8 = 4573;
-		public static final int _9 = 4574;
-		public static final int _10 = 4575;
-		public static final int _11 = 4576;
-		public static final int _12 = 4577;
-		public static final int _13 = 4578;
-		public static final int _14 = 4579;
-		public static final int _15 = 4580;
-		public static final int _16 = 4581;
-		public static final int _17 = 4582;
+		public static final int _0 = 8704;
+		public static final int _1 = 8705;
+		public static final int _2 = 8706;
+		public static final int _3 = 8707;
+		public static final int _4 = 8708;
+		public static final int _5 = 8709;
+		public static final int _6 = 8710;
+		public static final int _7 = 8711;
+		public static final int _8 = 8712;
+		public static final int _9 = 8713;
+		public static final int _10 = 8714;
+		public static final int _11 = 8715;
+		public static final int _12 = 8716;
+		public static final int _13 = 8717;
+		public static final int _14 = 8718;
+		public static final int _15 = 8719;
+		public static final int _16 = 8720;
+		public static final int _17 = 8721;
 	}
 
 	public static final class ToaInvocationIcons
 	{
-		public static final int _0 = 4583;
-		public static final int _1 = 4584;
-		public static final int _2 = 4585;
-		public static final int _3 = 4586;
-		public static final int _4 = 4587;
-		public static final int _5 = 4588;
-		public static final int _6 = 4589;
-		public static final int _7 = 4590;
-		public static final int _8 = 4591;
-		public static final int _9 = 4592;
-		public static final int _10 = 4593;
-		public static final int _11 = 4594;
-		public static final int _12 = 4595;
-		public static final int _13 = 4596;
-		public static final int _14 = 4597;
-		public static final int _15 = 4598;
-		public static final int _16 = 4599;
-		public static final int _17 = 4600;
-		public static final int _18 = 4601;
-		public static final int _19 = 4602;
-		public static final int _20 = 4603;
-		public static final int _21 = 4604;
-		public static final int _22 = 4605;
-		public static final int _23 = 4606;
+		public static final int _0 = 8722;
+		public static final int _1 = 8723;
+		public static final int _2 = 8724;
+		public static final int _3 = 8725;
+		public static final int _4 = 8726;
+		public static final int _5 = 8727;
+		public static final int _6 = 8728;
+		public static final int _7 = 8729;
+		public static final int _8 = 8730;
+		public static final int _9 = 8731;
+		public static final int _10 = 8732;
+		public static final int _11 = 8733;
+		public static final int _12 = 8734;
+		public static final int _13 = 8735;
+		public static final int _14 = 8736;
+		public static final int _15 = 8737;
+		public static final int _16 = 8738;
+		public static final int _17 = 8739;
+		public static final int _18 = 8740;
+		public static final int _19 = 8741;
+		public static final int _20 = 8742;
+		public static final int _21 = 8743;
+		public static final int _22 = 8744;
+		public static final int _23 = 8745;
 	}
 
 	public static final class ToaInvocationIconsBlack
 	{
-		public static final int _0 = 4607;
-		public static final int _1 = 4608;
-		public static final int _2 = 4609;
-		public static final int _3 = 4610;
-		public static final int _4 = 4611;
-		public static final int _5 = 4612;
-		public static final int _6 = 4613;
-		public static final int _7 = 4614;
-		public static final int _8 = 4615;
-		public static final int _9 = 4616;
-		public static final int _10 = 4617;
-		public static final int _11 = 4618;
-		public static final int _12 = 4619;
-		public static final int _13 = 4620;
-		public static final int _14 = 4621;
-		public static final int _15 = 4622;
-		public static final int _16 = 4623;
-		public static final int _17 = 4624;
-		public static final int _18 = 4625;
-		public static final int _19 = 4626;
-		public static final int _20 = 4627;
-		public static final int _21 = 4628;
-		public static final int _22 = 4629;
-		public static final int _23 = 4630;
+		public static final int _0 = 8746;
+		public static final int _1 = 8747;
+		public static final int _2 = 8748;
+		public static final int _3 = 8749;
+		public static final int _4 = 8750;
+		public static final int _5 = 8751;
+		public static final int _6 = 8752;
+		public static final int _7 = 8753;
+		public static final int _8 = 8754;
+		public static final int _9 = 8755;
+		public static final int _10 = 8756;
+		public static final int _11 = 8757;
+		public static final int _12 = 8758;
+		public static final int _13 = 8759;
+		public static final int _14 = 8760;
+		public static final int _15 = 8761;
+		public static final int _16 = 8762;
+		public static final int _17 = 8763;
+		public static final int _18 = 8764;
+		public static final int _19 = 8765;
+		public static final int _20 = 8766;
+		public static final int _21 = 8767;
+		public static final int _22 = 8768;
+		public static final int _23 = 8769;
 	}
 
 	public static final class ToaInvocationIconsSmall
 	{
-		public static final int _0 = 4631;
-		public static final int _1 = 4632;
-		public static final int _2 = 4633;
-		public static final int _3 = 4634;
-		public static final int _4 = 4635;
-		public static final int _5 = 4636;
-		public static final int _6 = 4637;
-		public static final int _7 = 4638;
-		public static final int _8 = 4639;
-		public static final int _9 = 4640;
-		public static final int _10 = 4641;
-		public static final int _11 = 4642;
-		public static final int _12 = 4643;
-		public static final int _13 = 4644;
-		public static final int _14 = 4645;
-		public static final int _15 = 4646;
-		public static final int _16 = 4647;
-		public static final int _17 = 4648;
-		public static final int _18 = 4649;
-		public static final int _19 = 4650;
-		public static final int _20 = 4651;
-		public static final int _21 = 4652;
-		public static final int _22 = 4653;
-		public static final int _23 = 4654;
+		public static final int _0 = 8770;
+		public static final int _1 = 8771;
+		public static final int _2 = 8772;
+		public static final int _3 = 8773;
+		public static final int _4 = 8774;
+		public static final int _5 = 8775;
+		public static final int _6 = 8776;
+		public static final int _7 = 8777;
+		public static final int _8 = 8778;
+		public static final int _9 = 8779;
+		public static final int _10 = 8780;
+		public static final int _11 = 8781;
+		public static final int _12 = 8782;
+		public static final int _13 = 8783;
+		public static final int _14 = 8784;
+		public static final int _15 = 8785;
+		public static final int _16 = 8786;
+		public static final int _17 = 8787;
+		public static final int _18 = 8788;
+		public static final int _19 = 8789;
+		public static final int _20 = 8790;
+		public static final int _21 = 8791;
+		public static final int _22 = 8792;
+		public static final int _23 = 8793;
 	}
 
 	public static final class ToaInvocationsProgresBar
 	{
-		public static final int _0 = 4655;
-		public static final int _1 = 4656;
-		public static final int _2 = 4657;
-		public static final int _3 = 4658;
+		public static final int _0 = 8794;
+		public static final int _1 = 8795;
+		public static final int _2 = 8796;
+		public static final int _3 = 8797;
 	}
 
 	public static final class ToaDifficultyIcons
 	{
-		public static final int _0 = 4660;
-		public static final int _1 = 4661;
-		public static final int _2 = 4662;
+		public static final int _0 = 8799;
+		public static final int _1 = 8800;
+		public static final int _2 = 8801;
 	}
 
 	public static final class StandardPrayer30
@@ -10934,6 +11114,16 @@ public final class SpriteID
 		public static final int _57 = 7172;
 		public static final int _58 = 7173;
 		public static final int _59 = 7174;
+		public static final int _60 = 8535;
+		public static final int _61 = 8536;
+		public static final int _62 = 8537;
+		public static final int _63 = 8538;
+		public static final int _64 = 8539;
+		public static final int _65 = 8540;
+		public static final int _66 = 8541;
+		public static final int _67 = 8542;
+		public static final int _68 = 8543;
+		public static final int _69 = 8544;
 	}
 
 	public static final class IconSailingStatus18x18
@@ -10969,6 +11159,14 @@ public final class SpriteID
 		public static final int _21 = 7199;
 		public static final int _22 = 7200;
 		public static final int _23 = 7201;
+		public static final int _24 = 8343;
+		public static final int _25 = 8344;
+		public static final int _26 = 8345;
+		public static final int _27 = 8346;
+		public static final int _28 = 8347;
+		public static final int _29 = 8348;
+		public static final int _30 = 8349;
+		public static final int _31 = 8350;
 	}
 
 	public static final class HeadbarIce40
@@ -12112,5 +12310,399 @@ public final class SpriteID
 		public static final int _3 = 8340;
 		public static final int _4 = 8341;
 		public static final int _5 = 8342;
+	}
+
+	public static final class RadioButtons
+	{
+		public static final int _0 = 8378;
+		public static final int _1 = 8379;
+		public static final int _2 = 8380;
+		public static final int _3 = 8381;
+		public static final int _4 = 8382;
+		public static final int _5 = 8383;
+		public static final int _6 = 8384;
+		public static final int _7 = 8385;
+	}
+
+	public static final class MenuButtonsSmall
+	{
+		public static final int _0 = 8386;
+		public static final int _1 = 8387;
+		public static final int _2 = 8388;
+		public static final int _3 = 8389;
+	}
+
+	public static final class CombinationLockSymbolsLarge
+	{
+		public static final int _0 = 8390;
+		public static final int _1 = 8391;
+		public static final int _2 = 8392;
+		public static final int _3 = 8393;
+		public static final int _4 = 8394;
+		public static final int _5 = 8395;
+		public static final int _6 = 8396;
+		public static final int _7 = 8397;
+		public static final int _8 = 8398;
+		public static final int _9 = 8399;
+		public static final int _10 = 8400;
+		public static final int _11 = 8401;
+		public static final int _12 = 8402;
+		public static final int _13 = 8403;
+		public static final int _14 = 8404;
+		public static final int _15 = 8405;
+		public static final int _16 = 8406;
+		public static final int _17 = 8407;
+		public static final int _18 = 8408;
+		public static final int _19 = 8409;
+		public static final int _20 = 8410;
+		public static final int _21 = 8411;
+		public static final int _22 = 8412;
+		public static final int _23 = 8413;
+		public static final int _24 = 8414;
+		public static final int _25 = 8415;
+		public static final int _26 = 8416;
+		public static final int _27 = 8417;
+		public static final int _28 = 8418;
+		public static final int _29 = 8419;
+	}
+
+	public static final class VampyreSymbols
+	{
+		public static final int _0 = 8428;
+		public static final int _1 = 8429;
+		public static final int _2 = 8430;
+		public static final int _3 = 8431;
+		public static final int _4 = 8432;
+		public static final int _5 = 8433;
+		public static final int _6 = 8434;
+		public static final int _7 = 8435;
+	}
+
+	public static final class VampyreSymbolsSmall
+	{
+		public static final int _0 = 8436;
+		public static final int _1 = 8437;
+		public static final int _2 = 8438;
+		public static final int _3 = 8439;
+		public static final int _4 = 8440;
+		public static final int _5 = 8441;
+		public static final int _6 = 8442;
+		public static final int _7 = 8443;
+	}
+
+	public static final class VampyreBooks
+	{
+		public static final int _0 = 8444;
+		public static final int _1 = 8445;
+		public static final int _2 = 8446;
+		public static final int _3 = 8447;
+		public static final int _4 = 8448;
+		public static final int _5 = 8449;
+		public static final int _6 = 8450;
+		public static final int _7 = 8451;
+	}
+
+	public static final class CastleDrakanWorldmapIcons
+	{
+		public static final int _0 = 8452;
+		public static final int _1 = 8453;
+	}
+
+	public static final class CastleDrakanRoomIcons
+	{
+		public static final int _0 = 8454;
+		public static final int _1 = 8455;
+		public static final int _2 = 8456;
+		public static final int _3 = 8457;
+		public static final int _4 = 8514;
+	}
+
+	public static final class BackingSlayerModifiers01_35x35
+	{
+		public static final int _0 = 8545;
+		public static final int _1 = 8546;
+		public static final int _2 = 8547;
+		public static final int _3 = 8548;
+		public static final int _4 = 8549;
+		public static final int _5 = 8550;
+	}
+
+	public static final class IconSlayerModifiers01_25x25
+	{
+		public static final int _0 = 8551;
+		public static final int _1 = 8552;
+		public static final int _2 = 8553;
+		public static final int _3 = 8554;
+		public static final int _4 = 8555;
+	}
+
+	public static final class IconPvpTutorial01_35x35
+	{
+		public static final int _0 = 8561;
+		public static final int _1 = 8562;
+		public static final int _2 = 8563;
+		public static final int _3 = 8564;
+		public static final int _4 = 8565;
+		public static final int _5 = 8566;
+		public static final int _6 = 8567;
+		public static final int _7 = 8568;
+		public static final int _8 = 8569;
+		public static final int _9 = 8570;
+	}
+
+	public static final class HeadbarBlood45
+	{
+		public static final int _0 = 8571;
+		public static final int _1 = 8572;
+	}
+
+	public static final class HeadbarHeat60
+	{
+		public static final int _0 = 8573;
+		public static final int _1 = 8574;
+	}
+
+	public static final class TfaGroupingIcons
+	{
+		public static final int _0 = 8615;
+		public static final int _1 = 8616;
+		public static final int _2 = 8617;
+		public static final int _3 = 8618;
+		public static final int _4 = 8619;
+		public static final int _5 = 8620;
+		public static final int _6 = 8621;
+		public static final int _7 = 8622;
+		public static final int _8 = 8623;
+		public static final int _9 = 8624;
+		public static final int _10 = 8625;
+		public static final int _11 = 8626;
+		public static final int _12 = 8627;
+		public static final int _13 = 8628;
+		public static final int _14 = 8629;
+		public static final int _15 = 8630;
+		public static final int _16 = 8631;
+		public static final int _17 = 8632;
+	}
+
+	public static final class TfaBackgroundBookTfa01
+	{
+		public static final int _0 = 8633;
+		public static final int _1 = 8634;
+		public static final int _2 = 8635;
+		public static final int _3 = 8636;
+		public static final int _4 = 8637;
+		public static final int _5 = 8638;
+		public static final int _6 = 8639;
+		public static final int _7 = 8640;
+		public static final int _8 = 8641;
+		public static final int _9 = 8642;
+		public static final int _10 = 8643;
+		public static final int _11 = 8644;
+	}
+
+	public static final class TfaBarScrollVertical01
+	{
+		public static final int _0 = 8645;
+		public static final int _1 = 8646;
+		public static final int _2 = 8647;
+		public static final int _3 = 8648;
+	}
+
+	public static final class TfaBarScrollVertical02
+	{
+		public static final int _0 = 8649;
+		public static final int _1 = 8650;
+		public static final int _2 = 8651;
+		public static final int _3 = 8652;
+	}
+
+	public static final class TfaBarScrollHorizontal01
+	{
+		public static final int _0 = 8653;
+		public static final int _1 = 8654;
+		public static final int _2 = 8655;
+		public static final int _3 = 8656;
+	}
+
+	public static final class TfaBarScrollHorizontal02
+	{
+		public static final int _0 = 8657;
+		public static final int _1 = 8658;
+		public static final int _2 = 8659;
+		public static final int _3 = 8660;
+	}
+
+	public static final class TfaBorderDecoTfa01
+	{
+		public static final int _0 = 8661;
+		public static final int _1 = 8662;
+		public static final int _2 = 8663;
+		public static final int _3 = 8664;
+		public static final int _4 = 8665;
+		public static final int _5 = 8666;
+		public static final int _6 = 8667;
+		public static final int _7 = 8668;
+	}
+
+	public static final class TfaButtonArrowTfa01
+	{
+		public static final int _0 = 8669;
+		public static final int _1 = 8670;
+		public static final int _2 = 8671;
+		public static final int _3 = 8672;
+	}
+
+	public static final class TfaButtonArrowTfa02
+	{
+		public static final int _0 = 8673;
+		public static final int _1 = 8674;
+		public static final int _2 = 8675;
+		public static final int _3 = 8676;
+	}
+
+	public static final class TfaTabsBookTfa01
+	{
+		public static final int _0 = 8678;
+		public static final int _1 = 8679;
+		public static final int _2 = 8680;
+		public static final int _3 = 8681;
+		public static final int _4 = 8682;
+		public static final int _5 = 8683;
+		public static final int _6 = 8684;
+		public static final int _7 = 8685;
+		public static final int _8 = 8686;
+		public static final int _9 = 8687;
+		public static final int _10 = 8688;
+		public static final int _11 = 8689;
+		public static final int _12 = 8690;
+		public static final int _13 = 8691;
+		public static final int _14 = 8692;
+		public static final int _15 = 8693;
+		public static final int _16 = 8694;
+		public static final int _17 = 8695;
+	}
+
+	public static final class TfaIconBossBlackout01
+	{
+		public static final int _0 = 8696;
+		public static final int _1 = 8697;
+		public static final int _2 = 8698;
+		public static final int _3 = 8699;
+		public static final int _4 = 8700;
+		public static final int _5 = 8701;
+		public static final int _6 = 8702;
+		public static final int _7 = 8703;
+	}
+
+	public static final class OrbsComplete
+	{
+		public static final int _0 = 8818;
+		public static final int _1 = 8819;
+		public static final int _2 = 8820;
+		public static final int _3 = 8821;
+	}
+
+	public static final class WotwSymbols
+	{
+		public static final int _0 = 8822;
+		public static final int _1 = 8823;
+		public static final int _2 = 8824;
+		public static final int _3 = 8825;
+		public static final int _4 = 8826;
+		public static final int _5 = 8827;
+		public static final int _6 = 8828;
+		public static final int _7 = 8829;
+		public static final int _8 = 8830;
+		public static final int _9 = 8831;
+		public static final int _10 = 8832;
+		public static final int _11 = 8833;
+		public static final int _12 = 8834;
+		public static final int _13 = 8835;
+		public static final int _14 = 8836;
+		public static final int _15 = 8837;
+		public static final int _16 = 8838;
+		public static final int _17 = 8839;
+		public static final int _18 = 8840;
+		public static final int _19 = 8841;
+		public static final int _20 = 8842;
+		public static final int _21 = 8843;
+		public static final int _22 = 8844;
+		public static final int _23 = 8845;
+		public static final int _24 = 8846;
+		public static final int _25 = 8847;
+		public static final int _26 = 8848;
+		public static final int _27 = 8849;
+		public static final int _28 = 8850;
+		public static final int _29 = 8851;
+		public static final int _30 = 8852;
+		public static final int _31 = 8853;
+		public static final int _32 = 8854;
+		public static final int _33 = 8855;
+		public static final int _34 = 8856;
+		public static final int _35 = 8857;
+		public static final int _36 = 8858;
+		public static final int _37 = 8859;
+		public static final int _38 = 8860;
+		public static final int _39 = 8861;
+		public static final int _40 = 8862;
+		public static final int _41 = 8863;
+		public static final int _42 = 8864;
+		public static final int _43 = 8865;
+		public static final int _44 = 8866;
+		public static final int _45 = 8867;
+		public static final int _46 = 8868;
+		public static final int _47 = 8869;
+	}
+
+	public static final class WotwSymbolsRed
+	{
+		public static final int _0 = 8871;
+		public static final int _1 = 8872;
+		public static final int _2 = 8873;
+		public static final int _3 = 8874;
+		public static final int _4 = 8875;
+		public static final int _5 = 8876;
+		public static final int _6 = 8877;
+		public static final int _7 = 8878;
+		public static final int _8 = 8879;
+		public static final int _9 = 8880;
+		public static final int _10 = 8881;
+		public static final int _11 = 8882;
+		public static final int _12 = 8883;
+		public static final int _13 = 8884;
+		public static final int _14 = 8885;
+		public static final int _15 = 8886;
+		public static final int _16 = 8887;
+		public static final int _17 = 8888;
+		public static final int _18 = 8889;
+		public static final int _19 = 8890;
+		public static final int _20 = 8891;
+		public static final int _21 = 8892;
+		public static final int _22 = 8893;
+		public static final int _23 = 8894;
+		public static final int _24 = 8895;
+		public static final int _25 = 8896;
+		public static final int _26 = 8897;
+		public static final int _27 = 8898;
+		public static final int _28 = 8899;
+		public static final int _29 = 8900;
+		public static final int _30 = 8901;
+		public static final int _31 = 8902;
+		public static final int _32 = 8903;
+		public static final int _33 = 8904;
+		public static final int _34 = 8905;
+		public static final int _35 = 8906;
+		public static final int _36 = 8907;
+		public static final int _37 = 8908;
+		public static final int _38 = 8909;
+		public static final int _39 = 8910;
+		public static final int _40 = 8911;
+		public static final int _41 = 8912;
+		public static final int _42 = 8913;
+		public static final int _43 = 8914;
+		public static final int _44 = 8915;
+		public static final int _45 = 8916;
+		public static final int _46 = 8917;
+		public static final int _47 = 8918;
 	}
 }
