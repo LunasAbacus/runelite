@@ -7,6 +7,7 @@ import net.runelite.api.events.*;
 import net.runelite.api.gameval.InventoryID;
 import net.runelite.client.owo.instruction.InstructionFactory;
 import net.runelite.client.owo.instruction.OwoServer;
+import net.runelite.client.owo.logics.DummyState;
 import net.runelite.client.owo.modules.InteractionManager;
 import net.runelite.client.owo.modules.PlayerModule;
 import net.runelite.client.owo.utils.BankUtils;
@@ -182,7 +183,7 @@ public abstract class OwoLogic<S extends Enum<S>> {
         }
 
         // Alert if stuck for more than 3 minutes and idle
-        if (lastStateChangeTick + STUCK_TIMEOUT < client.getTickCount() && ticksSinceLastIdle > STUCK_TIMEOUT) {
+        if (state != DummyState.NO_OP && lastStateChangeTick + STUCK_TIMEOUT < client.getTickCount() && ticksSinceLastIdle > STUCK_TIMEOUT) {
             lastStateChangeTick = Integer.MAX_VALUE;
             log.debug("No state change in {} ticks. Requesting manual help.", STUCK_TIMEOUT);
             postDiscordMessage("Father, I am stuck! Please provide assistance.");
@@ -313,13 +314,28 @@ public abstract class OwoLogic<S extends Enum<S>> {
         return distance <= maxDistance;
     }
 
+    protected boolean refreshInventory() {
+        ItemContainer inventory = client.getItemContainer(InventoryID.INV);
+        if (inventory == null) {
+            return false;
+        }
+
+        updateInventory(inventory);
+        return true;
+    }
+
+    private void updateInventory(ItemContainer inventory) {
+        Item[] items = inventory.getItems();
+        interactionManager.setInventoryItems(items);
+        playerModule.setInventoryItems(items);
+    }
+
     public void onItemContainerChanged(ItemContainerChanged event) {
         if (event.getContainerId() != InventoryID.INV) {
             return;
         }
 
-        interactionManager.setInventoryItems(event.getItemContainer().getItems());
-        playerModule.setInventoryItems(event.getItemContainer().getItems());
+        updateInventory(event.getItemContainer());
     }
 
     public void onGameObjectSpawned(GameObjectSpawned event) {

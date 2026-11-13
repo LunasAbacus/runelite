@@ -38,9 +38,18 @@ public class ArdyKnights extends OwoLogic<ArdyKnights.State> {
     }
 
     private int idleDuration = 0;
+    private boolean inventoryInitialized;
+
     @Override
     public void onGameTick(GameTick t) {
         super.onGameTick(t);
+
+        if (!inventoryInitialized) {
+            if (!refreshInventory()) {
+                return;
+            }
+            inventoryInitialized = true;
+        }
 
         if (idleDuration > 0) {
             idleDuration--;
@@ -160,6 +169,7 @@ public class ArdyKnights extends OwoLogic<ArdyKnights.State> {
                 }
                 break;
             case READY_TO_PICKPOCKET:
+                // TODO Wait if character is moving so not bouncing
                 plugin.setDebugText("Pickpocketing");
                 sentDiscordMessage = false;
                 interactionManager.clickClosestNpc(knightIds, "Knight");
@@ -185,14 +195,15 @@ public class ArdyKnights extends OwoLogic<ArdyKnights.State> {
         |-------|---    f = 2655, 3285
      */
     private boolean isKnightWithinBounds() {
-        Optional<NPC> ardyKnight = interactionManager.findClosestNPC(knightIds);
-        if (ardyKnight.isEmpty()) {
-            return false;
-        }
-
-        WorldPoint knightPosition = ardyKnight.get().getWorldLocation();
-        int x = knightPosition.getX();
-        int y = knightPosition.getY();
-        return (x == 2654 || x == 2655) && (y == 3287 || y == 3286 || y == 3285);
+        return true;
+//        Optional<NPC> ardyKnight = interactionManager.findClosestNPC(knightIds);
+//        if (ardyKnight.isEmpty()) {
+//            return false;
+//        }
+//
+//        WorldPoint knightPosition = ardyKnight.get().getWorldLocation();
+//        int x = knightPosition.getX();
+//        int y = knightPosition.getY();
+//        return (x == 2654 || x == 2655) && (y == 3287 || y == 3286 || y == 3285);
     }
 }
